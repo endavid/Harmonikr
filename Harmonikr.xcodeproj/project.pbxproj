@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */; };
+		63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBDD1A82DC2C00002886 /* Document.swift */; };
+		63EFEBE11A82DC2C00002886 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBDF1A82DC2C00002886 /* Document.xib */; };
+		63EFEBE31A82DC2C00002886 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBE21A82DC2C00002886 /* Images.xcassets */; };
+		63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBE41A82DC2C00002886 /* MainMenu.xib */; };
+		63EFEBF21A82DC2C00002886 /* HarmonikrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		63EFEBEC1A82DC2C00002886 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63EFEBCE1A82DC2C00002886 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63EFEBD51A82DC2C00002886;
+			remoteInfo = Harmonikr;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		63EFEBD61A82DC2C00002886 /* Harmonikr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmonikr.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		63EFEBDA1A82DC2C00002886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		63EFEBDD1A82DC2C00002886 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		63EFEBE01A82DC2C00002886 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Document.xib; sourceTree = "<group>"; };
+		63EFEBE21A82DC2C00002886 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		63EFEBE51A82DC2C00002886 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		63EFEBEB1A82DC2C00002886 /* HarmonikrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarmonikrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		63EFEBF01A82DC2C00002886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonikrTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		63EFEBD31A82DC2C00002886 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63EFEBE81A82DC2C00002886 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		63EFEBCD1A82DC2C00002886 = {
+			isa = PBXGroup;
+			children = (
+				63EFEBD81A82DC2C00002886 /* Harmonikr */,
+				63EFEBEE1A82DC2C00002886 /* HarmonikrTests */,
+				63EFEBD71A82DC2C00002886 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		63EFEBD71A82DC2C00002886 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				63EFEBD61A82DC2C00002886 /* Harmonikr.app */,
+				63EFEBEB1A82DC2C00002886 /* HarmonikrTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
+			isa = PBXGroup;
+			children = (
+				63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */,
+				63EFEBDD1A82DC2C00002886 /* Document.swift */,
+				63EFEBDF1A82DC2C00002886 /* Document.xib */,
+				63EFEBE21A82DC2C00002886 /* Images.xcassets */,
+				63EFEBE41A82DC2C00002886 /* MainMenu.xib */,
+				63EFEBD91A82DC2C00002886 /* Supporting Files */,
+			);
+			path = Harmonikr;
+			sourceTree = "<group>";
+		};
+		63EFEBD91A82DC2C00002886 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				63EFEBDA1A82DC2C00002886 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		63EFEBEE1A82DC2C00002886 /* HarmonikrTests */ = {
+			isa = PBXGroup;
+			children = (
+				63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */,
+				63EFEBEF1A82DC2C00002886 /* Supporting Files */,
+			);
+			path = HarmonikrTests;
+			sourceTree = "<group>";
+		};
+		63EFEBEF1A82DC2C00002886 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				63EFEBF01A82DC2C00002886 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		63EFEBD51A82DC2C00002886 /* Harmonikr */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63EFEBF51A82DC2C00002886 /* Build configuration list for PBXNativeTarget "Harmonikr" */;
+			buildPhases = (
+				63EFEBD21A82DC2C00002886 /* Sources */,
+				63EFEBD31A82DC2C00002886 /* Frameworks */,
+				63EFEBD41A82DC2C00002886 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Harmonikr;
+			productName = Harmonikr;
+			productReference = 63EFEBD61A82DC2C00002886 /* Harmonikr.app */;
+			productType = "com.apple.product-type.application";
+		};
+		63EFEBEA1A82DC2C00002886 /* HarmonikrTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63EFEBF81A82DC2C00002886 /* Build configuration list for PBXNativeTarget "HarmonikrTests" */;
+			buildPhases = (
+				63EFEBE71A82DC2C00002886 /* Sources */,
+				63EFEBE81A82DC2C00002886 /* Frameworks */,
+				63EFEBE91A82DC2C00002886 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				63EFEBED1A82DC2C00002886 /* PBXTargetDependency */,
+			);
+			name = HarmonikrTests;
+			productName = HarmonikrTests;
+			productReference = 63EFEBEB1A82DC2C00002886 /* HarmonikrTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		63EFEBCE1A82DC2C00002886 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "David Gavilan";
+				TargetAttributes = {
+					63EFEBD51A82DC2C00002886 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					63EFEBEA1A82DC2C00002886 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 63EFEBD51A82DC2C00002886;
+					};
+				};
+			};
+			buildConfigurationList = 63EFEBD11A82DC2C00002886 /* Build configuration list for PBXProject "Harmonikr" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 63EFEBCD1A82DC2C00002886;
+			productRefGroup = 63EFEBD71A82DC2C00002886 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				63EFEBD51A82DC2C00002886 /* Harmonikr */,
+				63EFEBEA1A82DC2C00002886 /* HarmonikrTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		63EFEBD41A82DC2C00002886 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EFEBE11A82DC2C00002886 /* Document.xib in Resources */,
+				63EFEBE31A82DC2C00002886 /* Images.xcassets in Resources */,
+				63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63EFEBE91A82DC2C00002886 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		63EFEBD21A82DC2C00002886 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */,
+				63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63EFEBE71A82DC2C00002886 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EFEBF21A82DC2C00002886 /* HarmonikrTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		63EFEBED1A82DC2C00002886 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63EFEBD51A82DC2C00002886 /* Harmonikr */;
+			targetProxy = 63EFEBEC1A82DC2C00002886 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		63EFEBDF1A82DC2C00002886 /* Document.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63EFEBE01A82DC2C00002886 /* Base */,
+			);
+			name = Document.xib;
+			sourceTree = "<group>";
+		};
+		63EFEBE41A82DC2C00002886 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				63EFEBE51A82DC2C00002886 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		63EFEBF31A82DC2C00002886 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		63EFEBF41A82DC2C00002886 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		63EFEBF61A82DC2C00002886 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Harmonikr/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		63EFEBF71A82DC2C00002886 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Harmonikr/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		63EFEBF91A82DC2C00002886 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HarmonikrTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Harmonikr.app/Contents/MacOS/Harmonikr";
+			};
+			name = Debug;
+		};
+		63EFEBFA1A82DC2C00002886 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HarmonikrTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Harmonikr.app/Contents/MacOS/Harmonikr";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		63EFEBD11A82DC2C00002886 /* Build configuration list for PBXProject "Harmonikr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63EFEBF31A82DC2C00002886 /* Debug */,
+				63EFEBF41A82DC2C00002886 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63EFEBF51A82DC2C00002886 /* Build configuration list for PBXNativeTarget "Harmonikr" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63EFEBF61A82DC2C00002886 /* Debug */,
+				63EFEBF71A82DC2C00002886 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		63EFEBF81A82DC2C00002886 /* Build configuration list for PBXNativeTarget "HarmonikrTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63EFEBF91A82DC2C00002886 /* Debug */,
+				63EFEBFA1A82DC2C00002886 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 63EFEBCE1A82DC2C00002886 /* Project object */;
+}
