@@ -10,9 +10,17 @@ import Cocoa
 
 class Document: NSDocument {
 
+    let irradianceWidth     : UInt = 32
+    let irradianceHeight    : UInt = 32
+    let irradianceBands     : UInt = 3     ///< R,G,B
+    var imgBuffer : Array<UInt8>!
+    var imgIrradiance : CGImageRef!
+    
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
+        let bufferLength : Int = (Int)(irradianceWidth * irradianceHeight * irradianceBands)
+        imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
     }
 
     override func windowControllerDidLoadNib(aController: NSWindowController) {
@@ -44,7 +52,27 @@ class Document: NSDocument {
         outError.memory = NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         return false
     }
+    
+    override func awakeFromNib() {
+        updateImgIrradiance()
+    }
+    
+    func updateImgIrradiance() {
+        var rgb = CGColorSpaceCreateDeviceRGB();
+        let bufferLength = irradianceWidth * irradianceHeight * irradianceBands;
+        let provider = CGDataProviderCreateWithData(nil, imgBuffer, bufferLength, nil)
+        var bitmapInfo:CGBitmapInfo = .ByteOrderDefault;
+        // with alpha
+        // bitmapInfo |= CGBitmapInfo(CGImageAlphaInfo.Last.rawValue)
+        imgIrradiance = CGImageCreate(irradianceWidth, irradianceHeight, 8, 8 * irradianceBands, irradianceWidth * irradianceBands, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
+        imgViewIrradiance.image = NSImage(CGImage: imgIrradiance, size: NSZeroSize)
+    }
 
+    @IBAction func computeHarmonics(sender: AnyObject) {
+        println("Compute!")
+    }
+    
+    @IBOutlet weak var imgViewIrradiance: NSImageView!
 
 }
 
