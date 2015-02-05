@@ -10,17 +10,13 @@ import Cocoa
 
 class Document: NSDocument {
 
-    let irradianceWidth     : UInt = 32
-    let irradianceHeight    : UInt = 32
-    let irradianceBands     : UInt = 3     ///< R,G,B
-    var imgBuffer : Array<UInt8>!
     var imgIrradiance : CGImageRef!
+    var sphereMap : SphereMap!
     
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
-        let bufferLength : Int = (Int)(irradianceWidth * irradianceHeight * irradianceBands)
-        imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
+        sphereMap = SphereMap()
     }
 
     override func windowControllerDidLoadNib(aController: NSWindowController) {
@@ -53,18 +49,20 @@ class Document: NSDocument {
         return false
     }
     
+    /// Initialization code that needs the instantiated IBOutlets (before this function is called, they are still nil!)
     override func awakeFromNib() {
         updateImgIrradiance()
     }
     
+    // ref: https://gist.github.com/irskep/e560be65163efcb04115
     func updateImgIrradiance() {
         var rgb = CGColorSpaceCreateDeviceRGB();
-        let bufferLength = irradianceWidth * irradianceHeight * irradianceBands;
-        let provider = CGDataProviderCreateWithData(nil, imgBuffer, bufferLength, nil)
+        let bufferLength = sphereMap.getBufferLength()
+        let provider = CGDataProviderCreateWithData(nil, sphereMap.imgBuffer, bufferLength, nil)
         var bitmapInfo:CGBitmapInfo = .ByteOrderDefault;
         // with alpha
         // bitmapInfo |= CGBitmapInfo(CGImageAlphaInfo.Last.rawValue)
-        imgIrradiance = CGImageCreate(irradianceWidth, irradianceHeight, 8, 8 * irradianceBands, irradianceWidth * irradianceBands, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
+        imgIrradiance = CGImageCreate(sphereMap.width, sphereMap.height, 8, 8 * sphereMap.bands, sphereMap.width * sphereMap.bands, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
         imgViewIrradiance.image = NSImage(CGImage: imgIrradiance, size: NSZeroSize)
     }
 

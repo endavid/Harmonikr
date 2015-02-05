@@ -13,6 +13,7 @@
 		63EFEBE31A82DC2C00002886 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBE21A82DC2C00002886 /* Images.xcassets */; };
 		63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBE41A82DC2C00002886 /* MainMenu.xib */; };
 		63EFEBF21A82DC2C00002886 /* HarmonikrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */; };
+		63EFEBFD1A8425BE00002886 /* SphereMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBFC1A8425BE00002886 /* SphereMap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		63EFEBEB1A82DC2C00002886 /* HarmonikrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarmonikrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63EFEBF01A82DC2C00002886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonikrTests.swift; sourceTree = "<group>"; };
+		63EFEBFC1A8425BE00002886 /* SphereMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SphereMap.swift; path = gfx/SphereMap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
 			isa = PBXGroup;
 			children = (
+				63EFEBFB1A84256300002886 /* gfx */,
 				63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */,
 				63EFEBDD1A82DC2C00002886 /* Document.swift */,
 				63EFEBDF1A82DC2C00002886 /* Document.xib */,
@@ -110,6 +113,14 @@
 				63EFEBF01A82DC2C00002886 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		63EFEBFB1A84256300002886 /* gfx */ = {
+			isa = PBXGroup;
+			children = (
+				63EFEBFC1A8425BE00002886 /* SphereMap.swift */,
+			);
+			name = gfx;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,6 +225,7 @@
 			files = (
 				63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */,
 				63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */,
+				63EFEBFD1A8425BE00002886 /* SphereMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
