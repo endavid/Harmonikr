@@ -11,12 +11,17 @@ import Cocoa
 class Document: NSDocument {
 
     var imgIrradiance : CGImageRef!
+    var imgCubemap: CGImageRef!
     var sphereMap : SphereMap!
-    
+    var cubeMap: CubeMap!
+    @IBOutlet weak var imgViewIrradiance: NSImageView!
+    @IBOutlet weak var imgViewCubemap: NSImageView!
+
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
         sphereMap = SphereMap()
+        cubeMap = CubeMap()
     }
 
     override func windowControllerDidLoadNib(aController: NSWindowController) {
@@ -52,6 +57,7 @@ class Document: NSDocument {
     /// Initialization code that needs the instantiated IBOutlets (before this function is called, they are still nil!)
     override func awakeFromNib() {
         updateImgIrradiance()
+        updateImgCubemap()
     }
     
     // ref: https://gist.github.com/irskep/e560be65163efcb04115
@@ -65,12 +71,24 @@ class Document: NSDocument {
         imgIrradiance = CGImageCreate(sphereMap.width, sphereMap.height, 8, 8 * sphereMap.bands, sphereMap.width * sphereMap.bands, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
         imgViewIrradiance.image = NSImage(CGImage: imgIrradiance, size: NSZeroSize)
     }
+    
+    func updateImgCubemap() {
+        var rgb = CGColorSpaceCreateDeviceRGB();
+        let bufferLength = cubeMap.getBufferLength()
+        let provider = CGDataProviderCreateWithData(nil, cubeMap.imgBuffer, bufferLength, nil)
+        var bitmapInfo:CGBitmapInfo = .ByteOrderDefault;
+        imgCubemap = CGImageCreate(cubeMap.width * cubeMap.sides, cubeMap.height, 8, 8 * cubeMap.bands, cubeMap.width * cubeMap.bands * cubeMap.sides, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
+        imgViewCubemap.image = NSImage(CGImage: imgCubemap, size: NSZeroSize)
+        
+    }
 
     @IBAction func computeHarmonics(sender: AnyObject) {
         println("Compute!")
     }
     
-    @IBOutlet weak var imgViewIrradiance: NSImageView!
 
+    @IBAction func inferCubemap(sender: AnyObject) {
+        println("Infer")
+    }
 }
 
