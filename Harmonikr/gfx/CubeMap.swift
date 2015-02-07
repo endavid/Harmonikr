@@ -20,6 +20,10 @@ class CubeMap {
     let sides       : UInt = 6
     var imgBuffer   : Array<UInt8>!
     
+    enum Face: UInt {
+        case NegativeX = 0, PositiveZ, PositiveX, NegativeZ, PositiveY, NegativeY
+    }
+    
     init() {
         let bufferLength : Int = (Int)(getBufferLength())
         imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
@@ -29,14 +33,14 @@ class CubeMap {
         return width * height * bands * sides
     }
     
-    func setFace(face: UInt, image: NSImage) {
+    func setFace(face: Face, image: NSImage) {
         let sampler = ImageSampler(image: image)
         for j in 0...(height-1) {
             for i in 0...(width-1) {
                 let u = Float(i) / Float(width)
                 let v = Float(j) / Float(height)
                 let sample = sampler.uvSampler(u: u, v: v)
-                let faceOffset = face * width * bands
+                let faceOffset = face.rawValue * width * bands
                 let k = Int(faceOffset + i*bands+bands*width*sides*j)
                 imgBuffer[k] = sample.r
                 imgBuffer[k+1] = sample.g

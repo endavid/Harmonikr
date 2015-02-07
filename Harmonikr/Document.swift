@@ -105,12 +105,12 @@ class Document: NSDocument {
 
         // if all are set, just copy them as sides of the cubemap
         if imgNegX != nil && imgPosX != nil && imgNegZ != nil && imgPosZ != nil && imgNegY != nil && imgPosY != nil {
-            cubeMap.setFace(0, image: imgNegX!)
-            cubeMap.setFace(1, image: imgPosZ!)
-            cubeMap.setFace(2, image: imgPosX!)
-            cubeMap.setFace(3, image: imgNegZ!)
-            cubeMap.setFace(4, image: imgPosY!)
-            cubeMap.setFace(5, image: imgNegY!)
+            cubeMap.setFace(CubeMap.Face.NegativeX, image: imgNegX!)
+            cubeMap.setFace(CubeMap.Face.PositiveZ, image: imgPosZ!)
+            cubeMap.setFace(CubeMap.Face.PositiveX, image: imgPosX!)
+            cubeMap.setFace(CubeMap.Face.NegativeZ, image: imgNegZ!)
+            cubeMap.setFace(CubeMap.Face.PositiveY, image: imgPosY!)
+            cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)
             updateImgCubemap()
         }
     }
