@@ -8,6 +8,12 @@
             <connections>
                 <outlet property="imgViewCubemap" destination="0Tx-wK-XjL" id="yQd-tk-Sqm"/>
                 <outlet property="imgViewIrradiance" destination="Sxy-AJ-fYK" id="RdP-a1-zy1"/>
+                <outlet property="imgViewNegativeX" destination="hZj-ZQ-rL1" id="VBc-6l-N6x"/>
+                <outlet property="imgViewNegativeY" destination="mgn-lD-llO" id="I1F-Ae-evd"/>
+                <outlet property="imgViewNegativeZ" destination="Hva-g6-3zx" id="PSg-s6-1dd"/>
+                <outlet property="imgViewPositiveX" destination="ivw-Fq-z9O" id="z7r-RB-wav"/>
+                <outlet property="imgViewPositiveY" destination="op0-tC-ZeI" id="QMV-zU-odV"/>
+                <outlet property="imgViewPositiveZ" destination="sD5-bv-LJq" id="8H5-pF-tJG"/>
                 <outlet property="window" destination="xOd-HO-29H" id="JIz-fz-R2o"/>
             </connections>
         </customObject>

@@ -16,7 +16,14 @@ class Document: NSDocument {
     var cubeMap: CubeMap!
     @IBOutlet weak var imgViewIrradiance: NSImageView!
     @IBOutlet weak var imgViewCubemap: NSImageView!
-
+    // cubemap outlets
+    @IBOutlet weak var imgViewNegativeX: NSImageView!
+    @IBOutlet weak var imgViewPositiveX: NSImageView!
+    @IBOutlet weak var imgViewPositiveZ: NSImageView!
+    @IBOutlet weak var imgViewNegativeZ: NSImageView!
+    @IBOutlet weak var imgViewPositiveY: NSImageView!
+    @IBOutlet weak var imgViewNegativeY: NSImageView!
+    
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
@@ -89,6 +96,23 @@ class Document: NSDocument {
 
     @IBAction func inferCubemap(sender: AnyObject) {
         println("Infer")
+        let imgNegX = imgViewNegativeX.image
+        let imgPosX = imgViewPositiveX.image
+        let imgNegZ = imgViewNegativeZ.image
+        let imgPosZ = imgViewPositiveZ.image
+        let imgNegY = imgViewNegativeY.image
+        let imgPosY = imgViewPositiveY.image
+
+        // if all are set, just copy them as sides of the cubemap
+        if imgNegX != nil && imgPosX != nil && imgNegZ != nil && imgPosZ != nil && imgNegY != nil && imgPosY != nil {
+            cubeMap.setFace(0, image: imgNegX!)
+            cubeMap.setFace(1, image: imgPosZ!)
+            cubeMap.setFace(2, image: imgPosX!)
+            cubeMap.setFace(3, image: imgNegZ!)
+            cubeMap.setFace(4, image: imgPosY!)
+            cubeMap.setFace(5, image: imgNegY!)
+            updateImgCubemap()
+        }
     }
 }
 
