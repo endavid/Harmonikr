@@ -29,4 +29,11 @@ class Spherical {
         φ = atan2f(v.x, v.z)
         φ = φ < 0 ? PI2 + φ : φ
     }
+    
+    init () {
+    }
+    
+    func ToVector3() -> Vector3 {
+        return Vector3(x: r * sinf(θ) * sinf(φ), y: r * cosf(θ), z: r * sinf(θ) * cos(φ) )
+    }
 }

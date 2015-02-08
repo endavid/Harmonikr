@@ -91,6 +91,8 @@ class Document: NSDocument {
 
     @IBAction func computeHarmonics(sender: AnyObject) {
         println("Compute!")
+        let sh = SphericalHarmonics(numBands: 3, numSamples: 10000)
+        println(sh.numCoeffs)
     }
     
 
