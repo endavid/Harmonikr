@@ -22,7 +22,7 @@ class ImageSampler {
         var imgRef  : Unmanaged<CGImage>!
         imgRef = img.CGImageForProposedRect(nil, context: nil, hints: nil)
         assert(imgRef != nil, "Null image!")
-        imgCg = imgRef.takeRetainedValue()
+        imgCg = imgRef.takeUnretainedValue() // we aren't responsible for freeing this image
         width = CGImageGetWidth(imgCg)
         height = CGImageGetHeight(imgCg)
         imgData = CGDataProviderCopyData(CGImageGetDataProvider(imgCg))
