@@ -84,7 +84,7 @@ class Document: NSDocument {
         let bufferLength = cubeMap.getBufferLength()
         let provider = CGDataProviderCreateWithData(nil, cubeMap.imgBuffer, bufferLength, nil)
         var bitmapInfo:CGBitmapInfo = .ByteOrderDefault;
-        imgCubemap = CGImageCreate(cubeMap.width * cubeMap.sides, cubeMap.height, 8, 8 * cubeMap.bands, cubeMap.width * cubeMap.bands * cubeMap.sides, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
+        imgCubemap = CGImageCreate(cubeMap.width * cubeMap.numFaces, cubeMap.height, 8, 8 * cubeMap.numBands, cubeMap.width * cubeMap.numBands * cubeMap.numFaces, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
         imgViewCubemap.image = NSImage(CGImage: imgCubemap, size: NSZeroSize)
         
     }
@@ -111,6 +111,19 @@ class Document: NSDocument {
             cubeMap.setFace(CubeMap.Face.NegativeZ, image: imgNegZ!)
             cubeMap.setFace(CubeMap.Face.PositiveY, image: imgPosY!)
             cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)
+            updateImgCubemap()
+        }
+        // create a cubemap from stretching 2 of the pictures
+        else if imgNegX != nil && imgPosX != nil && imgNegY != nil && imgPosY != nil {
+            cubeMap.setPanorama(CubeMap.Side.Left, image: imgNegX!)
+            cubeMap.setPanorama(CubeMap.Side.Right, image: imgPosX!)
+            cubeMap.setFace(CubeMap.Face.PositiveY, image: imgPosY!)
+            cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)
+            updateImgCubemap()
+        }
+        // create a cubemap from just 1 image, assuming it's a spherical projection
+        else if imgNegX != nil {
+            cubeMap.setSphericalProjectionMap(imgNegX!)
             updateImgCubemap()
         }
     }
