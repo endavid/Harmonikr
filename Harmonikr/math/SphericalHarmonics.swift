@@ -23,6 +23,7 @@ class SphericalHarmonics {
     let numCoeffs   : UInt
     let numSamples  : UInt
     var samples     : [SHSample]
+    var coeffs      : [Vector3]
     
     init(numBands: UInt = 3, numSamples: UInt = 10000) {
         let numSamplesSqrt = UInt(sqrtf(Float(numSamples)))
@@ -33,6 +34,7 @@ class SphericalHarmonics {
         let coefficients = [Double](count: Int(numCoeffs), repeatedValue: 0)
         let emptySample = SHSample(sph: Spherical(), vec: Vector3(), coeff: coefficients)
         samples = [SHSample](count: Int(self.numSamples), repeatedValue: emptySample)
+        coeffs = [Vector3](count: Int(numCoeffs), repeatedValue: Vector3())
         setupSphericalSamples(numSamplesSqrt)
     }
     
@@ -118,6 +120,45 @@ class SphericalHarmonics {
         else {
             return sqrt2 * K(l: l, m: -m) * sin(Double(-m)*φ) * P(l: l,m: -m,x: cos(θ))
         }
+    }
+    
+    /**
+     * Projects a polar function and computes the SH Coeffs
+     * @param fn the Polar Function. If the polar function is an image, pass a function that retrieves (R,G,B) values from it given a spherical coordinate.
+     */
+    func ProjectPolarFn(fn: (Float, Float) -> Vector3) -> [Vector3] {
+        let weight : Double = 4.0*π
+        // for each sample
+        for i : Int in 0...(numSamples-1) {
+            let θ = samples[i].sph.θ
+            let φ = samples[i].sph.φ
+            for n : Int in 0...(numCoeffs-1) {
+                coeffs[n] += fn(θ,φ) * Float(samples[i].coeff[n])
+            }
+        }
+        // divide the result by weight and number of samples
+        let factor = weight / Double(numSamples)
+        for i : Int in 0...(numCoeffs-1) {
+            coeffs[i] *= Float(factor)
+        }
+        
+        // compute matrices for later
+        //computeIrradianceApproximationMatrices();
+        
+        return coeffs
+    }
+    
+    /**
+     * Computes the approximate irradiance for the given normal direction
+     */
+    func GetIrradianceApproximation(normal: Vector3) -> Vector3 {
+        var v = Vector3(value: 0)
+        //var n = Vector4(normal,1)
+        // for every color channel
+        //v.x = Dot(n, matrixIrradiance[0] * n)
+        //v.y = Dot(n, matrixIrradiance[1] * n)
+        //v.z = Dot(n, matrixIrradiance[2] * n)
+        return v
     }
 }
 

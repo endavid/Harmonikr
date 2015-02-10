@@ -107,4 +107,58 @@ class CubeMap {
         }
     }
     
+    // @todo replace by getPolarSampler; pass option to apply linear RGB conversion
+    func polarSampler(#θ: Float, φ: Float) -> Vector3 {
+        let vec = Spherical(r: 1, θ: θ, φ: φ).ToVector3()
+        let rgb = directionalSampler(vec)
+        let color = Vector3(x: Float(rgb.0), y: Float(rgb.1), z: Float(rgb.2)) * (1.0/255.0)
+        return color
+    }
+    
+    func directionalSampler(vec: Vector3) -> (UInt8, UInt8, UInt8) {
+        // Find major axis direction
+        let d = [Face.PositiveX: vec.x, Face.NegativeX: -vec.x, Face.PositiveY: vec.y, Face.NegativeY: -vec.y, Face.PositiveZ: vec.z, Face.NegativeZ: -vec.z]
+        var maxAxis = Face.PositiveX
+        var maxAxisValue = d[maxAxis]!
+        for di in d {
+            if di.1 > maxAxisValue {
+                maxAxis = di.0
+                maxAxisValue = di.1
+            }
+        }
+        var sc : Float = 0
+        var tc : Float = 0
+        switch maxAxis {
+        case Face.PositiveX:
+            sc = -vec.z; tc = -vec.y
+            break
+        case Face.NegativeX:
+            sc = vec.z; tc = -vec.y
+            break
+        case Face.PositiveY:
+            sc = vec.x; tc = vec.z
+            break
+        case Face.NegativeY:
+            sc = vec.x; tc = -vec.z
+            break
+        case Face.PositiveZ:
+            sc = vec.x; tc = -vec.y
+            break
+        case Face.NegativeZ:
+            sc = -vec.x; tc = -vec.y
+            break
+        }
+        let s = ( sc/abs(maxAxisValue) + 1 ) / 2
+        let t = ( tc/abs(maxAxisValue) + 1 ) / 2
+        return uvSampler(maxAxis, u: s, v: t)
+    }
+    
+    func uvSampler(face: Face, u: Float, v: Float) -> (UInt8, UInt8, UInt8) {
+        let faceOffset = Int(face.rawValue) * Int(width * numBands)
+        let i = UInt( Float(width) * u ) % width
+        let j = UInt( Float(height) * v ) % height
+        let k = Int(faceOffset + i*numBands+numBands*width*numFaces*j)
+        return (imgBuffer[k], imgBuffer[k+1], imgBuffer[k+2])
+    }
+    
 }

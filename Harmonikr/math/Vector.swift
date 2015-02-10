@@ -9,10 +9,16 @@
 import Foundation
 
 // -----------------------------------------------------------
-class Vector3 {
+class Vector3 : Printable {
     var x               : Float = 0
     var y               : Float = 0
     var z               : Float = 0
+    var description : String {
+        return "(\(x), \(y), \(z))"
+    }
+    func toString() -> String {
+        return description
+    }
     
     init(x: Float, y: Float, z: Float) {
         self.x = x
@@ -38,6 +44,36 @@ class Vector3 {
     }
     
 }; // Vector3
+
+// -----------------------------------------------------------
+class Vector4 : Printable {
+    var x               : Float = 0
+    var y               : Float = 0
+    var z               : Float = 0
+    var w               : Float = 0
+    var description : String {
+        return "(\(x), \(y), \(z), \(w))"
+    }
+    func toString() -> String {
+        return description
+    }
+    
+    init(x: Float, y: Float, z: Float, w: Float) {
+        self.x = x
+        self.y = y
+        self.z = z
+        self.w = w
+    }
+    init(value: Float) {
+        self.x = value
+        self.y = value
+        self.z = value
+        self.w = value
+    }
+    init() {
+    }
+    
+}; // Vector4
 
 // -----------------------------------------------------------
 // operators
@@ -78,3 +114,12 @@ func LengthSqr(v: Vector3) -> Float {
 func Length(v: Vector3) -> Float {
     return sqrtf( LengthSqr(v) )
 }
+/// Clamp
+func Clamp(v: Vector3, lowest: Float, highest: Float) -> Vector3 {
+    var o = v
+    o.x = Clamp(o.x, lowest, highest)
+    o.y = Clamp(o.y, lowest, highest)
+    o.z = Clamp(o.z, lowest, highest)
+    return o
+}
+
