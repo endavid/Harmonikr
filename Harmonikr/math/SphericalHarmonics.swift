@@ -24,12 +24,14 @@ class SphericalHarmonics {
     let numSamples  : UInt
     var samples     : [SHSample]
     var coeffs      : [Vector3]
+    var mIrradiance : [Matrix4]     ///< Irradiance matrices
     
     init(numBands: UInt = 3, numSamples: UInt = 10000) {
         let numSamplesSqrt = UInt(sqrtf(Float(numSamples)))
         self.numBands = numBands
         self.numSamples = numSamplesSqrt * numSamplesSqrt
         numCoeffs = numBands * numBands
+        mIrradiance = Array(count: 3, repeatedValue: Matrix4())
         // init samples with 0-arrays, so they can be indexed in setupSphericalSamples
         let coefficients = [Double](count: Int(numCoeffs), repeatedValue: 0)
         let emptySample = SHSample(sph: Spherical(), vec: Vector3(), coeff: coefficients)
@@ -143,21 +145,60 @@ class SphericalHarmonics {
         }
         
         // compute matrices for later
-        //computeIrradianceApproximationMatrices();
+        computeIrradianceApproximationMatrices()
         
         return coeffs
     }
+    
+    /**
+     * @see "An efficient representation for Irradiance Environment Maps"
+     */
+    func computeIrradianceApproximationMatrices() {
+        if numBands < 3 {
+            println("Not enough coefficients!")
+            return
+        }
+        let a0 = PI * 1.0
+        let a1 = PI * 2.0/3.0
+        let a2 = PI * 1.0/4.0
+        let k0 = (1.0/4.0) * sqrtf(15.0/PI) * a2
+        let k1 = (1.0/4.0) * sqrtf(3.0/PI) * a1
+        let k2 = (1.0/2.0) * sqrtf(1.0/PI) * a0
+        let k3 = (1.0/4.0) * sqrtf(5.0/PI) * a2
+    
+        // coeff: L00, L1-1, L10, L11, L2-2, L2-1, L20, L21, L22
+    
+        // for every color channel
+        for i in 0...2 {
+            mIrradiance[i][0,0] = k0 * coeffs[8][i]
+            mIrradiance[i][0,1] = k0 * coeffs[4][i]
+            mIrradiance[i][0,2] = k0 * coeffs[7][i]
+            mIrradiance[i][0,3] = k1 * coeffs[3][i]
+            mIrradiance[i][1,0] = k0 * coeffs[4][i]
+            mIrradiance[i][1,1] = -k0 * coeffs[8][i]
+            mIrradiance[i][1,2] = k0 * coeffs[5][i]
+            mIrradiance[i][1,3] = k1 * coeffs[1][i]
+            mIrradiance[i][2,0] = k0 * coeffs[7][i]
+            mIrradiance[i][2,1] = k0 * coeffs[5][i]
+            mIrradiance[i][2,2] = 3.0 * k3 * coeffs[6][i]
+            mIrradiance[i][2,3] = k1 * coeffs[2][i]
+            mIrradiance[i][3,0] = k1 * coeffs[3][i]
+            mIrradiance[i][3,1] = k1 * coeffs[1][i]
+            mIrradiance[i][3,2] = k1 * coeffs[2][i]
+            mIrradiance[i][3,3] = k2 * coeffs[0][i] - k3 * coeffs[6][i]
+        }
+    } // computeIrradianceApproximationMatrices
     
     /**
      * Computes the approximate irradiance for the given normal direction
      */
     func GetIrradianceApproximation(normal: Vector3) -> Vector3 {
         var v = Vector3(value: 0)
-        //var n = Vector4(normal,1)
+        var n = Vector4(v: normal,w: 1)
         // for every color channel
-        //v.x = Dot(n, matrixIrradiance[0] * n)
-        //v.y = Dot(n, matrixIrradiance[1] * n)
-        //v.z = Dot(n, matrixIrradiance[2] * n)
+        v.x = Dot(n, mIrradiance[0] * n)
+        v.y = Dot(n, mIrradiance[1] * n)
+        v.z = Dot(n, mIrradiance[2] * n)
         return v
     }
 }

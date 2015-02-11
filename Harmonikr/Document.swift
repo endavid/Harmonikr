@@ -95,6 +95,8 @@ class Document: NSDocument {
         // compute spherical harmonics
         let vs = sh.ProjectPolarFn(cubeMap.polarSampler)
         println(vs)
+        sphereMap.update(sh)
+        updateImgIrradiance()
     }
     
 

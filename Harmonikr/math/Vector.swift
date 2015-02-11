@@ -9,7 +9,7 @@
 import Foundation
 
 // -----------------------------------------------------------
-class Vector3 : Printable {
+struct Vector3 : Printable {
     var x               : Float = 0
     var y               : Float = 0
     var z               : Float = 0
@@ -33,6 +33,11 @@ class Vector3 : Printable {
     init() {
     }
     
+    subscript(row: Int) -> Float {
+        get {
+            return row == 0 ? x : row == 1 ? y : z
+        }
+    }
     
     func Normalize() -> Vector3 {
         // save some computation is is already normalized
@@ -46,7 +51,7 @@ class Vector3 : Printable {
 }; // Vector3
 
 // -----------------------------------------------------------
-class Vector4 : Printable {
+struct Vector4 : Printable {
     var x               : Float = 0
     var y               : Float = 0
     var z               : Float = 0
@@ -62,6 +67,12 @@ class Vector4 : Printable {
         self.x = x
         self.y = y
         self.z = z
+        self.w = w
+    }
+    init(v: Vector3, w: Float) {
+        self.x = v.x
+        self.y = v.y
+        self.z = v.z
         self.w = w
     }
     init(value: Float) {
@@ -105,6 +116,9 @@ func *= (inout v: Vector3, f: Float) {
 /// dot product
 func Dot(v0: Vector3, v1: Vector3) -> Float {
     return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z
+}
+func Dot(v0: Vector4, v1: Vector4) -> Float {
+    return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z + v0.w * v1.w
 }
 /// square-length of a vector
 func LengthSqr(v: Vector3) -> Float {
