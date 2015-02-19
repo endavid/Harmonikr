@@ -91,11 +91,20 @@ class Document: NSDocument {
 
     @IBAction func computeHarmonics(sender: AnyObject) {
         println("Compute!")
-        let sh = SphericalHarmonics(numBands: 3, numSamples: 10000)
+#if true
+        let sh = SphericalHarmonics(numBands: 3, numSamples: 2500)
         // compute spherical harmonics
-        let vs = sh.ProjectPolarFn(cubeMap.polarSampler)
+        let vs = sh.projectPolarFn(cubeMap.polarSampler)
         println(vs)
-        sphereMap.update(sh)
+        sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
+            let n = Vector3(x: v.x, y: v.z, z: v.y)
+            let o = Clamp(sh.reconstruct(n), 0, 1) * 255.0
+            return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
+        })
+#else
+        // just sample the cubemap, for testing the spheremap
+        sphereMap.update(cubeMap.directionalSampler)
+#endif
         updateImgIrradiance()
     }
     

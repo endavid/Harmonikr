@@ -49,8 +49,8 @@ class SphericalHarmonics {
     func setupSphericalSamples(numSamplesSqrt: UInt) {
         var i = 0 // array index
         let oneoverN = 1.0/Double(numSamplesSqrt)
-        for a in 0...(numSamplesSqrt-1) {
-            for b in 0...(numSamplesSqrt-1) {
+        for a in 0..<numSamplesSqrt {
+            for b in 0..<numSamplesSqrt {
                 // generate unbiased distribution of spherical coords
                 let x = (Double(a)+Double(Randf())) * oneoverN; //do not reuse results
                 let y = (Double(b)+Double(Randf())) * oneoverN; //each sample must be random
@@ -60,7 +60,7 @@ class SphericalHarmonics {
                 // convert spherical coords to unit vector
                 samples[i].vec = samples[i].sph.ToVector3()
                 // precompute all SH coefficients for this sample
-                for l in 0...(Int(numBands)-1) {
+                for l in 0..<Int(numBands) {
                     for m in -l...l {
                         let ci = l * (l+1) + m // coefficient index
                         samples[i].coeff[ci] = SH(l: l,m: m,θ: θ,φ: φ)
@@ -128,7 +128,7 @@ class SphericalHarmonics {
      * Projects a polar function and computes the SH Coeffs
      * @param fn the Polar Function. If the polar function is an image, pass a function that retrieves (R,G,B) values from it given a spherical coordinate.
      */
-    func ProjectPolarFn(fn: (Float, Float) -> Vector3) -> [Vector3] {
+    func projectPolarFn(fn: (Float, Float) -> Vector3) -> [Vector3] {
         let weight : Double = 4.0*π
         // for each sample
         for i : Int in 0...(numSamples-1) {
@@ -149,6 +149,33 @@ class SphericalHarmonics {
         
         return coeffs
     }
+    
+    /**
+     * Reconstruct the approximated function for the given input direction,
+     * given in spherical/polar coordinates
+     */
+    func reconstruct(#θ: Double, φ: Double) -> Vector3
+    {
+        var o = Vector3();
+        for l in 0..<Int(numBands) {
+            for m in -l...l {
+                let ci = l * (l+1) + m // coefficient index
+                let sh = Float(SH(l: l,m: m,θ: θ,φ: φ))
+                o += sh * coeffs[ci];
+            }
+        }
+        return o;
+    }
+    
+    /**
+     * Reconstruct the approximated function for the given input direction
+     */
+    func reconstruct(direction: Vector3) -> Vector3
+    {
+        var sp = Spherical(v: direction);
+        return reconstruct(θ: Double(sp.θ), φ: Double(sp.φ))
+    }
+    
     
     /**
      * @see "An efficient representation for Irradiance Environment Maps"

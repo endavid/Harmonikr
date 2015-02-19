@@ -57,7 +57,7 @@ func Factorial(n: Int) -> Double { // 64-bit ints aren't enough for big factoria
     if (!CacheData.isFactorialCached) {
         // init cache
         var r : Double = 1
-        for c in 0...(CacheData.maxCount-1) {
+        for c in 0..<CacheData.maxCount {
             r *= Double(c+2)
             CacheData.factorialCache[c] = r
         }

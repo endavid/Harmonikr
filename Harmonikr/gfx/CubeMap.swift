@@ -42,9 +42,9 @@ class CubeMap {
     /// Initializes a face of the cubemap with the given image
     func setFace(face: Face, image: NSImage) {
         let sampler = ImageSampler(image: image)
-        for j in 0...(height-1) {
+        for j in 0..<height {
             let v = Float(j) / Float(height)
-            for i in 0...(width-1) {
+            for i in 0..<width {
                 let u = Float(i) / Float(width)
                 let sample = sampler.uvSampler(u: u, v: v)
                 let faceOffset = face.rawValue * width * numBands
@@ -59,9 +59,9 @@ class CubeMap {
     /// Initializes 2 faces of the cubemap with the give image
     func setPanorama(side: Side, image: NSImage) {
         let sampler = ImageSampler(image: image)
-        for j in 0...(height-1) {
+        for j in 0..<height {
             let v = Float(j) / Float(height)
-            for i in 0...(2*width-1) {
+            for i in 0..<2*width {
                 let u = Float(i) / Float(2*width)
                 let sample = sampler.uvSampler(u: u, v: v)
                 let sideOffset = side.rawValue * 2 * width * numBands
@@ -76,10 +76,10 @@ class CubeMap {
     /// Pass a spherical projection map to initialize the cubemap
     func setSphericalProjectionMap(image: NSImage) {
         let sampler = ImageSampler(image: image)
-        for j in 0...(height-1) {
+        for j in 0..<height {
             let t = Float(j) / Float(height)
             let tc = 2.0 * t - 1.0
-            for i in 0...(width-1) {
+            for i in 0..<width {
                 let s = Float(i) / Float(width)
                 let sc = 2.0 * s - 1.0
                 let posX = Spherical( v: Vector3(x: 1, y: -tc, z: -sc).Normalize() )
