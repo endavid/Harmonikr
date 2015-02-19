@@ -108,6 +108,18 @@ class Document: NSDocument {
         updateImgIrradiance()
     }
     
+    // menu items connected to First Responder
+    @IBAction func debugSphereMapRenderCubemap(sender: AnyObject) {
+        // just sample the cubemap, for testing the spheremap
+        sphereMap.update(cubeMap.directionalSampler)
+        updateImgIrradiance()        
+    }
+
+    @IBAction func debugSphereMapRenderNormal(sender: AnyObject) {
+        sphereMap.update(sphereMap.debugDirection)
+        updateImgIrradiance()
+    }
+
 
     @IBAction func inferCubemap(sender: AnyObject) {
         println("Infer")

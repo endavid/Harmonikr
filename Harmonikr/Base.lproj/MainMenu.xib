@@ -658,9 +658,15 @@
                                     <items>
                                         <menuItem title="Render Normal" id="mlT-jp-D52" userLabel="Render Normal">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="debugSphereMapRenderNormal:" target="-1" id="1On-aJ-LgS"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Render Cubemap" id="Zqg-Mc-1bu" userLabel="Render Cubemap">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="debugSphereMapRenderCubemap:" target="-1" id="0oX-2t-Fpe"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
