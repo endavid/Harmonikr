@@ -49,7 +49,8 @@ class SphereMap {
         // radius at which to start encoding the negative Y hemisphere
         let negYr : Float = 0.7
         for j in 0..<height {
-            let v = 2.0 * (Float(j)+0.5) * hInv - 1.0
+            // the positive V in OpenGL is on top
+            let v = 1 - 2.0 * (Float(j)+0.5) * hInv
             for i in 0..<width {
                 let u = 2.0 * (Float(i)+0.5) * wInv - 1.0
                 let n = normalEncodingLinear(u: u, v: v, thresholdRadius: negYr)
