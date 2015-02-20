@@ -90,7 +90,7 @@ class Document: NSDocument {
     }
 
     @IBAction func computeHarmonics(sender: AnyObject) {
-        let sh = SphericalHarmonics(numBands: 3, numSamples: 2500)
+        let sh = SphericalHarmonics(numBands: 3, numSamples: 10000)
         // compute spherical harmonics
         let vs = sh.projectPolarFn(cubeMap.polarSampler)
         println(vs)

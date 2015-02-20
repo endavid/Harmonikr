@@ -147,14 +147,27 @@ class CubeMap {
     
     func directionalSampler(vec: Vector3) -> (UInt8, UInt8, UInt8) {
         // Find major axis direction
-        let d = [Face.PositiveX: vec.x, Face.NegativeX: -vec.x, Face.PositiveY: vec.y, Face.NegativeY: -vec.y, Face.PositiveZ: vec.z, Face.NegativeZ: -vec.z]
         var maxAxis = Face.PositiveX
-        var maxAxisValue = d[maxAxis]!
-        for di in d {
-            if di.1 > maxAxisValue {
-                maxAxis = di.0
-                maxAxisValue = di.1
-            }
+        var maxAxisValue = vec.x
+        if -vec.x > maxAxisValue {
+            maxAxis = Face.NegativeX
+            maxAxisValue = -vec.x
+        }
+        if vec.y > maxAxisValue {
+            maxAxis = Face.PositiveY
+            maxAxisValue = vec.y
+        }
+        if -vec.y > maxAxisValue {
+            maxAxis = Face.NegativeY
+            maxAxisValue = -vec.y
+        }
+        if vec.z > maxAxisValue {
+            maxAxis = Face.PositiveZ
+            maxAxisValue = vec.z
+        }
+        if -vec.z > maxAxisValue {
+            maxAxis = Face.NegativeX
+            maxAxisValue = -vec.z
         }
         var sc : Float = 0
         var tc : Float = 0

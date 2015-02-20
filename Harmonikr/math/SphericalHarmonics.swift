@@ -56,9 +56,10 @@ class SphericalHarmonics {
                 let y = (Double(b)+Double(Randf())) * oneoverN; //each sample must be random
                 let θ = 2.0 * acos(sqrt(1.0 - x))
                 let φ = 2.0 * π * y
-                samples[i].sph = Spherical(r: 1.0, θ: Float(θ), φ: Float(φ))
+                let sph = Spherical(r: 1.0, θ: Float(θ), φ: Float(φ))
+                samples[i].sph = sph
                 // convert spherical coords to unit vector
-                samples[i].vec = samples[i].sph.ToVector3()
+                samples[i].vec = sph.ToVector3()
                 // precompute all SH coefficients for this sample
                 for l in 0..<Int(numBands) {
                     for m in -l...l {
