@@ -109,6 +109,13 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
+                            <menuItem title="Import Side-Cross Cubemap" id="W8c-x7-r1Z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="importSideCrossCubemap:" target="-1" id="NdS-NX-KM3"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="kos-Ee-MKO"/>
                             <menuItem title="Page Setup…" keyEquivalent="P" id="qIS-W8-SiK">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>

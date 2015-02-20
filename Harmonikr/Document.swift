@@ -113,9 +113,23 @@ class Document: NSDocument {
         updateImgIrradiance()
     }
 
+    @IBAction func importSideCrossCubemap(sender: AnyObject) {
+        let fileDialog : NSOpenPanel = NSOpenPanel()
+        fileDialog.allowsMultipleSelection = false
+        fileDialog.canChooseDirectories = false
+        fileDialog.allowedFileTypes = ["png", "jpg", "tiff"]
+        fileDialog.runModal()
+        var chosenFile = fileDialog.URL // holds path to selected file, if there is one
+        if (chosenFile != nil) {
+            let img : NSImage? = NSImage(byReferencingURL: chosenFile!)
+            if (img != nil) {
+                cubeMap.setSideCrossCubemap(img!)
+                updateImgCubemap()
+            }
+        }
+    }
 
     @IBAction func inferCubemap(sender: AnyObject) {
-        println("Infer")
         let imgNegX = imgViewNegativeX.image
         let imgPosX = imgViewPositiveX.image
         let imgNegZ = imgViewNegativeZ.image

@@ -39,6 +39,36 @@ class CubeMap {
         return width * height * numBands * numFaces
     }
     
+    func setSideCrossCubemap(image: NSImage) {
+        let sampler = ImageSampler(image: image)
+        for j in 0..<height {
+            let v = Float(j) / Float(height) / 3
+            // copy the 4 xz faces
+            for i in 0..<4*width {
+                let u = Float(i) / Float(width) / 4
+                let sample = sampler.uvSampler(u: u, v: v + 1/3)
+                let k = Int(i*numBands+numBands*width*numFaces*j)
+                imgBuffer[k] = sample.r
+                imgBuffer[k+1] = sample.g
+                imgBuffer[k+2] = sample.b
+            }
+            // copy Y+ and Y-
+            for i in 0..<width {
+                let u = Float(i) / Float(width) / 4
+                let sampleYpos = sampler.uvSampler(u: u + 1/4, v: v)
+                let sampleYneg = sampler.uvSampler(u: u + 1/4, v: v + 2/3)
+                let k0 = Int(Face.PositiveY.rawValue * width * numBands + i*numBands+numBands*width*numFaces*j)
+                let k1 = Int(Face.NegativeY.rawValue * width * numBands + i*numBands+numBands*width*numFaces*j)
+                imgBuffer[k0] = sampleYpos.r
+                imgBuffer[k0+1] = sampleYpos.g
+                imgBuffer[k0+2] = sampleYpos.b
+                imgBuffer[k1] = sampleYneg.r
+                imgBuffer[k1+1] = sampleYneg.g
+                imgBuffer[k1+2] = sampleYneg.b
+            }
+        }
+    }
+    
     /// Initializes a face of the cubemap with the given image
     func setFace(face: Face, image: NSImage) {
         let sampler = ImageSampler(image: image)
