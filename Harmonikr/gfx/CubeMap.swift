@@ -166,7 +166,7 @@ class CubeMap {
             maxAxisValue = vec.z
         }
         if -vec.z > maxAxisValue {
-            maxAxis = Face.NegativeX
+            maxAxis = Face.NegativeZ
             maxAxisValue = -vec.z
         }
         var sc : Float = 0

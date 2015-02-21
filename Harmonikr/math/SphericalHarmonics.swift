@@ -44,7 +44,6 @@ class SphericalHarmonics {
      * @brief Initializes the SHSamples
      * fill an N*N*2 array with uniformly distributed
      * samples across the sphere using jittered stratification
-     * !!!!!!!!! THIS LOOP IS SLOW! In C++ is just a few ms...
     */
     func setupSphericalSamples(numSamplesSqrt: UInt) {
         var i = 0 // array index
@@ -64,6 +63,7 @@ class SphericalHarmonics {
                 for l in 0..<Int(numBands) {
                     for m in -l...l {
                         let ci = l * (l+1) + m // coefficient index
+                        // accessing the array here seems to be a bit slow...
                         samples[i].coeff[ci] = SH(l: l,m: m,θ: θ,φ: φ)
                     }
                 }
@@ -179,6 +179,8 @@ class SphericalHarmonics {
     
     
     /**
+     * Computes matrix M used to approximate irradiance E(n).
+     * For normal direction n, E(n) = n^ * M * n
      * @see "An efficient representation for Irradiance Environment Maps"
      */
     func computeIrradianceApproximationMatrices() {
@@ -199,30 +201,33 @@ class SphericalHarmonics {
         // for every color channel
         for i in 0...2 {
             mIrradiance[i][0,0] = k0 * coeffs[8][i]
-            mIrradiance[i][0,1] = k0 * coeffs[4][i]
-            mIrradiance[i][0,2] = k0 * coeffs[7][i]
-            mIrradiance[i][0,3] = k1 * coeffs[3][i]
             mIrradiance[i][1,0] = k0 * coeffs[4][i]
-            mIrradiance[i][1,1] = -k0 * coeffs[8][i]
-            mIrradiance[i][1,2] = k0 * coeffs[5][i]
-            mIrradiance[i][1,3] = k1 * coeffs[1][i]
             mIrradiance[i][2,0] = k0 * coeffs[7][i]
-            mIrradiance[i][2,1] = k0 * coeffs[5][i]
-            mIrradiance[i][2,2] = 3.0 * k3 * coeffs[6][i]
-            mIrradiance[i][2,3] = k1 * coeffs[2][i]
             mIrradiance[i][3,0] = k1 * coeffs[3][i]
+            mIrradiance[i][0,1] = k0 * coeffs[4][i]
+            mIrradiance[i][1,1] = -k0 * coeffs[8][i]
+            mIrradiance[i][2,1] = k0 * coeffs[5][i]
             mIrradiance[i][3,1] = k1 * coeffs[1][i]
+            mIrradiance[i][0,2] = k0 * coeffs[7][i]
+            mIrradiance[i][1,2] = k0 * coeffs[5][i]
+            mIrradiance[i][2,2] = 3.0 * k3 * coeffs[6][i]
             mIrradiance[i][3,2] = k1 * coeffs[2][i]
+            mIrradiance[i][0,3] = k1 * coeffs[3][i]
+            mIrradiance[i][1,3] = k1 * coeffs[1][i]
+            mIrradiance[i][2,3] = k1 * coeffs[2][i]
             mIrradiance[i][3,3] = k2 * coeffs[0][i] - k3 * coeffs[6][i]
         }
     } // computeIrradianceApproximationMatrices
     
     /**
      * Computes the approximate irradiance for the given normal direction
+     *  E(n) = n^ * M * n
      */
     func GetIrradianceApproximation(normal: Vector3) -> Vector3 {
         var v = Vector3(value: 0)
-        var n = Vector4(v: normal,w: 1)
+        // In the original paper, (x,y,z) = (sinθcosφ, sinθsinφ, cosθ),
+        // but in our Spherical class the vertical axis cosθ is Y
+        var n = Vector4(x: -normal.z, y: -normal.x, z: normal.y, w: 1)
         // for every color channel
         v.x = Dot(n, mIrradiance[0] * n)
         v.y = Dot(n, mIrradiance[1] * n)

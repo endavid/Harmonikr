@@ -14,6 +14,8 @@ class Document: NSDocument {
     var imgCubemap: CGImageRef!
     var sphereMap : SphereMap!
     var cubeMap: CubeMap!
+    var sphericalHarmonics: SphericalHarmonics?
+    
     @IBOutlet weak var imgViewIrradiance: NSImageView!
     @IBOutlet weak var imgViewCubemap: NSImageView!
     // cubemap outlets
@@ -88,14 +90,33 @@ class Document: NSDocument {
         imgViewCubemap.image = NSImage(CGImage: imgCubemap, size: NSZeroSize)
         
     }
+    
+    func updateSphericalHarmonics() {
+        sphericalHarmonics = SphericalHarmonics(numBands: 3, numSamples: 10000)
+        // compute spherical harmonics
+        let vs = sphericalHarmonics!.projectPolarFn(cubeMap.polarSampler)
+        println(vs)
+    }
 
     @IBAction func computeHarmonics(sender: AnyObject) {
-        let sh = SphericalHarmonics(numBands: 3, numSamples: 10000)
-        // compute spherical harmonics
-        let vs = sh.projectPolarFn(cubeMap.polarSampler)
-        println(vs)
+        if sphericalHarmonics == nil {
+            updateSphericalHarmonics()
+        }
+        let sh = sphericalHarmonics!
         sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
             let o = Clamp(sh.reconstruct(v), 0, 1) * 255.0
+            return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
+        })
+        updateImgIrradiance()
+    }
+    
+    @IBAction func computeIrradiance(sender: AnyObject) {
+        if sphericalHarmonics == nil {
+            updateSphericalHarmonics()
+        }
+        let sh = sphericalHarmonics!
+        sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
+            let o = Clamp(sh.GetIrradianceApproximation(v) * (1/PI), 0, 1) * 255.0
             return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
         })
         updateImgIrradiance()

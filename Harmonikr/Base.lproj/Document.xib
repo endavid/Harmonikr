@@ -104,9 +104,15 @@
                             <action selector="inferCubemap:" target="-2" id="BHX-8g-mIV"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="624A0375-34EE-4F93-A130-A957868546B4" label="Irradiance" paletteLabel="Irradiance" tag="-1" image="NSEveryone" id="bV7-gz-FHq">
+                        <connections>
+                            <action selector="computeIrradiance:" target="-2" id="EGF-yX-KgA"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="KSD-xN-MXg"/>
+                    <toolbarItem reference="bV7-gz-FHq"/>
                     <toolbarItem reference="fxg-Da-p3q"/>
                     <toolbarItem reference="qZs-Ze-7zG"/>
                 </defaultToolbarItems>
@@ -118,6 +124,7 @@
         </window>
     </objects>
     <resources>
+        <image name="NSEveryone" width="32" height="32"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSSmartBadgeTemplate" width="14" height="14"/>
     </resources>

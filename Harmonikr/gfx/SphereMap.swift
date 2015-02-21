@@ -47,7 +47,7 @@ class SphereMap {
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
         // radius at which to start encoding the negative Y hemisphere
-        let negYr : Float = 0.7
+        let negYr : Float = 0.5
         for j in 0..<height {
             // the positive V in OpenGL is on top
             let v = 1 - 2.0 * (Float(j)+0.5) * hInv
