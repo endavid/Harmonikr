@@ -35,6 +35,9 @@ func Min(a: Float, b: Float) -> Float {
 func Clamp(value: Float, lowest: Float, highest: Float) -> Float {
     return (value<lowest) ?lowest:(value>highest) ?highest:value
 }
+func Clamp(value: Int, lowest: Int, highest: Int) -> Int {
+    return (value<lowest) ?lowest:(value>highest) ?highest:value
+}
 /// Random Int. Preferred to rand() % upperBound
 func Rand(upperBound: UInt32) -> UInt32 {
     return arc4random_uniform(upperBound)

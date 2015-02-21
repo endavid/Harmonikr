@@ -25,6 +25,8 @@ class Document: NSDocument {
     @IBOutlet weak var imgViewNegativeZ: NSImageView!
     @IBOutlet weak var imgViewPositiveY: NSImageView!
     @IBOutlet weak var imgViewNegativeY: NSImageView!
+    @IBOutlet weak var textFieldNumBands: NSTextField!
+    @IBOutlet weak var textFieldNumSamples: NSTextField!
     
     override init() {
         super.init()
@@ -92,7 +94,7 @@ class Document: NSDocument {
     }
     
     func updateSphericalHarmonics() {
-        sphericalHarmonics = SphericalHarmonics(numBands: 3, numSamples: 10000)
+        sphericalHarmonics = SphericalHarmonics(numBands: UInt(textFieldNumBands.integerValue), numSamples: UInt(textFieldNumSamples.integerValue))
         // compute spherical harmonics
         let vs = sphericalHarmonics!.projectPolarFn(cubeMap.polarSampler)
         println(vs)
@@ -182,5 +184,24 @@ class Document: NSDocument {
             updateImgCubemap()
         }
     }
+    
+    @IBAction func validateNumSamples(sender: AnyObject) {
+        let defaultValue = 10000
+        let number = NSNumberFormatter().numberFromString(textFieldNumSamples.stringValue)
+        let numSamples = number != nil ? Clamp(number!.integerValue, 100, 30000) : defaultValue
+        textFieldNumSamples.stringValue = "\(numSamples)"
+        // SH no longer valid
+        sphericalHarmonics = nil
+    }
+    
+    @IBAction func validateNumBands(sender: AnyObject) {
+        let defaultValue = 3
+        let number = NSNumberFormatter().numberFromString(textFieldNumBands.stringValue)
+        let numBands = number != nil ? Clamp(number!.integerValue, 1, 20) : defaultValue
+        textFieldNumBands.stringValue = "\(numBands)"
+        // SH no longer valid
+        sphericalHarmonics = nil
+    }
+    
 }
 

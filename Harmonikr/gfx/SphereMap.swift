@@ -22,8 +22,8 @@ func normalEncodingLinear(#u: Float, #v: Float, #thresholdRadius: Float) -> Vect
 }
 
 class SphereMap {
-    let width       : UInt = 32
-    let height      : UInt = 32
+    let width       : UInt = 64
+    let height      : UInt = 64
     let bands       : UInt = 3     ///< R,G,B
     var imgBuffer   : Array<UInt8>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
