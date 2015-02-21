@@ -8,7 +8,8 @@
 
 import Cocoa
 
-class Document: NSDocument {
+
+class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
 
     var imgIrradiance : CGImageRef!
     var imgCubemap: CGImageRef!
@@ -27,6 +28,7 @@ class Document: NSDocument {
     @IBOutlet weak var imgViewNegativeY: NSImageView!
     @IBOutlet weak var textFieldNumBands: NSTextField!
     @IBOutlet weak var textFieldNumSamples: NSTextField!
+    @IBOutlet weak var tableViewCoeffs: NSTableView!
     
     override init() {
         super.init()
@@ -90,14 +92,15 @@ class Document: NSDocument {
         var bitmapInfo:CGBitmapInfo = .ByteOrderDefault;
         imgCubemap = CGImageCreate(cubeMap.width * cubeMap.numFaces, cubeMap.height, 8, 8 * cubeMap.numBands, cubeMap.width * cubeMap.numBands * cubeMap.numFaces, rgb, bitmapInfo, provider, nil /*decode*/, false /*shouldInterpolate*/, kCGRenderingIntentDefault)
         imgViewCubemap.image = NSImage(CGImage: imgCubemap, size: NSZeroSize)
-        
+        // SH no longer valid
+        sphericalHarmonics = nil
     }
     
     func updateSphericalHarmonics() {
         sphericalHarmonics = SphericalHarmonics(numBands: UInt(textFieldNumBands.integerValue), numSamples: UInt(textFieldNumSamples.integerValue))
         // compute spherical harmonics
         let vs = sphericalHarmonics!.projectPolarFn(cubeMap.polarSampler)
-        println(vs)
+        tableViewCoeffs.reloadData()
     }
 
     @IBAction func computeHarmonics(sender: AnyObject) {
@@ -203,5 +206,30 @@ class Document: NSDocument {
         sphericalHarmonics = nil
     }
     
+    // =============================================================
+    // NSTableViewDataSource implementation
+    // =============================================================
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return sphericalHarmonics == nil ? 0 : Int(sphericalHarmonics!.numCoeffs)
+    }
+    func tableView(tableView: NSTableView!, objectValueForTableColumn tableColumn: NSTableColumn!, row: Int) -> AnyObject!
+    {
+        if tableColumn.identifier == "index" {
+            return row
+        }
+        if sphericalHarmonics != nil {
+            switch tableColumn.identifier {
+            case "red":
+                return sphericalHarmonics!.coeffs[row].x
+            case "green":
+                return sphericalHarmonics!.coeffs[row].y
+            case "blue":
+                return sphericalHarmonics!.coeffs[row].z
+            default:
+                break
+            }
+        }
+        return ""
+    }
 }
 
