@@ -25,9 +25,10 @@ class SphereMap {
     let width       : UInt = 64
     let height      : UInt = 64
     let bands       : UInt = 3     ///< R,G,B
+    var negYr       : Float = 0.5  ///< radius at which to start encoding the negative Y hemisphere
     var imgBuffer   : Array<UInt8>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
-
+    
     init() {
         let bufferLength : Int = (Int)(getBufferLength())
         imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
@@ -46,8 +47,6 @@ class SphereMap {
     func update(colorFn: Vector3 -> (UInt8, UInt8, UInt8) ) {
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
-        // radius at which to start encoding the negative Y hemisphere
-        let negYr : Float = 0.5
         for j in 0..<height {
             // the positive V in OpenGL is on top
             let v = 1 - 2.0 * (Float(j)+0.5) * hInv
@@ -55,18 +54,6 @@ class SphereMap {
                 let u = 2.0 * (Float(i)+0.5) * wInv - 1.0
                 let n = normalEncodingLinear(u: u, v: v, thresholdRadius: negYr)
                 let color = colorFn(n)
-
-                /*
-                if let sh = harmonics {
-                    // get irradiance for given direction
-                    let n = Vector3(x: x, y: z, z: y)
-                    let irradiance = sh.GetIrradianceApproximation(n)
-                    let c = Clamp(irradiance * PI_INV, 0, 1)
-                    // @ todo change colorspace
-                    x = 255 * c.x
-                    y = 255 * c.y
-                    z = 255 * c.z
-                }*/
                 imgBuffer[Int(i*bands+bands*width*j)] = color.0
                 imgBuffer[Int(i*bands+bands*width*j+1)] = color.1
                 imgBuffer[Int(i*bands+bands*width*j+2)] = color.2

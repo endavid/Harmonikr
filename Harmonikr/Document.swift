@@ -29,6 +29,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var textFieldNumBands: NSTextField!
     @IBOutlet weak var textFieldNumSamples: NSTextField!
     @IBOutlet weak var tableViewCoeffs: NSTableView!
+    @IBOutlet weak var sliderPosYPercentage: NSSlider!
     
     override init() {
         super.init()
@@ -204,6 +205,11 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         textFieldNumBands.stringValue = "\(numBands)"
         // SH no longer valid
         sphericalHarmonics = nil
+    }
+    
+    @IBAction func validatePosYPercentage(sender: AnyObject) {
+        sphereMap.negYr = sliderPosYPercentage.floatValue
+        debugSphereMapRenderNormal(sender)
     }
     
     // =============================================================

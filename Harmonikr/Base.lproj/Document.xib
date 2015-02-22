@@ -14,6 +14,7 @@
                 <outlet property="imgViewPositiveX" destination="ivw-Fq-z9O" id="z7r-RB-wav"/>
                 <outlet property="imgViewPositiveY" destination="op0-tC-ZeI" id="QMV-zU-odV"/>
                 <outlet property="imgViewPositiveZ" destination="sD5-bv-LJq" id="8H5-pF-tJG"/>
+                <outlet property="sliderPosYPercentage" destination="fP3-So-gcV" id="uZ6-zF-B1y"/>
                 <outlet property="tableViewCoeffs" destination="wkN-99-eQv" id="JLw-Or-yE1"/>
                 <outlet property="textFieldNumBands" destination="m2Y-rk-WgF" id="qxn-ps-86P"/>
                 <outlet property="textFieldNumSamples" destination="1ga-RC-ReY" id="aFE-aI-rHi"/>
@@ -141,7 +142,7 @@
                                             <rect key="frame" x="15" y="191" width="104" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Num. bands" id="o9E-3N-eb1">
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -150,16 +151,16 @@
                                             <rect key="frame" x="15" y="166" width="104" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Num. samples" id="X8h-IC-KkW">
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="m2Y-rk-WgF">
-                                            <rect key="frame" x="125" y="188" width="80" height="22"/>
+                                            <rect key="frame" x="125" y="191" width="92" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="3" placeholderString="#bands" drawsBackground="YES" id="JIb-z8-V3Y">
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -168,16 +169,33 @@
                                             </connections>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="1ga-RC-ReY">
-                                            <rect key="frame" x="125" y="163" width="80" height="22"/>
+                                            <rect key="frame" x="125" y="166" width="92" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="10000" placeholderString="#samples" drawsBackground="YES" id="t0V-4u-rGT">
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
                                                 <action selector="validateNumSamples:" target="-2" id="CZa-Fr-9sq"/>
                                             </connections>
+                                        </textField>
+                                        <slider verticalHuggingPriority="750" id="fP3-So-gcV">
+                                            <rect key="frame" x="123" y="140" width="96" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="0.01" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="W8r-Iw-ZUO"/>
+                                            <connections>
+                                                <action selector="validatePosYPercentage:" target="-2" id="db3-2r-Rpl"/>
+                                            </connections>
+                                        </slider>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="0ni-ZV-0pH">
+                                            <rect key="frame" x="15" y="141" width="104" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Map PositiveY %" id="CXL-Yh-QLv">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
                                         </textField>
                                     </subviews>
                                 </view>
