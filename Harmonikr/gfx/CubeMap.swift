@@ -112,12 +112,12 @@ class CubeMap {
             for i in 0..<width {
                 let s = Float(i) / Float(width)
                 let sc = 2.0 * s - 1.0
-                let posX = Spherical( v: Vector3(x: 1, y: -tc, z: -sc).Normalize() )
-                let negX = Spherical( v: Vector3(x: -1, y: -tc, z: sc).Normalize() )
-                let posY = Spherical( v: Vector3(x: sc, y: 1, z: tc).Normalize() )
-                let negY = Spherical( v: Vector3(x: sc, y: -1, z: -tc).Normalize() )
-                let posZ = Spherical( v: Vector3(x: sc, y: -tc, z: 1).Normalize() )
-                let negZ = Spherical( v: Vector3(x: -sc, y: -tc, z: -1).Normalize() )
+                let posX = Spherical( v: Vector3(x: 1, y: -tc, z: -sc).normalize() )
+                let negX = Spherical( v: Vector3(x: -1, y: -tc, z: sc).normalize() )
+                let posY = Spherical( v: Vector3(x: sc, y: 1, z: tc).normalize() )
+                let negY = Spherical( v: Vector3(x: sc, y: -1, z: -tc).normalize() )
+                let posZ = Spherical( v: Vector3(x: sc, y: -tc, z: 1).normalize() )
+                let negZ = Spherical( v: Vector3(x: -sc, y: -tc, z: -1).normalize() )
                 let samples = [
                     sampler.uvSampler(u: negX.φ / PI2, v: negX.θ * PI_INV),
                     sampler.uvSampler(u: posZ.φ / PI2, v: posZ.θ * PI_INV),

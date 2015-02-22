@@ -39,7 +39,7 @@ struct Vector3 : Printable {
         }
     }
     
-    func Normalize() -> Vector3 {
+    func normalize() -> Vector3 {
         // save some computation is is already normalized
         let r2 = LengthSqr(self)
         if (fabsf(r2-1.0)>NORM_SQR_ERROR_TOLERANCE) {
@@ -48,6 +48,11 @@ struct Vector3 : Printable {
         return self
     }
     
+    /// Apply a function
+    func apply(f: (Float) -> Float) -> Vector3 {
+        return Vector3(x: f(x), y: f(y), z: f(z))
+    }
+
 }; // Vector3
 
 // -----------------------------------------------------------

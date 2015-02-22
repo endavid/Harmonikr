@@ -44,6 +44,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var tableViewCoeffs: NSTableView!
     @IBOutlet weak var sliderPosYPercentage: NSSlider!
     @IBOutlet weak var sliderMapResolution: NSSlider!
+    @IBOutlet weak var buttonRGBConversion: NSButton!
     
     override init() {
         super.init()
@@ -115,8 +116,16 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     func updateSphericalHarmonics() {
         sphericalHarmonics = SphericalHarmonics(numBands: UInt(textFieldNumBands.integerValue), numSamples: UInt(textFieldNumSamples.integerValue))
-        // compute spherical harmonics
-        let vs = sphericalHarmonics!.projectPolarFn(cubeMap.polarSampler)
+        if buttonRGBConversion.state == NSOnState {
+            // function to sample & convert to linear RGB
+            let f = { (θ: Float, φ: Float) -> Vector3 in
+                return colorRGBfromSRGB(self.cubeMap.polarSampler(θ: θ, φ: φ))
+            }
+            // compute spherical harmonics
+            sphericalHarmonics!.projectPolarFn(f)
+        } else {
+            sphericalHarmonics!.projectPolarFn(cubeMap.polarSampler)
+        }
         tableViewCoeffs.reloadData()
     }
 
@@ -125,8 +134,17 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             updateSphericalHarmonics()
         }
         let sh = sphericalHarmonics!
+        var f = { (v: Vector3) -> Vector3 in
+                return Clamp(v, 0, 1) * 255.0
+            }
+        if buttonRGBConversion.state == NSOnState {
+            // function to sample & convert back to gamma RGB
+            f = { (v: Vector3) -> Vector3 in
+                return colorSRGBfromRGB(Clamp(v, 0, 1)) * 255.0
+            }
+        }
         sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
-            let o = Clamp(sh.reconstruct(v), 0, 1) * 255.0
+            let o = f(sh.reconstruct(v))
             return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
         })
         updateImgIrradiance()
@@ -217,21 +235,27 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     @IBAction func validateNumSamples(sender: AnyObject) {
+        let numSamplesOld = sphericalHarmonics == nil ? 0 : sphericalHarmonics!.numSamples
         let defaultValue = 10000
         let number = NSNumberFormatter().numberFromString(textFieldNumSamples.stringValue)
         let numSamples = number != nil ? Clamp(number!.integerValue, 100, 30000) : defaultValue
         textFieldNumSamples.stringValue = "\(numSamples)"
-        // SH no longer valid
-        sphericalHarmonics = nil
+        if numSamplesOld != UInt(numSamples) {
+            // SH no longer valid
+            sphericalHarmonics = nil
+        }
     }
     
     @IBAction func validateNumBands(sender: AnyObject) {
+        let numBandsOld = sphericalHarmonics == nil ? 0 : sphericalHarmonics!.numBands
         let defaultValue = 3
         let number = NSNumberFormatter().numberFromString(textFieldNumBands.stringValue)
         let numBands = number != nil ? Clamp(number!.integerValue, 1, 20) : defaultValue
         textFieldNumBands.stringValue = "\(numBands)"
-        // SH no longer valid
-        sphericalHarmonics = nil
+        if numBandsOld != UInt(numBands) {
+            // SH no longer valid
+            sphericalHarmonics = nil
+        }
     }
     
     @IBAction func validateSphereMapResolution(sender: AnyObject) {
@@ -246,6 +270,11 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func validatePosYPercentage(sender: AnyObject) {
         sphereMap.negYr = sliderPosYPercentage.floatValue
         debugSphereMapRenderNormal(sender)
+    }
+    
+    @IBAction func validateRGBConversion(sender: AnyObject) {
+        // SH no longer valid
+        sphericalHarmonics = nil        
     }
     
     // =============================================================
