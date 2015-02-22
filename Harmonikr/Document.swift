@@ -48,7 +48,6 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
-        sphereMap = SphereMap()
         cubeMap = CubeMap()
     }
 
@@ -84,6 +83,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     /// Initialization code that needs the instantiated IBOutlets (before this function is called, they are still nil!)
     override func awakeFromNib() {
+        let power = sliderMapResolution.integerValue
+        let numPixels = UInt(2 << power)
+        sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         updateImgCubemap()
     }
@@ -235,7 +237,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func validateSphereMapResolution(sender: AnyObject) {
         let power = sliderMapResolution.integerValue
         let numPixels = UInt(2 << power)
-        sphereMap = SphereMap(w: numPixels, h: numPixels)
+        sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         // SH no longer valid
         sphericalHarmonics = nil

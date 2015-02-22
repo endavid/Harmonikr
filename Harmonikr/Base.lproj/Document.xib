@@ -185,7 +185,7 @@
                                         <slider verticalHuggingPriority="750" id="fP3-So-gcV">
                                             <rect key="frame" x="123" y="140" width="96" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <sliderCell key="cell" state="on" alignment="left" minValue="0.01" maxValue="1" doubleValue="0.5" tickMarkPosition="above" sliderType="linear" id="W8r-Iw-ZUO"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="0.01" maxValue="1" doubleValue="0.59999999999999998" tickMarkPosition="above" sliderType="linear" id="W8r-Iw-ZUO"/>
                                             <connections>
                                                 <action selector="validatePosYPercentage:" target="-2" id="db3-2r-Rpl"/>
                                             </connections>

@@ -8,16 +8,22 @@
 
 import Foundation
 
+/**
+ * x = f(r,u) = u/t + sign(u) * clamp(r-t, 0, 1-t) / (t-1) / t
+ * f(t,t) = 1, f(t, 0) = 0, f(1,1) = 0
+ * To recover the clip (u,v) coordinates from normalized (x,y,z),
+ *  u = tx + sign(x) * clamp(r-t, 0, 1-t) / (1-t)
+ */
 func normalEncodingLinear(#u: Float, #v: Float, #thresholdRadius: Float) -> Vector3 {
     var o = Vector3()
-    let radius = sqrtf(u * u + v * v)
+    let r = sqrtf(u * u + v * v)
+    let t = thresholdRadius
     // encode both Y+ and Y- hemispheres
     // (no div by zero, since never in the center for even sizes)
-    let yNegSide = Clamp((radius/thresholdRadius - 1)/(1-thresholdRadius), 0, 1/thresholdRadius)
-    let s = (1 / thresholdRadius - yNegSide)
-    o.x = Clamp(u * s, -1, 1)
-    o.z = Clamp(v * s, -1, 1)
-    o.y = Sign(1-radius/thresholdRadius)*sqrtf(1 - Clamp(o.x * o.x + o.z * o.z, 0, 1))
+    let negSide = Clamp(r - t, 0, 1 - t) / (t-1) / t
+    o.x = Clamp(u / t + Sign(u) * negSide, -1, 1)
+    o.z = Clamp(v / t + Sign(v) * negSide, -1, 1)
+    o.y = Sign(1-r/thresholdRadius)*sqrtf(1 - Clamp(o.x * o.x + o.z * o.z, 0, 1))
     return o
 }
 
@@ -25,13 +31,14 @@ class SphereMap {
     let width       : UInt
     let height      : UInt
     let bands       : UInt = 3     ///< R,G,B
-    var negYr       : Float = 0.5  ///< radius at which to start encoding the negative Y hemisphere
+    var negYr       : Float  ///< radius at which to start encoding the negative Y hemisphere
     var imgBuffer   : Array<UInt8>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
     
-    init(w: UInt = 64, h: UInt = 64) {
+    init(w: UInt = 64, h: UInt = 64, negYr: Float = 0.5) {
         width = w
         height = h
+        self.negYr = negYr
         let bufferLength : Int = (Int)(getBufferLength())
         imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
         update(debugDirection) // init with UV debug values
@@ -65,11 +72,12 @@ class SphereMap {
     
     func debugDirection(v: Vector3) -> (UInt8, UInt8, UInt8) {
         let o = 127.5 * v + Vector3(x: 127.5, y: 127.5, z: 127.5)
-        //let o = Clamp(v, 0, 1) * 255.0
+        //let o = Clamp(1.0 * v, 0, 1) * 255.0
+        //let o = Clamp(Vector3(x: v.x, y: 0, z: -v.x), 0, 1) * 255.0
+        //let o = Clamp(Vector3(x: v.x, y: 0, z: -v.x), 0, 1) * 255.0
         return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
         //return (UInt8(o.x), 0, UInt8(o.z))
         //return (0, UInt8(o.y), 0)
-
     }
     
 }
