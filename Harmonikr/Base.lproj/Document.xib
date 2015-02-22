@@ -14,6 +14,7 @@
                 <outlet property="imgViewPositiveX" destination="ivw-Fq-z9O" id="z7r-RB-wav"/>
                 <outlet property="imgViewPositiveY" destination="op0-tC-ZeI" id="QMV-zU-odV"/>
                 <outlet property="imgViewPositiveZ" destination="sD5-bv-LJq" id="8H5-pF-tJG"/>
+                <outlet property="sliderMapResolution" destination="MRd-9j-1Z5" id="7Rt-Ch-z0b"/>
                 <outlet property="sliderPosYPercentage" destination="fP3-So-gcV" id="uZ6-zF-B1y"/>
                 <outlet property="tableViewCoeffs" destination="wkN-99-eQv" id="JLw-Or-yE1"/>
                 <outlet property="textFieldNumBands" destination="m2Y-rk-WgF" id="qxn-ps-86P"/>
@@ -51,12 +52,13 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="12" headerView="5gi-ey-T7G" id="wkN-99-eQv">
+                                                        <rect key="frame" x="0.0" y="0.0" width="450" height="14"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn identifier="index" width="46.5" minWidth="40" maxWidth="1000" id="bed-h1-JMB">
+                                                            <tableColumn identifier="index" width="47.5" minWidth="40" maxWidth="1000" id="bed-h1-JMB">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Index">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -69,7 +71,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="red" width="126.5" minWidth="40" maxWidth="1000" id="kov-wY-ATc">
+                                                            <tableColumn identifier="red" width="127.5" minWidth="40" maxWidth="1000" id="kov-wY-ATc">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Red">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -82,7 +84,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="green" width="131.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="ytw-a1-uDz">
+                                                            <tableColumn identifier="green" width="132.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="ytw-a1-uDz">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Green">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -95,7 +97,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="blue" width="133.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="XY2-IX-q80">
+                                                            <tableColumn identifier="blue" width="134.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="XY2-IX-q80">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Blue">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -197,6 +199,23 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <slider verticalHuggingPriority="750" id="MRd-9j-1Z5">
+                                            <rect key="frame" x="123" y="110" width="96" height="25"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="4" maxValue="9" doubleValue="6" tickMarkPosition="above" numberOfTickMarks="6" allowsTickMarkValuesOnly="YES" sliderType="linear" id="34m-Kb-lxn"/>
+                                            <connections>
+                                                <action selector="validateSphereMapResolution:" target="-2" id="dZC-Vp-BAY"/>
+                                            </connections>
+                                        </slider>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="V1i-UW-Udd">
+                                            <rect key="frame" x="15" y="115" width="104" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Map Resolution" id="onL-Kz-Osf">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
                                     </subviews>
                                 </view>
                             </tabViewItem>
@@ -263,12 +282,18 @@
                             <action selector="computeIrradiance:" target="-2" id="EGF-yX-KgA"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="9C4D2284-7CF0-4881-A113-454B17150718" label="Save Map" paletteLabel="Save Map" tag="-1" image="NSShareTemplate" id="qh3-Oh-EGd">
+                        <connections>
+                            <action selector="saveSphereMap:" target="-2" id="ADc-Gl-Ful"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="KSD-xN-MXg"/>
                     <toolbarItem reference="bV7-gz-FHq"/>
                     <toolbarItem reference="fxg-Da-p3q"/>
                     <toolbarItem reference="qZs-Ze-7zG"/>
+                    <toolbarItem reference="qh3-Oh-EGd"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
@@ -280,6 +305,7 @@
     <resources>
         <image name="NSEveryone" width="32" height="32"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
+        <image name="NSShareTemplate" width="11" height="16"/>
         <image name="NSSmartBadgeTemplate" width="14" height="14"/>
     </resources>
 </document>

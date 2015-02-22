@@ -9,6 +9,19 @@
 import Cocoa
 
 
+/** Saves image to disk
+*  @see http://stackoverflow.com/questions/1320988/saving-cgimageref-to-a-png-file
+*/
+func CGImageWriteToFile(image: CGImageRef, filename: NSURL) {
+    let url = filename as CFURL
+    let destination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, nil)
+    CGImageDestinationAddImage(destination, image, nil);
+    
+    if !CGImageDestinationFinalize(destination) {
+        println("Failed to write image to \(filename.absoluteString)")
+    }
+}
+
 class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
 
     var imgIrradiance : CGImageRef!
@@ -30,6 +43,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var textFieldNumSamples: NSTextField!
     @IBOutlet weak var tableViewCoeffs: NSTableView!
     @IBOutlet weak var sliderPosYPercentage: NSSlider!
+    @IBOutlet weak var sliderMapResolution: NSSlider!
     
     override init() {
         super.init()
@@ -189,6 +203,17 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
     }
     
+    @IBAction func saveSphereMap(sender: AnyObject) {
+        // Create the File Save Dialog class.
+        let fileDialog : NSSavePanel = NSSavePanel()
+        fileDialog.allowedFileTypes = ["png"]
+        // Display the dialog.  If the OK button was pressed, save
+        if fileDialog.runModal() == NSOKButton {
+            var chosenFile = fileDialog.URL!
+            CGImageWriteToFile(imgIrradiance, chosenFile);
+        }
+    }
+    
     @IBAction func validateNumSamples(sender: AnyObject) {
         let defaultValue = 10000
         let number = NSNumberFormatter().numberFromString(textFieldNumSamples.stringValue)
@@ -203,6 +228,15 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let number = NSNumberFormatter().numberFromString(textFieldNumBands.stringValue)
         let numBands = number != nil ? Clamp(number!.integerValue, 1, 20) : defaultValue
         textFieldNumBands.stringValue = "\(numBands)"
+        // SH no longer valid
+        sphericalHarmonics = nil
+    }
+    
+    @IBAction func validateSphereMapResolution(sender: AnyObject) {
+        let power = sliderMapResolution.integerValue
+        let numPixels = UInt(2 << power)
+        sphereMap = SphereMap(w: numPixels, h: numPixels)
+        updateImgIrradiance()
         // SH no longer valid
         sphericalHarmonics = nil
     }

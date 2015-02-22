@@ -22,14 +22,16 @@ func normalEncodingLinear(#u: Float, #v: Float, #thresholdRadius: Float) -> Vect
 }
 
 class SphereMap {
-    let width       : UInt = 64
-    let height      : UInt = 64
+    let width       : UInt
+    let height      : UInt
     let bands       : UInt = 3     ///< R,G,B
     var negYr       : Float = 0.5  ///< radius at which to start encoding the negative Y hemisphere
     var imgBuffer   : Array<UInt8>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
     
-    init() {
+    init(w: UInt = 64, h: UInt = 64) {
+        width = w
+        height = h
         let bufferLength : Int = (Int)(getBufferLength())
         imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
         update(debugDirection) // init with UV debug values
