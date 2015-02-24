@@ -67,19 +67,31 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         return "Document"
     }
 
+    // "Swift Development with Cocoa"
     override func dataOfType(typeName: String, error outError: NSErrorPointer) -> NSData? {
-        // Insert code here to write your document to data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning nil.
-        // You can also choose to override fileWrapperOfType:error:, writeToURL:ofType:error:, or writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
-        outError.memory = NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
-        return nil
+        let dic = ["SH": sphericalHarmonics != nil ? sphericalHarmonics!.toDictionary() : []]
+        
+        var error : NSError? = nil
+        let serializedData = NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
+        if serializedData == nil || error != nil {
+            outError.memory = error
+            return nil
+        } else {
+            return serializedData
+        }
     }
 
     override func readFromData(data: NSData, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
-        // Insert code here to read your document from the given data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning false.
-        // You can also choose to override readFromFileWrapper:ofType:error: or readFromURL:ofType:error: instead.
-        // If you override either of these, you should also override -isEntireFileLoaded to return NO if the contents are lazily loaded.
-        outError.memory = NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
-        return false
+        var error : NSError? = nil
+        let data = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(), error: &error) as? NSDictionary
+        if data == nil || error != nil {
+            outError.memory = error
+            return false
+        }
+        if let shDic = data!["SH"] as? NSDictionary {
+            sphericalHarmonics = SphericalHarmonics(dictionary: shDic)
+        }
+        return true
     }
     
     /// Initialization code that needs the instantiated IBOutlets (before this function is called, they are still nil!)

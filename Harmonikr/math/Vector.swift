@@ -52,6 +52,10 @@ struct Vector3 : Printable {
     func apply(f: (Float) -> Float) -> Vector3 {
         return Vector3(x: f(x), y: f(y), z: f(z))
     }
+    
+    func toArray() -> [Float] {
+        return [x, y, z]
+    }
 
 }; // Vector3
 

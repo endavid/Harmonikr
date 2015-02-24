@@ -15,6 +15,7 @@
 		63D490F01A86DF8300532F62 /* Spherical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490EF1A86DF8300532F62 /* Spherical.swift */; };
 		63D490F21A87829C00532F62 /* SphericalHarmonics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490F11A87829C00532F62 /* SphericalHarmonics.swift */; };
 		63E2EDA41A9A51540002216C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E2EDA31A9A51540002216C /* Color.swift */; };
+		63E2EDA91A9A9BB80002216C /* map-xyz.png in Resources */ = {isa = PBXBuildFile; fileRef = 63E2EDA81A9A9BB80002216C /* map-xyz.png */; };
 		63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */; };
 		63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBDD1A82DC2C00002886 /* Document.swift */; };
 		63EFEBE11A82DC2C00002886 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBDF1A82DC2C00002886 /* Document.xib */; };
@@ -43,6 +44,7 @@
 		63D490EF1A86DF8300532F62 /* Spherical.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Spherical.swift; path = math/Spherical.swift; sourceTree = "<group>"; };
 		63D490F11A87829C00532F62 /* SphericalHarmonics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = SphericalHarmonics.swift; path = math/SphericalHarmonics.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		63E2EDA31A9A51540002216C /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Color.swift; path = math/Color.swift; sourceTree = "<group>"; };
+		63E2EDA81A9A9BB80002216C /* map-xyz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "map-xyz.png"; path = "Resources/map-xyz.png"; sourceTree = "<group>"; };
 		63EFEBD61A82DC2C00002886 /* Harmonikr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmonikr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63EFEBDA1A82DC2C00002886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 			name = math;
 			sourceTree = "<group>";
 		};
+		63E2EDA51A9A9B3A0002216C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				63E2EDA81A9A9BB80002216C /* map-xyz.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		63EFEBCD1A82DC2C00002886 = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +118,7 @@
 		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
 			isa = PBXGroup;
 			children = (
+				63E2EDA51A9A9B3A0002216C /* Resources */,
 				63D490EA1A86CCD100532F62 /* math */,
 				63EFEBFB1A84256300002886 /* gfx */,
 				63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */,
@@ -235,6 +246,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63E2EDA91A9A9BB80002216C /* map-xyz.png in Resources */,
 				63EFEBE11A82DC2C00002886 /* Document.xib in Resources */,
 				63EFEBE31A82DC2C00002886 /* Images.xcassets in Resources */,
 				63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */,

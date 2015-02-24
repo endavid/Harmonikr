@@ -12,15 +12,19 @@
 				<string>spharm</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string></string>
+			<string>map-xyz</string>
 			<key>CFBundleTypeName</key>
-			<string>DocumentType</string>
+			<string>Harmonikr File</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>????</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.endavid.document.spharm</string>
+			</array>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).Document</string>
 		</dict>
@@ -51,5 +55,27 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeDescription</key>
+			<string>Harmonikr File</string>
+			<key>UTTypeIconFile</key>
+			<string>map-xyz</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.endavid.document.spharm</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>spharm</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict/>
+	</array>
 </dict>
 </plist>

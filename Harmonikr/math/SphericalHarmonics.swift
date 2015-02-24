@@ -40,6 +40,53 @@ class SphericalHarmonics {
         setupSphericalSamples(numSamplesSqrt)
     }
     
+    /// Import from a dictionary file (Load Json)
+    init(dictionary: NSDictionary) {
+        if let numSamples = dictionary["numSamples"] as? UInt {
+            self.numSamples = numSamples
+        } else {
+            self.numSamples = 10000
+        }
+        let numSamplesSqrt = UInt(sqrtf(Float(self.numSamples)))
+        if let numBands = dictionary["numBands"] as? UInt {
+            self.numBands = numBands
+        } else {
+            self.numBands = 3
+        }
+        numCoeffs = self.numBands * self.numBands
+        if let coeffs = dictionary["coeffs"] as? [[Float]] {
+            self.coeffs = coeffs.map() { Vector3(x: $0[0], y: $0[1], z: $0[2]) }
+        } else {
+            self.coeffs = [Vector3](count: Int(numCoeffs), repeatedValue: Vector3())
+        }
+        if let mIrradiance = dictionary["mIrradiance"] as? [[Float]] {
+            self.mIrradiance = mIrradiance.map() {
+                var m = Matrix4()
+                m.values = $0
+                return m
+            }
+        } else {
+            self.mIrradiance = Array(count: 3, repeatedValue: Matrix4())
+        }
+        // init samples with 0-arrays, so they can be indexed in setupSphericalSamples
+        let coefficients = [Double](count: Int(numCoeffs), repeatedValue: 0)
+        let emptySample = SHSample(sph: Spherical(), vec: Vector3(), coeff: coefficients)
+        samples = [SHSample](count: Int(self.numSamples), repeatedValue: emptySample)
+        setupSphericalSamples(numSamplesSqrt)
+    }
+    
+    /// Used to export properties. It doesn't export the samples
+    func toDictionary() -> NSDictionary {
+        let dic : NSDictionary = [
+            "numBands": numBands,
+            "numCoeffs": numCoeffs,
+            "numSamples": numSamples,
+            "coeffs": coeffs.map() { $0.toArray() },
+            "mIrradiance": mIrradiance.map() { $0.values }
+        ]
+        return dic
+    }
+    
     /**
      * @brief Initializes the SHSamples
      * fill an N*N*2 array with uniformly distributed
