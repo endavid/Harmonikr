@@ -100,7 +100,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let numPixels = UInt(2 << power)
         sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
-        updateImgCubemap()
+        if sphericalHarmonics == nil {
+            updateImgCubemap()
+        }
     }
     
     // ref: https://gist.github.com/irskep/e560be65163efcb04115
