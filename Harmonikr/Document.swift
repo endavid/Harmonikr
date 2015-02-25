@@ -23,12 +23,13 @@ func CGImageWriteToFile(image: CGImageRef, filename: NSURL) {
 }
 
 class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
-
+    
     var imgIrradiance : CGImageRef!
     var imgCubemap: CGImageRef!
     var sphereMap : SphereMap!
     var cubeMap: CubeMap!
     var sphericalHarmonics: SphericalHarmonics?
+    var settings: Dictionary<String, String>!
     
     @IBOutlet weak var imgViewIrradiance: NSImageView!
     @IBOutlet weak var imgViewCubemap: NSImageView!
@@ -50,6 +51,12 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         super.init()
         // Add your subclass-specific initialization here.
         cubeMap = CubeMap()
+        // directly a dictionary, easier to serialize
+        settings = [
+            "negYr": "0.6",
+            "mapResolution": "6",
+            "convertRGB": "true"
+        ]
     }
 
     override func windowControllerDidLoadNib(aController: NSWindowController) {
@@ -69,7 +76,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
 
     // "Swift Development with Cocoa"
     override func dataOfType(typeName: String, error outError: NSErrorPointer) -> NSData? {
-        let dic = ["SH": sphericalHarmonics != nil ? sphericalHarmonics!.toDictionary() : []]
+        let dic = ["SH": sphericalHarmonics != nil ? sphericalHarmonics!.toDictionary() : [],
+            "settings": settings
+        ]
         
         var error : NSError? = nil
         let serializedData = NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
@@ -91,6 +100,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         if let shDic = data!["SH"] as? NSDictionary {
             sphericalHarmonics = SphericalHarmonics(dictionary: shDic)
         }
+        if let settings = data!["settings"] as? Dictionary<String,String> {
+            self.settings = settings
+        }
         return true
     }
     
@@ -98,11 +110,23 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     override func awakeFromNib() {
         let power = sliderMapResolution.integerValue
         let numPixels = UInt(2 << power)
+        updateSettingsView()
         sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         if sphericalHarmonics == nil {
             updateImgCubemap()
         }
+    }
+    
+    /// Updates the View from the data in the Model
+    func updateSettingsView() {
+        if sphericalHarmonics != nil {
+            textFieldNumBands.stringValue = "\(sphericalHarmonics!.numBands)"
+            textFieldNumSamples.stringValue = "\(sphericalHarmonics!.numSamples)"
+        }
+        sliderPosYPercentage.floatValue = (settings["negYr"]! as NSString).floatValue
+        sliderMapResolution.integerValue = settings["mapResolution"]!.toInt()!
+        buttonRGBConversion.state = settings["convertRGB"] == "true" ? NSOnState : NSOffState
     }
     
     // ref: https://gist.github.com/irskep/e560be65163efcb04115
@@ -252,7 +276,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let numSamplesOld = sphericalHarmonics == nil ? 0 : sphericalHarmonics!.numSamples
         let defaultValue = 10000
         let number = NSNumberFormatter().numberFromString(textFieldNumSamples.stringValue)
-        let numSamples = number != nil ? Clamp(number!.integerValue, 100, 30000) : defaultValue
+        var numSamples = number != nil ? Clamp(number!.integerValue, 100, 30000) : defaultValue
+        let numSamplesSqrt = UInt(sqrtf(Float(numSamples)))
+        numSamples = Int(numSamplesSqrt * numSamplesSqrt)
         textFieldNumSamples.stringValue = "\(numSamples)"
         if numSamplesOld != UInt(numSamples) {
             // SH no longer valid
