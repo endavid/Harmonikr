@@ -12,7 +12,7 @@
 				<string>spharm</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>map-xyz</string>
+			<string>spharmDocument</string>
 			<key>CFBundleTypeName</key>
 			<string>Harmonikr File</string>
 			<key>CFBundleTypeRole</key>
@@ -56,14 +56,14 @@
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
-            <key>UTTypeConformsTo</key>
-            <array>
-                <string>public.data</string>
-            </array>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
 			<key>UTTypeDescription</key>
 			<string>Harmonikr File</string>
 			<key>UTTypeIconFile</key>
-			<string>map-xyz</string>
+			<string>spharmDocument</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.endavid.document.spharm</string>
 			<key>UTTypeTagSpecification</key>
