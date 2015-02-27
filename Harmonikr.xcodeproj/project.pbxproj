@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */; };
 		63BF50391A89837C006F41A9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF50381A89837C006F41A9 /* Matrix.swift */; };
+		63C0B1D71A9E854100035E53 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C0B1D61A9E854100035E53 /* OpenGL.framework */; };
+		63C0B1D91A9E867800035E53 /* CustomOpenGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0B1D81A9E867800035E53 /* CustomOpenGLView.swift */; };
+		63C0B1DB1A9E87FD00035E53 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C0B1DA1A9E87FD00035E53 /* AppKit.framework */; };
+		63C0B1DD1A9E88FC00035E53 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C0B1DC1A9E88FC00035E53 /* GLKit.framework */; };
+		63C0B1E01A9E98E900035E53 /* geometryColor.vs in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1DF1A9E98E900035E53 /* geometryColor.vs */; };
+		63C0B1E41A9FDEE500035E53 /* color.fs in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1E31A9FDEE500035E53 /* color.fs */; };
 		63D490E71A85865F00532F62 /* CubeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490E61A85865F00532F62 /* CubeMap.swift */; };
 		63D490E91A860C8A00532F62 /* ImageSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490E81A860C8A00532F62 /* ImageSampler.swift */; };
 		63D490EC1A86CCF400532F62 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490EB1A86CCF400532F62 /* Vector.swift */; };
@@ -38,6 +44,12 @@
 /* Begin PBXFileReference section */
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
+		63C0B1D61A9E854100035E53 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		63C0B1D81A9E867800035E53 /* CustomOpenGLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomOpenGLView.swift; path = gfx/CustomOpenGLView.swift; sourceTree = "<group>"; };
+		63C0B1DA1A9E87FD00035E53 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		63C0B1DC1A9E88FC00035E53 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		63C0B1DF1A9E98E900035E53 /* geometryColor.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = geometryColor.vs; path = Shaders/geometryColor.vs; sourceTree = "<group>"; };
+		63C0B1E31A9FDEE500035E53 /* color.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color.fs; path = Shaders/color.fs; sourceTree = "<group>"; };
 		63D490E61A85865F00532F62 /* CubeMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CubeMap.swift; path = gfx/CubeMap.swift; sourceTree = "<group>"; };
 		63D490E81A860C8A00532F62 /* ImageSampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageSampler.swift; path = gfx/ImageSampler.swift; sourceTree = "<group>"; };
 		63D490EB1A86CCF400532F62 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vector.swift; path = math/Vector.swift; sourceTree = "<group>"; };
@@ -63,6 +75,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C0B1DB1A9E87FD00035E53 /* AppKit.framework in Frameworks */,
+				63C0B1DD1A9E88FC00035E53 /* GLKit.framework in Frameworks */,
+				63C0B1D71A9E854100035E53 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +91,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63C0B1DE1A9E962800035E53 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				63C0B1DF1A9E98E900035E53 /* geometryColor.vs */,
+				63C0B1E31A9FDEE500035E53 /* color.fs */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
 		63D490EA1A86CCD100532F62 /* math */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +124,9 @@
 		63EFEBCD1A82DC2C00002886 = {
 			isa = PBXGroup;
 			children = (
+				63C0B1DC1A9E88FC00035E53 /* GLKit.framework */,
+				63C0B1DA1A9E87FD00035E53 /* AppKit.framework */,
+				63C0B1D61A9E854100035E53 /* OpenGL.framework */,
 				63EFEBD81A82DC2C00002886 /* Harmonikr */,
 				63EFEBEE1A82DC2C00002886 /* HarmonikrTests */,
 				63EFEBD71A82DC2C00002886 /* Products */,
@@ -118,6 +145,7 @@
 		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
 			isa = PBXGroup;
 			children = (
+				63C0B1DE1A9E962800035E53 /* Shaders */,
 				63E2EDA51A9A9B3A0002216C /* Resources */,
 				63D490EA1A86CCD100532F62 /* math */,
 				63EFEBFB1A84256300002886 /* gfx */,
@@ -162,6 +190,7 @@
 				63EFEBFC1A8425BE00002886 /* SphereMap.swift */,
 				63D490E61A85865F00532F62 /* CubeMap.swift */,
 				63D490E81A860C8A00532F62 /* ImageSampler.swift */,
+				63C0B1D81A9E867800035E53 /* CustomOpenGLView.swift */,
 			);
 			name = gfx;
 			sourceTree = "<group>";
@@ -246,7 +275,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C0B1E01A9E98E900035E53 /* geometryColor.vs in Resources */,
 				637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */,
+				63C0B1E41A9FDEE500035E53 /* color.fs in Resources */,
 				63EFEBE11A82DC2C00002886 /* Document.xib in Resources */,
 				63EFEBE31A82DC2C00002886 /* Images.xcassets in Resources */,
 				63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */,
@@ -271,6 +302,7 @@
 				63D490F21A87829C00532F62 /* SphericalHarmonics.swift in Sources */,
 				63E2EDA41A9A51540002216C /* Color.swift in Sources */,
 				63D490E71A85865F00532F62 /* CubeMap.swift in Sources */,
+				63C0B1D91A9E867800035E53 /* CustomOpenGLView.swift in Sources */,
 				63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */,
 				63D490EE1A86D64700532F62 /* Math.swift in Sources */,
 				63D490E91A860C8A00532F62 /* ImageSampler.swift in Sources */,

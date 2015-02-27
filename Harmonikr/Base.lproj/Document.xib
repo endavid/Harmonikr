@@ -53,7 +53,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="12" headerView="5gi-ey-T7G" id="wkN-99-eQv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="450" height="14"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="454" height="14"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -273,6 +273,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="proportionallyDown" imageFrameStyle="groove" id="NOY-nx-4kI"/>
                     </imageView>
+                    <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" id="ZfD-Ex-eja" customClass="CustomOpenGLView" customModule="Harmonikr" customModuleProvider="target">
+                        <rect key="frame" x="313" y="284" width="160" height="160"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </openGLView>
                 </subviews>
             </view>
             <toolbar key="toolbar" implicitIdentifier="535C5EFA-BFC6-4F74-8BDD-7933B4D1CFC9" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="rZx-Ei-VBj">
