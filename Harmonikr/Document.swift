@@ -300,6 +300,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         // create a cubemap from just 1 image, assuming it's a spherical projection
         else if imgNegX != nil {
             cubeMap.setSphericalProjectionMap(imgNegX!)
+            if imgNegY != nil { // overwrite ground
+                cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)                
+            }
             updateImgCubemap()
         }
     }
