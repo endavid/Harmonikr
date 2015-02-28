@@ -53,7 +53,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="12" headerView="5gi-ey-T7G" id="wkN-99-eQv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="450" height="14"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="454" height="14"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -233,32 +233,32 @@
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hZj-ZQ-rL1">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hZj-ZQ-rL1" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
                         <rect key="frame" x="17" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="TON-ue-QBd"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sD5-bv-LJq">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sD5-bv-LJq" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
                         <rect key="frame" x="83" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="ZkC-JV-3Fp"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ivw-Fq-z9O">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ivw-Fq-z9O" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
                         <rect key="frame" x="149" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="wZe-VG-rGn"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hva-g6-3zx">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hva-g6-3zx" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
                         <rect key="frame" x="215" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="mMZ-bw-4gx"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="op0-tC-ZeI">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="op0-tC-ZeI" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
                         <rect key="frame" x="83" y="398" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="78k-YY-8G9"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="mgn-lD-llO">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="mgn-lD-llO" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
                         <rect key="frame" x="83" y="266" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="Kv1-JG-Fr6"/>
