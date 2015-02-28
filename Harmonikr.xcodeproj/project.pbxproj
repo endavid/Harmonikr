@@ -10,6 +10,10 @@
 		637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */; };
 		63BF50391A89837C006F41A9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF50381A89837C006F41A9 /* Matrix.swift */; };
 		63C0B1E91AA134B100035E53 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0B1E81AA134B100035E53 /* CustomImageView.swift */; };
+		63C0B1EE1AA1E40300035E53 /* compute-cubemap.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */; };
+		63C0B1EF1AA1E40300035E53 /* compute-irradiance.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */; };
+		63C0B1F01AA1E40300035E53 /* compute-sh.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EC1AA1E40300035E53 /* compute-sh.png */; };
+		63C0B1F11AA1E40300035E53 /* save-spheremap.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1ED1AA1E40300035E53 /* save-spheremap.png */; };
 		63D490E71A85865F00532F62 /* CubeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490E61A85865F00532F62 /* CubeMap.swift */; };
 		63D490E91A860C8A00532F62 /* ImageSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490E81A860C8A00532F62 /* ImageSampler.swift */; };
 		63D490EC1A86CCF400532F62 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490EB1A86CCF400532F62 /* Vector.swift */; };
@@ -40,6 +44,10 @@
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
 		63C0B1E81AA134B100035E53 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomImageView.swift; path = ui/CustomImageView.swift; sourceTree = "<group>"; };
+		63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-cubemap.png"; path = "Resources/compute-cubemap.png"; sourceTree = "<group>"; };
+		63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-irradiance.png"; path = "Resources/compute-irradiance.png"; sourceTree = "<group>"; };
+		63C0B1EC1AA1E40300035E53 /* compute-sh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-sh.png"; path = "Resources/compute-sh.png"; sourceTree = "<group>"; };
+		63C0B1ED1AA1E40300035E53 /* save-spheremap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "save-spheremap.png"; path = "Resources/save-spheremap.png"; sourceTree = "<group>"; };
 		63D490E61A85865F00532F62 /* CubeMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CubeMap.swift; path = gfx/CubeMap.swift; sourceTree = "<group>"; };
 		63D490E81A860C8A00532F62 /* ImageSampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageSampler.swift; path = gfx/ImageSampler.swift; sourceTree = "<group>"; };
 		63D490EB1A86CCF400532F62 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vector.swift; path = math/Vector.swift; sourceTree = "<group>"; };
@@ -102,6 +110,10 @@
 		63E2EDA51A9A9B3A0002216C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */,
+				63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */,
+				63C0B1EC1AA1E40300035E53 /* compute-sh.png */,
+				63C0B1ED1AA1E40300035E53 /* save-spheremap.png */,
 				637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */,
 			);
 			name = Resources;
@@ -258,9 +270,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */,
+				63C0B1EF1AA1E40300035E53 /* compute-irradiance.png in Resources */,
+				63C0B1F01AA1E40300035E53 /* compute-sh.png in Resources */,
 				63EFEBE11A82DC2C00002886 /* Document.xib in Resources */,
 				63EFEBE31A82DC2C00002886 /* Images.xcassets in Resources */,
 				63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */,
+				63C0B1F11AA1E40300035E53 /* save-spheremap.png in Resources */,
+				63C0B1EE1AA1E40300035E53 /* compute-cubemap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

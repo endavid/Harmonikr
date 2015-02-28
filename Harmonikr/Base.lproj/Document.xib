@@ -279,22 +279,22 @@
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="wxA-lZ-zKb"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="qZs-Ze-7zG"/>
-                    <toolbarItem implicitItemIdentifier="7F04E887-0351-413D-ADE6-89BCA9246F61" label="Compute" paletteLabel="Compute" toolTip="Compute Spherical Harmonics from Cubemap" tag="-1" image="NSRefreshTemplate" id="KSD-xN-MXg">
+                    <toolbarItem implicitItemIdentifier="7F04E887-0351-413D-ADE6-89BCA9246F61" label="Compute" paletteLabel="Compute" toolTip="Compute Spherical Harmonics from Cubemap" tag="-1" image="compute-sh" id="KSD-xN-MXg">
                         <connections>
                             <action selector="computeHarmonics:" target="-2" id="Tri-B8-BP6"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="AA4687EB-AE06-4C61-9158-5FFB9E4E1489" label="Infer" paletteLabel="Infer" toolTip="Infer Cubemap from existing pictures" tag="-1" image="NSSmartBadgeTemplate" id="fxg-Da-p3q">
+                    <toolbarItem implicitItemIdentifier="AA4687EB-AE06-4C61-9158-5FFB9E4E1489" label="Infer" paletteLabel="Infer" toolTip="Infer Cubemap from existing pictures" tag="-1" image="compute-cubemap" id="fxg-Da-p3q">
                         <connections>
                             <action selector="inferCubemap:" target="-2" id="BHX-8g-mIV"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="624A0375-34EE-4F93-A130-A957868546B4" label="Irradiance" paletteLabel="Irradiance" tag="-1" image="NSEveryone" id="bV7-gz-FHq">
+                    <toolbarItem implicitItemIdentifier="624A0375-34EE-4F93-A130-A957868546B4" label="Irradiance" paletteLabel="Irradiance" toolTip="Compute Irradiance from current harmonics" tag="-1" image="compute-irradiance" id="bV7-gz-FHq">
                         <connections>
                             <action selector="computeIrradiance:" target="-2" id="EGF-yX-KgA"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="9C4D2284-7CF0-4881-A113-454B17150718" label="Save Map" paletteLabel="Save Map" tag="-1" image="NSShareTemplate" id="qh3-Oh-EGd">
+                    <toolbarItem implicitItemIdentifier="9C4D2284-7CF0-4881-A113-454B17150718" label="Save Map" paletteLabel="Save Map" toolTip="Save sphere map image" tag="-1" image="save-spheremap" id="qh3-Oh-EGd">
                         <connections>
                             <action selector="saveSphereMap:" target="-2" id="ADc-Gl-Ful"/>
                         </connections>
@@ -315,9 +315,9 @@
         </window>
     </objects>
     <resources>
-        <image name="NSEveryone" width="32" height="32"/>
-        <image name="NSRefreshTemplate" width="11" height="15"/>
-        <image name="NSShareTemplate" width="11" height="16"/>
-        <image name="NSSmartBadgeTemplate" width="14" height="14"/>
+        <image name="compute-cubemap" width="238" height="238"/>
+        <image name="compute-irradiance" width="260" height="260"/>
+        <image name="compute-sh" width="160" height="160"/>
+        <image name="save-spheremap" width="166" height="166"/>
     </resources>
 </document>
