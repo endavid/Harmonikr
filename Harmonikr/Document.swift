@@ -50,6 +50,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var imgViewNegativeY: CustomImageView!
     @IBOutlet weak var textFieldNumBands: NSTextField!
     @IBOutlet weak var textFieldNumSamples: NSTextField!
+    @IBOutlet weak var textFieldLinearScale: NSTextField!
     @IBOutlet weak var tableViewCoeffs: NSTableView!
     @IBOutlet weak var sliderPosYPercentage: NSSlider!
     @IBOutlet weak var sliderMapResolution: NSSlider!
@@ -63,7 +64,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         settings = [
             "negYr": "0.6",
             "mapResolution": "6",
-            "convertRGB": "true"
+            "convertRGB": "true",
+            "linearScale": "1.0"
         ]
     }
 
@@ -84,19 +86,12 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
 
     // "Swift Development with Cocoa"
     override func dataOfType(typeName: String, error outError: NSErrorPointer) -> NSData? {
-        imagePaths = [
-            "negX": imgViewNegativeX.localPath,
-            "posX": imgViewPositiveX.localPath,
-            "negY": imgViewNegativeY.localPath,
-            "posY": imgViewPositiveY.localPath,
-            "negZ": imgViewNegativeZ.localPath,
-            "posZ": imgViewPositiveZ.localPath
-        ]
+        serializeImagePaths()
+        serializeSettings()
         let dic = ["SH": sphericalHarmonics != nil ? sphericalHarmonics!.toDictionary() : [],
             "settings": settings,
             "images": imagePaths
         ]
-        
         var error : NSError? = nil
         let serializedData = NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted, error: &error)
         if serializedData == nil || error != nil {
@@ -163,6 +158,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     /// Updates the View from the data in the Model
     func updateSettingsView() {
+        if settings["linearScale"] == nil {
+           settings["linearScale"] = "1.0"
+        }
         if sphericalHarmonics != nil {
             textFieldNumBands.stringValue = "\(sphericalHarmonics!.numBands)"
             textFieldNumSamples.stringValue = "\(sphericalHarmonics!.numSamples)"
@@ -170,6 +168,27 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         sliderPosYPercentage.floatValue = (settings["negYr"]! as NSString).floatValue
         sliderMapResolution.integerValue = settings["mapResolution"]!.toInt()!
         buttonRGBConversion.state = settings["convertRGB"] == "true" ? NSOnState : NSOffState
+        textFieldLinearScale.floatValue = (settings["linearScale"]! as NSString).floatValue
+    }
+    
+    func serializeImagePaths() {
+        imagePaths = [
+            "negX": imgViewNegativeX.localPath,
+            "posX": imgViewPositiveX.localPath,
+            "negY": imgViewNegativeY.localPath,
+            "posY": imgViewPositiveY.localPath,
+            "negZ": imgViewNegativeZ.localPath,
+            "posZ": imgViewPositiveZ.localPath
+        ]
+    }
+    
+    func serializeSettings() {
+        settings = [
+            "negYr": "\(sliderPosYPercentage.floatValue)",
+            "mapResolution": "\(sliderMapResolution.integerValue)",
+            "convertRGB": buttonRGBConversion.state == NSOnState ? "true" : "false",
+            "linearScale": "\(textFieldLinearScale.floatValue)"
+        ]
     }
     
     // ref: https://gist.github.com/irskep/e560be65163efcb04115
@@ -214,6 +233,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         if sphericalHarmonics == nil {
             updateSphericalHarmonics()
         }
+        let scale = textFieldLinearScale.floatValue
         let sh = sphericalHarmonics!
         var f = { (v: Vector3) -> Vector3 in
                 return Clamp(v, 0, 1) * 255.0
@@ -225,7 +245,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             }
         }
         sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
-            let o = f(sh.reconstruct(v))
+            let o = f(scale * sh.reconstruct(v))
             return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
         })
         updateImgIrradiance()
@@ -235,9 +255,10 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         if sphericalHarmonics == nil {
             updateSphericalHarmonics()
         }
+        let scale = textFieldLinearScale.floatValue
         let sh = sphericalHarmonics!
         sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
-            let o = Clamp(sh.GetIrradianceApproximation(v) * (1/PI), 0, 1) * 255.0
+            let o = Clamp(scale * sh.GetIrradianceApproximation(v) * (1/PI), 0, 1) * 255.0
             return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
         })
         updateImgIrradiance()
@@ -361,6 +382,10 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func validateRGBConversion(sender: AnyObject) {
         // SH no longer valid
         sphericalHarmonics = nil        
+    }
+    
+    @IBAction func validateLinearScale(sender: AnyObject) {
+        
     }
     
     // =============================================================

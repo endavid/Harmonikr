@@ -18,6 +18,7 @@
                 <outlet property="sliderMapResolution" destination="MRd-9j-1Z5" id="7Rt-Ch-z0b"/>
                 <outlet property="sliderPosYPercentage" destination="fP3-So-gcV" id="uZ6-zF-B1y"/>
                 <outlet property="tableViewCoeffs" destination="wkN-99-eQv" id="JLw-Or-yE1"/>
+                <outlet property="textFieldLinearScale" destination="dWW-DO-YMc" id="8BA-Qc-Fc7"/>
                 <outlet property="textFieldNumBands" destination="m2Y-rk-WgF" id="qxn-ps-86P"/>
                 <outlet property="textFieldNumSamples" destination="1ga-RC-ReY" id="aFE-aI-rHi"/>
                 <outlet property="window" destination="xOd-HO-29H" id="JIz-fz-R2o"/>
@@ -159,18 +160,6 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField verticalHuggingPriority="750" id="m2Y-rk-WgF">
-                                            <rect key="frame" x="125" y="191" width="92" height="19"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="3" placeholderString="#bands" drawsBackground="YES" id="JIb-z8-V3Y">
-                                                <font key="font" metaFont="smallSystem"/>
-                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <action selector="validateNumBands:" target="-2" id="Qgu-pV-MOw"/>
-                                            </connections>
-                                        </textField>
                                         <textField verticalHuggingPriority="750" id="1ga-RC-ReY">
                                             <rect key="frame" x="125" y="166" width="92" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -228,6 +217,39 @@
                                                 <action selector="validateRGBConversion:" target="-2" id="sfV-mt-chb"/>
                                             </connections>
                                         </button>
+                                        <textField toolTip="Scale color when constructing the spherical map" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="6Y2-n8-9ZX">
+                                            <rect key="frame" x="15" y="65" width="104" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Linear scale" id="2sO-BB-EKv">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="dWW-DO-YMc">
+                                            <rect key="frame" x="125" y="65" width="92" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="1.0" placeholderString="scale" drawsBackground="YES" id="NUU-oj-f79">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="validateLinearScale:" target="-2" id="Md0-9X-dnm"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="m2Y-rk-WgF">
+                                            <rect key="frame" x="125" y="191" width="92" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="3" placeholderString="#bands" drawsBackground="YES" id="JIb-z8-V3Y">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="validateNumBands:" target="-2" id="Qgu-pV-MOw"/>
+                                            </connections>
+                                        </textField>
                                     </subviews>
                                 </view>
                             </tabViewItem>
