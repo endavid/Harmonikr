@@ -31,12 +31,12 @@ class SphericalHarmonics {
         self.numBands = numBands
         self.numSamples = numSamplesSqrt * numSamplesSqrt
         numCoeffs = numBands * numBands
-        mIrradiance = Array(count: 3, repeatedValue: Matrix4())
+        mIrradiance = Array(repeating: Matrix4(), count: 3)
         // init samples with 0-arrays, so they can be indexed in setupSphericalSamples
-        let coefficients = [Double](count: Int(numCoeffs), repeatedValue: 0)
+        let coefficients = [Double](repeating: 0, count: Int(numCoeffs))
         let emptySample = SHSample(sph: Spherical(), vec: Vector3(), coeff: coefficients)
-        samples = [SHSample](count: Int(self.numSamples), repeatedValue: emptySample)
-        coeffs = [Vector3](count: Int(numCoeffs), repeatedValue: Vector3())
+        samples = [SHSample](repeating: emptySample, count: Int(self.numSamples))
+        coeffs = [Vector3](repeating: Vector3(), count: Int(numCoeffs))
         setupSphericalSamples(numSamplesSqrt)
     }
     
@@ -57,7 +57,7 @@ class SphericalHarmonics {
         if let coeffs = dictionary["coeffs"] as? [[Float]] {
             self.coeffs = coeffs.map() { Vector3(x: $0[0], y: $0[1], z: $0[2]) }
         } else {
-            self.coeffs = [Vector3](count: Int(numCoeffs), repeatedValue: Vector3())
+            self.coeffs = [Vector3](repeating: Vector3(), count: Int(numCoeffs))
         }
         if let mIrradiance = dictionary["mIrradiance"] as? [[Float]] {
             self.mIrradiance = mIrradiance.map() {
@@ -66,12 +66,12 @@ class SphericalHarmonics {
                 return m
             }
         } else {
-            self.mIrradiance = Array(count: 3, repeatedValue: Matrix4())
+            self.mIrradiance = Array(repeating: Matrix4(), count: 3)
         }
         // init samples with 0-arrays, so they can be indexed in setupSphericalSamples
-        let coefficients = [Double](count: Int(numCoeffs), repeatedValue: 0)
+        let coefficients = [Double](repeating: 0, count: Int(numCoeffs))
         let emptySample = SHSample(sph: Spherical(), vec: Vector3(), coeff: coefficients)
-        samples = [SHSample](count: Int(self.numSamples), repeatedValue: emptySample)
+        samples = [SHSample](repeating: emptySample, count: Int(self.numSamples))
         setupSphericalSamples(numSamplesSqrt)
     }
     
@@ -92,7 +92,7 @@ class SphericalHarmonics {
      * fill an N*N*2 array with uniformly distributed
      * samples across the sphere using jittered stratification
     */
-    func setupSphericalSamples(numSamplesSqrt: UInt) {
+    func setupSphericalSamples(_ numSamplesSqrt: UInt) {
         var i = 0 // array index
         let oneoverN = 1.0/Double(numSamplesSqrt)
         for a in 0..<numSamplesSqrt {
@@ -114,18 +114,18 @@ class SphericalHarmonics {
                         samples[i].coeff[ci] = SH(l: l,m: m,θ: θ,φ: φ)
                     }
                 }
-                ++i
+                i+=1
             }
         }
     } // func setupSphericalSamples
     
     /// evaluate an Associated Legendre Polynomial P(l,m,x) at x
-    func P(#l: Int, m: Int, x: Double) -> Double {
+    func P(l: Int, m: Int, x: Double) -> Double {
         var pmm : Double = 1.0
         if (m>0) {
             let somx2 = sqrt((1.0-x)*(1.0+x))
             var fact = 1.0
-            for i in 1...m {
+            for _ in 1...m {
                 pmm *= (-fact) * somx2;
                 fact += 2.0;
             }
@@ -138,16 +138,18 @@ class SphericalHarmonics {
             return pmmp1
         }
         var pll : Double = 0.0
-        for var ll = m+2; ll<=l; ++ll {
+        var ll = m+2
+        while ll<=l {
             pll = ( (2.0*Double(ll)-1.0)*x*pmmp1-(Double(ll+m)-1.0)*pmm ) / Double(ll-m)
             pmm = pmmp1
             pmmp1 = pll
+            ll+=1
         }
         return pll
     }
     
     /// renormalization constant for SH function
-    func K(#l: Int, m: Int) -> Double {
+    func K(l: Int, m: Int) -> Double {
         let temp = ((2.0*Double(l)+1.0)*Factorial(l-m)) / (4.0*π*Factorial(l+m))
         return sqrt(temp)
     }
@@ -159,7 +161,7 @@ class SphericalHarmonics {
     *  theta in the range [0..Pi]
     *  phi in the range [0..2*Pi]
     */
-    func SH(#l: Int, m: Int, θ: Double, φ: Double) -> Double {
+    func SH(l: Int, m: Int, θ: Double, φ: Double) -> Double {
         let sqrt2 : Double = sqrt(2.0)
         if (m==0) {
             return K(l: l,m: 0) * P(l: l,m: m,x: cos(θ))
@@ -176,19 +178,19 @@ class SphericalHarmonics {
      * Projects a polar function and computes the SH Coeffs
      * @param fn the Polar Function. If the polar function is an image, pass a function that retrieves (R,G,B) values from it given a spherical coordinate.
      */
-    func projectPolarFn(fn: (Float, Float) -> Vector3) -> [Vector3] {
+    func projectPolarFn(_ fn: (Float, Float) -> Vector3) -> [Vector3] {
         let weight : Double = 4.0*π
         // for each sample
-        for i : Int in 0...(numSamples-1) {
+        for i : Int in 0..<Int(numSamples) {
             let θ = samples[i].sph.θ
             let φ = samples[i].sph.φ
-            for n : Int in 0...(numCoeffs-1) {
+            for n : Int in 0..<Int(numCoeffs) {
                 coeffs[n] += fn(θ,φ) * Float(samples[i].coeff[n])
             }
         }
         // divide the result by weight and number of samples
         let factor = weight / Double(numSamples)
-        for i : Int in 0...(numCoeffs-1) {
+        for i : Int in 0..<Int(numCoeffs) {
             coeffs[i] *= Float(factor)
         }
         
@@ -202,7 +204,7 @@ class SphericalHarmonics {
      * Reconstruct the approximated function for the given input direction,
      * given in spherical/polar coordinates
      */
-    func reconstruct(#θ: Double, φ: Double) -> Vector3
+    func reconstruct(θ: Double, φ: Double) -> Vector3
     {
         var o = Vector3();
         for l in 0..<Int(numBands) {
@@ -220,7 +222,7 @@ class SphericalHarmonics {
      */
     func reconstruct(direction: Vector3) -> Vector3
     {
-        var sp = Spherical(v: direction);
+        let sp = Spherical(v: direction);
         return reconstruct(θ: Double(sp.θ), φ: Double(sp.φ))
     }
     
@@ -232,7 +234,7 @@ class SphericalHarmonics {
      */
     func computeIrradianceApproximationMatrices() {
         if numBands < 3 {
-            println("Not enough coefficients!")
+            print("Not enough coefficients!")
             return
         }
         let a0 = PI * 1.0
@@ -274,7 +276,7 @@ class SphericalHarmonics {
         var v = Vector3(value: 0)
         // In the original paper, (x,y,z) = (sinθcosφ, sinθsinφ, cosθ),
         // but in our Spherical class the vertical axis cosθ is Y
-        var n = Vector4(x: -normal.z, y: -normal.x, z: normal.y, w: 1)
+        let n = Vector4(x: -normal.z, y: -normal.x, z: normal.y, w: 1)
         // for every color channel
         v.x = Dot(n, mIrradiance[0] * n)
         v.y = Dot(n, mIrradiance[1] * n)

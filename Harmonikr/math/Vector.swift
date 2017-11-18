@@ -9,7 +9,7 @@
 import Foundation
 
 // -----------------------------------------------------------
-struct Vector3 : Printable {
+struct Vector3 : CustomStringConvertible {
     var x               : Float = 0
     var y               : Float = 0
     var z               : Float = 0
@@ -49,7 +49,7 @@ struct Vector3 : Printable {
     }
     
     /// Apply a function
-    func apply(f: (Float) -> Float) -> Vector3 {
+    func apply(_ f: (Float) -> Float) -> Vector3 {
         return Vector3(x: f(x), y: f(y), z: f(z))
     }
     
@@ -60,7 +60,7 @@ struct Vector3 : Printable {
 }; // Vector3
 
 // -----------------------------------------------------------
-struct Vector4 : Printable {
+struct Vector4 : CustomStringConvertible {
     var x               : Float = 0
     var y               : Float = 0
     var z               : Float = 0
@@ -102,13 +102,13 @@ struct Vector4 : Printable {
 func + (left: Vector3, right: Vector3) -> Vector3 {
     return Vector3(x: left.x + right.x, y: left.y + right.y, z: left.z + right.z)
 }
-func += (inout left: Vector3, right: Vector3) {
+func += (left: inout Vector3, right: Vector3) {
     left = left + right
 }
 func - (left: Vector3, right: Vector3) -> Vector3 {
     return Vector3(x: left.x - right.x, y: left.y - right.y, z: left.z - right.z)
 }
-func -= (inout left: Vector3, right: Vector3) {
+func -= (left: inout Vector3, right: Vector3) {
     left = left - right
 }
 func * (v: Vector3, f: Float) -> Vector3 {
@@ -117,32 +117,32 @@ func * (v: Vector3, f: Float) -> Vector3 {
 func * (f: Float, v: Vector3) -> Vector3 {
     return v * f
 }
-func *= (inout v: Vector3, f: Float) {
+func *= (v: inout Vector3, f: Float) {
     v = v * f
 }
 
 // -----------------------------------------------------
 /// dot product
-func Dot(v0: Vector3, v1: Vector3) -> Float {
+func Dot(_ v0: Vector3, _ v1: Vector3) -> Float {
     return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z
 }
-func Dot(v0: Vector4, v1: Vector4) -> Float {
+func Dot(_ v0: Vector4, _ v1: Vector4) -> Float {
     return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z + v0.w * v1.w
 }
 /// square-length of a vector
-func LengthSqr(v: Vector3) -> Float {
+func LengthSqr(_ v: Vector3) -> Float {
     return Dot(v, v)
 }
 /// length of a vector
-func Length(v: Vector3) -> Float {
+func Length(_ v: Vector3) -> Float {
     return sqrtf( LengthSqr(v) )
 }
 /// Clamp
-func Clamp(v: Vector3, lowest: Float, highest: Float) -> Vector3 {
+func Clamp(_ v: Vector3, low: Float, high: Float) -> Vector3 {
     var o = v
-    o.x = Clamp(o.x, lowest, highest)
-    o.y = Clamp(o.y, lowest, highest)
-    o.z = Clamp(o.z, lowest, highest)
+    o.x = Clamp(o.x, low: low, high: high)
+    o.y = Clamp(o.y, low: low, high: high)
+    o.z = Clamp(o.z, low: low, high: high)
     return o
 }
 

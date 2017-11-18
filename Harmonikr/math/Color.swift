@@ -11,7 +11,7 @@ import Foundation
 let SRGB_GAMMA      : Float = 2.4
 
 /// Convert gamma RGB to linear RGB
-func colorRGBfromSRGB(srgb: Vector3) -> Vector3 {
+func colorRGBfromSRGB(_ srgb: Vector3) -> Vector3 {
     let f = { (c: Float) -> Float in
         if c > 0.04045 {
             return powf((c+0.055)/1.055, SRGB_GAMMA)
@@ -22,7 +22,7 @@ func colorRGBfromSRGB(srgb: Vector3) -> Vector3 {
 }
 
 /// Convert linear RGB to gamma RGB
-func colorSRGBfromRGB(rgb: Vector3) -> Vector3 {
+func colorSRGBfromRGB(_ rgb: Vector3) -> Vector3 {
     let f = { (c: Float) -> Float in
         if c > 0.00304 {
             return 1.055 * powf(c, 1/SRGB_GAMMA) - 0.055

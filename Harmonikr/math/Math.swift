@@ -16,30 +16,30 @@ let NORM_SQR_ERROR_TOLERANCE : Float = 0.001
 let π       : Double = Double(PI)
 
 /// Converts angle in degrees to radians
-func DegToRad(angle: Float) -> Float {
+func DegToRad(_ angle: Float) -> Float {
     return angle * (PI/180.0)
 }
 /// Gets the sign of a number
-func Sign(n: Float) -> Float {
+func Sign(_ n: Float) -> Float {
     return (n>=0) ?1:-1
 }
 /// Max
-func Max(a: Float, b: Float) -> Float {
+func Max(_ a: Float,_ b: Float) -> Float {
     return (a>=b) ?a:b
 }
 /// Min
-func Min(a: Float, b: Float) -> Float {
+func Min(_ a: Float,_ b: Float) -> Float {
     return (a<=b) ?a:b
 }
 /// Clamp
-func Clamp(value: Float, lowest: Float, highest: Float) -> Float {
-    return (value<lowest) ?lowest:(value>highest) ?highest:value
+func Clamp(_ value: Float, low: Float, high: Float) -> Float {
+    return (value<low) ?low:(value>high) ?high:value
 }
-func Clamp(value: Int, lowest: Int, highest: Int) -> Int {
-    return (value<lowest) ?lowest:(value>highest) ?highest:value
+func Clamp(_ value: Int, low: Int, high: Int) -> Int {
+    return (value<low) ?low:(value>high) ?high:value
 }
 /// Random Int. Preferred to rand() % upperBound
-func Rand(upperBound: UInt32) -> UInt32 {
+func Rand(_ upperBound: UInt32) -> UInt32 {
     return arc4random_uniform(upperBound)
 }
 /// Random Float between 0 and 1
@@ -47,11 +47,11 @@ func Randf() -> Float {
     return Float(Rand(10000)) * 0.0001
 }
 // Factorial of a number with a cache
-func Factorial(n: Int) -> Double { // 64-bit ints aren't enough for big factorials
+func Factorial(_ n: Int) -> Double { // 64-bit ints aren't enough for big factorials
     struct CacheData {
         static let maxCount = 33
         static var isFactorialCached = false
-        static var factorialCache : [Double] = [Double](count: maxCount, repeatedValue: 1)
+        static var factorialCache : [Double] = [Double](repeating: 1, count: maxCount)
     }
     
     if (n < 2) {

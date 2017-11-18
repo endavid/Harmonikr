@@ -14,32 +14,33 @@ import AppKit
  *  About cubemaps: http://www.nvidia.com/object/cube_map_ogl_tutorial.html
  */
 class CubeMap {
-    let width       : UInt = 64
-    let height      : UInt = 64
-    let numBands    : UInt = 3     ///< R,G,B
-    let numFaces    : UInt = 6
+    let width       : Int = 64
+    let height      : Int = 64
+    let numBands    : Int = 3     ///< R,G,B
+    let numFaces    : Int = 6
     var imgBuffer   : Array<UInt8>!
     
+    var bufferLength: Int {
+        get {
+            return width * height * numBands * numFaces
+        }
+    }
+    
     /// faces of the cubemap
-    enum Face: UInt {
+    enum Face: Int {
         case NegativeX = 0, PositiveZ, PositiveX, NegativeZ, PositiveY, NegativeY
     }
     
     /// 2 faces of a cubemap (Left: -X,Z; Right: X,-Z)
-    enum Side: UInt {
+    enum Side: Int {
         case Left = 0, Right
     }
     
     init() {
-        let bufferLength : Int = (Int)(getBufferLength())
-        imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
+        imgBuffer = Array<UInt8>(repeating: 0, count: bufferLength)
     }
     
-    func getBufferLength() -> (UInt) {
-        return width * height * numBands * numFaces
-    }
-    
-    func setSideCrossCubemap(image: NSImage) {
+    func setSideCrossCubemap(_ image: NSImage) {
         let sampler = ImageSampler(image: image)
         for j in 0..<height {
             let v = Float(j) / Float(height) / 3
@@ -70,7 +71,7 @@ class CubeMap {
     }
     
     /// Initializes a face of the cubemap with the given image
-    func setFace(face: Face, image: NSImage) {
+    func setFace(_ face: Face, image: NSImage) {
         let sampler = ImageSampler(image: image)
         for j in 0..<height {
             let v = Float(j) / Float(height)
@@ -87,7 +88,7 @@ class CubeMap {
     }
     
     /// Initializes 2 faces of the cubemap with the give image
-    func setPanorama(side: Side, image: NSImage) {
+    func setPanorama(_ side: Side, image: NSImage) {
         let sampler = ImageSampler(image: image)
         for j in 0..<height {
             let v = Float(j) / Float(height)
@@ -104,7 +105,7 @@ class CubeMap {
     }
     
     /// Pass a spherical projection map to initialize the cubemap
-    func setSphericalProjectionMap(image: NSImage) {
+    func setSphericalProjectionMap(_ image: NSImage) {
         let sampler = ImageSampler(image: image)
         for j in 0..<height {
             let t = Float(j) / Float(height)
@@ -128,7 +129,7 @@ class CubeMap {
                 ]
                 for face in 0...5 {
                     let faceOffset = face * Int(width * numBands)
-                    let k = Int(faceOffset + i*numBands+numBands*width*numFaces*j)
+                    let k = Int(faceOffset) + Int(i*numBands+numBands*width*numFaces*j)
                     imgBuffer[k] = samples[face].r
                     imgBuffer[k+1] = samples[face].g
                     imgBuffer[k+2] = samples[face].b
@@ -138,14 +139,14 @@ class CubeMap {
     }
     
     // @todo replace by getPolarSampler; pass option to apply linear RGB conversion
-    func polarSampler(#θ: Float, φ: Float) -> Vector3 {
+    func polarSampler(θ: Float, φ: Float) -> Vector3 {
         let vec = Spherical(r: 1, θ: θ, φ: φ).ToVector3()
         let rgb = directionalSampler(vec)
         let color = Vector3(x: Float(rgb.0), y: Float(rgb.1), z: Float(rgb.2)) * (1.0/255.0)
         return color
     }
     
-    func directionalSampler(vec: Vector3) -> (UInt8, UInt8, UInt8) {
+    func directionalSampler(_ vec: Vector3) -> (UInt8, UInt8, UInt8) {
         // Find major axis direction
         var maxAxis = Face.PositiveX
         var maxAxisValue = vec.x
@@ -193,14 +194,14 @@ class CubeMap {
         }
         let s = ( sc/abs(maxAxisValue) + 1 ) / 2
         let t = ( tc/abs(maxAxisValue) + 1 ) / 2
-        return uvSampler(maxAxis, u: s, v: t)
+        return uvSampler(face: maxAxis, u: s, v: t)
     }
     
     func uvSampler(face: Face, u: Float, v: Float) -> (UInt8, UInt8, UInt8) {
-        let faceOffset = Int(face.rawValue) * Int(width * numBands)
-        let i = UInt( Float(width) * u ) % width
-        let j = UInt( Float(height) * v ) % height
-        let k = Int(faceOffset + i*numBands+numBands*width*numFaces*j)
+        let faceOffset = face.rawValue * width * numBands
+        let i = Int( Float(width) * u ) % width
+        let j = Int( Float(height) * v ) % height
+        let k = faceOffset + i*numBands+numBands*width*numFaces*j
         return (imgBuffer[k], imgBuffer[k+1], imgBuffer[k+2])
     }
     

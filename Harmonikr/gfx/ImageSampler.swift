@@ -19,13 +19,10 @@ class ImageSampler {
     
     init(image: NSImage) {
         img = image
-        var imgRef  : Unmanaged<CGImage>!
-        imgRef = img.CGImageForProposedRect(nil, context: nil, hints: nil)
-        assert(imgRef != nil, "Null image!")
-        imgCg = imgRef.takeUnretainedValue() // we aren't responsible for freeing this image
-        width = CGImageGetWidth(imgCg)
-        height = CGImageGetHeight(imgCg)
-        imgData = CGDataProviderCopyData(CGImageGetDataProvider(imgCg))
+        imgCg = img.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        width = UInt(imgCg.width)
+        height = UInt(imgCg.height)
+        imgData = imgCg.dataProvider!.data
         let size = CFDataGetLength(imgData)
         let expectedSizeRGB = Int(width * height * 3)
         let expectedSizeRGBA = Int(width * height * 4)
@@ -43,7 +40,7 @@ class ImageSampler {
     }
     
     /// u, v: 0..1; top-left corner = (0,0) (in OpenGL it would be 0,1)
-    func uvSampler(#u: Float, v: Float) -> (r: UInt8, g: UInt8, b: UInt8, a: UInt8) {
+    func uvSampler(u: Float, v: Float) -> (r: UInt8, g: UInt8, b: UInt8, a: UInt8) {
         // @todo warp negative UVs
         let i = UInt( Float(width) * u ) % width
         let j = UInt( Float(height) * v ) % height

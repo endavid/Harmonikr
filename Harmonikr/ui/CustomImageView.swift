@@ -13,29 +13,32 @@ class CustomImageView: NSImageView {
 
     var localPath : String = ""
     
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
-
-        // Drawing code here.
-    }
-    
-    override func performDragOperation(sender: NSDraggingInfo) -> Bool {
+    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
         let dragSucceeded = super.performDragOperation(sender)
-        if dragSucceeded {
-            let filenamesXML = sender.draggingPasteboard().stringForType(NSFilenamesPboardType)
-            if filenamesXML != nil {
-                var error : NSError?
-                let data = filenamesXML!.dataUsingEncoding(NSUTF8StringEncoding)
-                if data != nil {
-                    let filenames : AnyObject! = NSPropertyListSerialization.propertyListWithData(data!, options: 0, format: nil, error: &error)
-                    if error == nil && filenames != nil {
-                        if let array = filenames as? NSArray {
-                            localPath = array[0] as String
-                        }
-                    }
-                }
-            }
+        if !dragSucceeded {
+            return false
         }
-        return dragSucceeded
+        if #available(OSX 10.13, *) {
+            guard let filenamesXML = sender.draggingPasteboard().string(forType: .fileURL) else {
+                return false
+            }
+            guard let data = filenamesXML.data(using: .utf8) else {
+                return false
+            }
+            do {
+                let filenames = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+                guard let array = filenames as? NSArray else {
+                    return false
+                }
+                localPath = array[0] as! String
+                return true
+            } catch let error {
+                NSLog("performDragOperation: \(error.localizedDescription)")
+                return false
+            }
+        } else {
+            // Fallback on earlier versions
+            return false
+        }
     }
 }

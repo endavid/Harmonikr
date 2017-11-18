@@ -15,7 +15,7 @@ import Foundation
 struct Matrix4 {
     var values: [Float]
     init() {
-        values = Array(count: 4*4, repeatedValue: 0)
+        values = Array(repeating: 0, count: 4*4)
     }
     subscript(column: Int, row: Int) -> Float {
         get {

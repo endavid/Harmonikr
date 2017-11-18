@@ -14,46 +14,47 @@ import Foundation
  * To recover the clip (u,v) coordinates from normalized (x,y,z),
  *  u = tx + sign(x) * clamp(r-t, 0, 1-t) / (1-t)
  */
-func normalEncodingLinear(#u: Float, #v: Float, #thresholdRadius: Float) -> Vector3 {
+func normalEncodingLinear(u: Float, v: Float, thresholdRadius: Float) -> Vector3 {
     var o = Vector3()
     let r = sqrtf(u * u + v * v)
     let t = thresholdRadius
     // encode both Y+ and Y- hemispheres
     // (no div by zero, since never in the center for even sizes)
-    let negSide = Clamp(r - t, 0, 1 - t) / (t-1) / t
-    o.x = Clamp(u / t + Sign(u) * negSide, -1, 1)
-    o.z = Clamp(v / t + Sign(v) * negSide, -1, 1)
-    o.y = Sign(1-r/thresholdRadius)*sqrtf(1 - Clamp(o.x * o.x + o.z * o.z, 0, 1))
+    let negSide = Clamp(r - t, low: 0, high: 1 - t) / (t-1) / t
+    o.x = Clamp(u / t + Sign(u) * negSide, low: -1, high: 1)
+    o.z = Clamp(v / t + Sign(v) * negSide, low: -1, high: 1)
+    o.y = Sign(1-r/thresholdRadius)*sqrtf(1 - Clamp(o.x * o.x + o.z * o.z, low: 0, high: 1))
     return o
 }
 
 class SphereMap {
-    let width       : UInt
-    let height      : UInt
-    let bands       : UInt = 3     ///< R,G,B
+    let width       : Int
+    let height      : Int
+    let bands       : Int = 3     ///< R,G,B
     var negYr       : Float  ///< radius at which to start encoding the negative Y hemisphere
     var imgBuffer   : Array<UInt8>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
     
+    var bufferLength: Int {
+        get {
+            return width * height * bands
+        }
+    }
+    
     init(w: UInt = 64, h: UInt = 64, negYr: Float = 0.5) {
-        width = w
-        height = h
+        width = Int(w)
+        height = Int(h)
         self.negYr = negYr
-        let bufferLength : Int = (Int)(getBufferLength())
-        imgBuffer = Array<UInt8>(count: bufferLength, repeatedValue: 0)
+        imgBuffer = Array<UInt8>(repeating: 0, count: bufferLength)
         update(debugDirection) // init with UV debug values
     }
-    
-    func getBufferLength() -> (UInt) {
-        return width * height * bands
-    }
-    
+        
     /**
     * @brief Creates a map of sphere coordinates on 2D
     * Y axis is defined with respect to the center of the image, being 1 at the center, 0 at radius = 0.7, and -1 if radius >= 1.
     * TODO: convert linear color to sRGB
     */
-    func update(colorFn: Vector3 -> (UInt8, UInt8, UInt8) ) {
+    func update(_ colorFn: (Vector3) -> (UInt8, UInt8, UInt8) ) {
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
         for j in 0..<height {
