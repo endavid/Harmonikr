@@ -86,7 +86,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     override func data(ofType typeName: String) throws -> Data {
         serializeImagePaths()
         serializeSettings()
-        let dic: [String: Any] = ["SH": sphericalHarmonics != nil ? sphericalHarmonics!.toDictionary() : [],
+        let dic: [String: Any] = [
+            "SH": sphericalHarmonics?.toDictionary() ?? [],
             "settings": settings!,
             "images": imagePaths
         ]
@@ -346,6 +347,18 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
     }
     
+    @IBAction func exportCoefficients(_ sender: AnyObject) {
+        let fileDialog : NSSavePanel = NSSavePanel()
+        fileDialog.allowedFileTypes = ["json"]
+        if fileDialog.runModal() == .OK {
+            if let chosenFile = fileDialog.url, let stream = OutputStream(url: chosenFile, append: false) {
+                stream.open()
+                JSONSerialization.writeJSONObject(sphericalHarmonics?.toDictionary() ?? [], to: stream, options: .prettyPrinted, error: nil)
+                stream.close()
+            }
+        }
+    }
+    
     @IBAction func validateNumSamples(_ sender: AnyObject) {
         let numSamplesOld = sphericalHarmonics == nil ? 0 : sphericalHarmonics!.numSamples
         let defaultValue = 10000
@@ -400,7 +413,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     // =============================================================
     // NSTableViewDataSource implementation
     // =============================================================
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return sphericalHarmonics == nil ? 0 : Int(sphericalHarmonics!.numCoeffs)
     }
     func tableView(_ tableView: NSTableView,
