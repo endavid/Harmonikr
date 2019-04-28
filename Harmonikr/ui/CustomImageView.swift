@@ -19,7 +19,7 @@ class CustomImageView: NSImageView {
             return false
         }
         if #available(OSX 10.13, *) {
-            guard let filenamesXML = sender.draggingPasteboard().string(forType: .fileURL) else {
+            guard let filenamesXML = sender.draggingPasteboard.string(forType: .fileURL) else {
                 return false
             }
             guard let data = filenamesXML.data(using: .utf8) else {

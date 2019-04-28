@@ -78,7 +78,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     override var windowNibName: NSNib.Name? {
         // Returns the nib file name of the document
         // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this property and override -makeWindowControllers instead.
-        return NSNib.Name("Document")
+        return "Document"
     }
 
     
@@ -87,7 +87,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         serializeImagePaths()
         serializeSettings()
         let dic: [String: Any] = ["SH": sphericalHarmonics != nil ? sphericalHarmonics!.toDictionary() : [],
-            "settings": settings,
+            "settings": settings!,
             "images": imagePaths
         ]
         let serializedData: Data?
