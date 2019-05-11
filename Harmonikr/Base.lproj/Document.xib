@@ -17,6 +17,7 @@
                 <outlet property="imgViewPositiveX" destination="ivw-Fq-z9O" id="z7r-RB-wav"/>
                 <outlet property="imgViewPositiveY" destination="op0-tC-ZeI" id="QMV-zU-odV"/>
                 <outlet property="imgViewPositiveZ" destination="sD5-bv-LJq" id="8H5-pF-tJG"/>
+                <outlet property="sliderCubemapSize" destination="MvE-9d-Xng" id="n0B-Bq-vC3"/>
                 <outlet property="sliderMapResolution" destination="MRd-9j-1Z5" id="7Rt-Ch-z0b"/>
                 <outlet property="sliderPosYPercentage" destination="fP3-So-gcV" id="uZ6-zF-B1y"/>
                 <outlet property="tableViewCoeffs" destination="wkN-99-eQv" id="JLw-Or-yE1"/>
@@ -140,7 +141,7 @@
                             </tabViewItem>
                             <tabViewItem label="Settings" identifier="2" id="EZl-Ss-ttb">
                                 <view key="view" id="KFY-ql-471">
-                                    <rect key="frame" x="10" y="33" width="466" height="211"/>
+                                    <rect key="frame" x="10" y="33" width="472" height="211"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="B4e-tw-RCR">
@@ -207,38 +208,6 @@
                                                 <action selector="validateSphereMapResolution:" target="-2" id="dZC-Vp-BAY"/>
                                             </connections>
                                         </slider>
-                                        <button id="Yr9-bS-WeU">
-                                            <rect key="frame" x="15" y="88" width="151" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Convert sRGB to RGB" bezelStyle="regularSquare" imagePosition="left" alignment="center" state="on" inset="2" id="V51-c7-oCT">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="smallSystem"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="validateRGBConversion:" target="-2" id="sfV-mt-chb"/>
-                                            </connections>
-                                        </button>
-                                        <textField toolTip="Scale color when constructing the spherical map" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="6Y2-n8-9ZX">
-                                            <rect key="frame" x="15" y="65" width="104" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Linear scale" id="2sO-BB-EKv">
-                                                <font key="font" metaFont="smallSystem"/>
-                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="dWW-DO-YMc">
-                                            <rect key="frame" x="125" y="65" width="92" height="19"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="1.0" placeholderString="scale" drawsBackground="YES" id="NUU-oj-f79">
-                                                <font key="font" metaFont="smallSystem"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <action selector="validateLinearScale:" target="-2" id="Md0-9X-dnm"/>
-                                            </connections>
-                                        </textField>
                                         <textField verticalHuggingPriority="750" id="m2Y-rk-WgF">
                                             <rect key="frame" x="125" y="191" width="92" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -251,6 +220,55 @@
                                                 <action selector="validateNumBands:" target="-2" id="Qgu-pV-MOw"/>
                                             </connections>
                                         </textField>
+                                        <button id="Yr9-bS-WeU">
+                                            <rect key="frame" x="15" y="63" width="151" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Convert sRGB to RGB" bezelStyle="regularSquare" imagePosition="left" alignment="center" state="on" inset="2" id="V51-c7-oCT">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="smallSystem"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="validateRGBConversion:" target="-2" id="sfV-mt-chb"/>
+                                            </connections>
+                                        </button>
+                                        <textField toolTip="Scale color when constructing the spherical map" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="6Y2-n8-9ZX">
+                                            <rect key="frame" x="15" y="40" width="104" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Linear scale" id="2sO-BB-EKv">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="dWW-DO-YMc">
+                                            <rect key="frame" x="125" y="40" width="92" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="1.0" placeholderString="scale" drawsBackground="YES" id="NUU-oj-f79">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <action selector="validateLinearScale:" target="-2" id="Md0-9X-dnm"/>
+                                            </connections>
+                                        </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="EJD-aM-17a">
+                                            <rect key="frame" x="15" y="87" width="104" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Cubemap Size" id="Qi2-UE-XeO">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <slider verticalHuggingPriority="750" id="MvE-9d-Xng">
+                                            <rect key="frame" x="123" y="85" width="96" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="5" maxValue="9" doubleValue="5" tickMarkPosition="above" numberOfTickMarks="5" allowsTickMarkValuesOnly="YES" sliderType="linear" id="Wq6-eV-0dZ"/>
+                                            <connections>
+                                                <action selector="validateCubemapSize:" target="-2" id="z3U-Js-F0e"/>
+                                            </connections>
+                                        </slider>
                                     </subviews>
                                 </view>
                             </tabViewItem>

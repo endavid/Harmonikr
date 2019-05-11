@@ -56,12 +56,13 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var tableViewCoeffs: NSTableView!
     @IBOutlet weak var sliderPosYPercentage: NSSlider!
     @IBOutlet weak var sliderMapResolution: NSSlider!
+    @IBOutlet weak var sliderCubemapSize: NSSlider!
     @IBOutlet weak var buttonRGBConversion: NSButton!
     
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
-        cubeMap = CubeMap()
+        cubeMap = CubeMap(width: 64, height: 64)
         // directly a dictionary, easier to serialize
         settings = [
             "negYr": "0.6",
@@ -400,12 +401,21 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     @IBAction func validateSphereMapResolution(_ sender: AnyObject) {
-        let power = sliderMapResolution.integerValue
-        let numPixels = UInt(2 << power)
+        let exponent = sliderMapResolution.integerValue
+        let numPixels = UInt(2 << exponent)
         sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         // SH no longer valid
         sphericalHarmonics = nil
+    }
+    
+    @IBAction func validateCubemapSize(_ sender: AnyObject) {
+        let exponent = sliderCubemapSize.integerValue
+        let numPixels = Int(2 << exponent)
+        if cubeMap.width != numPixels || cubeMap.height != numPixels {
+            cubeMap = CubeMap(width: numPixels, height: numPixels)
+            updateImgCubemap()
+        }
     }
     
     @IBAction func validatePosYPercentage(_ sender: AnyObject) {

@@ -14,8 +14,8 @@ import AppKit
  *  About cubemaps: http://www.nvidia.com/object/cube_map_ogl_tutorial.html
  */
 class CubeMap {
-    let width       : Int = 64
-    let height      : Int = 64
+    let width       : Int
+    let height      : Int
     let numBands    : Int = 3     ///< R,G,B
     let numFaces    : Int = 6
     var imgBuffer   : Array<UInt8>!
@@ -36,7 +36,9 @@ class CubeMap {
         case Left = 0, Right
     }
     
-    init() {
+    init(width: Int, height: Int) {
+        self.width = width
+        self.height = height
         imgBuffer = Array<UInt8>(repeating: 0, count: bufferLength)
     }
     
