@@ -347,6 +347,18 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
     }
     
+    @IBAction func saveCubemap(_ sender: AnyObject) {
+        // Create the File Save Dialog class.
+        let fileDialog : NSSavePanel = NSSavePanel()
+        fileDialog.allowedFileTypes = ["png"]
+        // Display the dialog.  If the OK button was pressed, save
+        if fileDialog.runModal() == .OK {
+            if let chosenFile = fileDialog.url {
+                CGImageWriteToFile(imgCubemap, filename: chosenFile)
+            }
+        }
+    }
+    
     @IBAction func exportCoefficients(_ sender: AnyObject) {
         let fileDialog : NSSavePanel = NSSavePanel()
         fileDialog.allowedFileTypes = ["json"]
