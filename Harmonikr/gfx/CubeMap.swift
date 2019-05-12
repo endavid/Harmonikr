@@ -28,7 +28,9 @@ class CubeMap {
     
     /// faces of the cubemap
     enum Face: Int {
-        case NegativeX = 0, PositiveZ, PositiveX, NegativeZ, PositiveY, NegativeY
+        // order them as in Unity https://docs.unity3d.com/Manual/class-Cubemap.html
+        // and as in Metal https://developer.apple.com/documentation/metal/mtltexturetype
+        case PositiveX = 0, NegativeX, PositiveY, NegativeY, PositiveZ, NegativeZ
     }
     
     /// 2 faces of a cubemap (Left: -X,Z; Right: X,-Z)
