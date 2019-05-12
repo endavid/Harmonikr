@@ -274,32 +274,32 @@
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hZj-ZQ-rL1" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hZj-ZQ-rL1">
                         <rect key="frame" x="17" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="TON-ue-QBd"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sD5-bv-LJq" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sD5-bv-LJq">
                         <rect key="frame" x="83" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="ZkC-JV-3Fp"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ivw-Fq-z9O" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ivw-Fq-z9O">
                         <rect key="frame" x="149" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="wZe-VG-rGn"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hva-g6-3zx" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Hva-g6-3zx">
                         <rect key="frame" x="215" y="332" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="mMZ-bw-4gx"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="op0-tC-ZeI" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="op0-tC-ZeI">
                         <rect key="frame" x="83" y="398" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="78k-YY-8G9"/>
                     </imageView>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="mgn-lD-llO" customClass="CustomImageView" customModule="Harmonikr" customModuleProvider="target">
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" id="mgn-lD-llO">
                         <rect key="frame" x="83" y="266" width="64" height="64"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="Kv1-JG-Fr6"/>

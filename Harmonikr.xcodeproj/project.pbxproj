@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */; };
 		63BF50391A89837C006F41A9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF50381A89837C006F41A9 /* Matrix.swift */; };
-		63C0B1E91AA134B100035E53 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C0B1E81AA134B100035E53 /* CustomImageView.swift */; };
 		63C0B1EE1AA1E40300035E53 /* compute-cubemap.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */; };
 		63C0B1EF1AA1E40300035E53 /* compute-irradiance.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */; };
 		63C0B1F01AA1E40300035E53 /* compute-sh.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EC1AA1E40300035E53 /* compute-sh.png */; };
@@ -43,7 +42,6 @@
 /* Begin PBXFileReference section */
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
-		63C0B1E81AA134B100035E53 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomImageView.swift; path = ui/CustomImageView.swift; sourceTree = "<group>"; };
 		63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-cubemap.png"; path = "Resources/compute-cubemap.png"; sourceTree = "<group>"; };
 		63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-irradiance.png"; path = "Resources/compute-irradiance.png"; sourceTree = "<group>"; };
 		63C0B1EC1AA1E40300035E53 /* compute-sh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-sh.png"; path = "Resources/compute-sh.png"; sourceTree = "<group>"; };
@@ -86,14 +84,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		63C0B1E71AA1345800035E53 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				63C0B1E81AA134B100035E53 /* CustomImageView.swift */,
-			);
-			name = ui;
-			sourceTree = "<group>";
-		};
 		63D490EA1A86CCD100532F62 /* math */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,7 +130,6 @@
 		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
 			isa = PBXGroup;
 			children = (
-				63C0B1E71AA1345800035E53 /* ui */,
 				63E2EDA51A9A9B3A0002216C /* Resources */,
 				63D490EA1A86CCD100532F62 /* math */,
 				63EFEBFB1A84256300002886 /* gfx */,
@@ -301,7 +290,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */,
-				63C0B1E91AA134B100035E53 /* CustomImageView.swift in Sources */,
 				63D490F21A87829C00532F62 /* SphericalHarmonics.swift in Sources */,
 				63E2EDA41A9A51540002216C /* Color.swift in Sources */,
 				63D490E71A85865F00532F62 /* CubeMap.swift in Sources */,

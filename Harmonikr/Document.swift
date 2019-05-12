@@ -32,24 +32,16 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     var cubeMap: CubeMap!
     var sphericalHarmonics: SphericalHarmonics?
     var settings: Dictionary<String, String>!
-    var imagePaths = [
-        "negX": "",
-        "posX": "",
-        "negY": "",
-        "posY": "",
-        "negZ": "",
-        "posZ": ""
-    ]
     
     @IBOutlet weak var imgViewIrradiance: NSImageView!
     @IBOutlet weak var imgViewCubemap: NSImageView!
     // cubemap outlets
-    @IBOutlet weak var imgViewNegativeX: CustomImageView!
-    @IBOutlet weak var imgViewPositiveX: CustomImageView!
-    @IBOutlet weak var imgViewPositiveZ: CustomImageView!
-    @IBOutlet weak var imgViewNegativeZ: CustomImageView!
-    @IBOutlet weak var imgViewPositiveY: CustomImageView!
-    @IBOutlet weak var imgViewNegativeY: CustomImageView!
+    @IBOutlet weak var imgViewNegativeX: NSImageView!
+    @IBOutlet weak var imgViewPositiveX: NSImageView!
+    @IBOutlet weak var imgViewPositiveZ: NSImageView!
+    @IBOutlet weak var imgViewNegativeZ: NSImageView!
+    @IBOutlet weak var imgViewPositiveY: NSImageView!
+    @IBOutlet weak var imgViewNegativeY: NSImageView!
     @IBOutlet weak var textFieldNumBands: NSTextField!
     @IBOutlet weak var textFieldNumSamples: NSTextField!
     @IBOutlet weak var textFieldLinearScale: NSTextField!
@@ -85,12 +77,10 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     // "Swift Development with Cocoa"
     override func data(ofType typeName: String) throws -> Data {
-        serializeImagePaths()
         serializeSettings()
         let dic: [String: Any] = [
             "SH": sphericalHarmonics?.toDictionary() ?? [],
-            "settings": settings!,
-            "images": imagePaths
+            "settings": settings!
         ]
         let serializedData: Data?
         do {
@@ -117,10 +107,6 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             if let settings = json["settings"] as? Dictionary<String,String> {
                 self.settings = settings
             }
-            if let images = json["images"] as? Dictionary<String, String> {
-                self.imagePaths = images
-            }
-
         } catch let error {
             throw error
         }
@@ -133,33 +119,12 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         updateSettingsView()
         sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
-        updateImages()
         inferCubemap(self)
         if sphericalHarmonics == nil {
             updateImgCubemap()
         }
     }
     
-    func updateImages() {
-        if imagePaths["negX"] != nil && !imagePaths["negX"]!.isEmpty {
-            imgViewNegativeX.image = NSImage(byReferencingFile: imagePaths["negX"]!)
-        }
-        if imagePaths["posX"] != nil && !imagePaths["posX"]!.isEmpty {
-            imgViewPositiveX.image = NSImage(byReferencingFile: imagePaths["posX"]!)
-        }
-        if imagePaths["negY"] != nil && !imagePaths["negY"]!.isEmpty {
-            imgViewNegativeY.image = NSImage(byReferencingFile: imagePaths["negY"]!)
-        }
-        if imagePaths["posY"] != nil && !imagePaths["posY"]!.isEmpty {
-            imgViewPositiveY.image = NSImage(byReferencingFile: imagePaths["posY"]!)
-        }
-        if imagePaths["negZ"] != nil && !imagePaths["negZ"]!.isEmpty {
-            imgViewNegativeZ.image = NSImage(byReferencingFile: imagePaths["negZ"]!)
-        }
-        if imagePaths["posZ"] != nil && !imagePaths["posZ"]!.isEmpty {
-            imgViewPositiveZ.image = NSImage(byReferencingFile: imagePaths["posZ"]!)
-        }
-    }
     
     /// Updates the View from the data in the Model
     func updateSettingsView() {
@@ -174,17 +139,6 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         sliderMapResolution.integerValue = Int(settings["mapResolution"]!)!
         buttonRGBConversion.state = settings["convertRGB"] == "true" ? .on : .off
         textFieldLinearScale.floatValue = (settings["linearScale"]! as NSString).floatValue
-    }
-    
-    func serializeImagePaths() {
-        imagePaths = [
-            "negX": imgViewNegativeX.localPath,
-            "posX": imgViewPositiveX.localPath,
-            "negY": imgViewNegativeY.localPath,
-            "posY": imgViewPositiveY.localPath,
-            "negZ": imgViewNegativeZ.localPath,
-            "posZ": imgViewPositiveZ.localPath
-        ]
     }
     
     func serializeSettings() {
