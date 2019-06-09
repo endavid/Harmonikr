@@ -124,12 +124,12 @@ class CubeMap {
                 let posZ = Spherical( v: Vector3(x: sc, y: -tc, z: 1).normalize() )
                 let negZ = Spherical( v: Vector3(x: -sc, y: -tc, z: -1).normalize() )
                 let samples = [
-                    sampler.uvSampler(u: negX.φ / PI2, v: negX.θ * PI_INV),
-                    sampler.uvSampler(u: posZ.φ / PI2, v: posZ.θ * PI_INV),
                     sampler.uvSampler(u: posX.φ / PI2, v: posX.θ * PI_INV),
-                    sampler.uvSampler(u: negZ.φ / PI2, v: negZ.θ * PI_INV),
+                    sampler.uvSampler(u: negX.φ / PI2, v: negX.θ * PI_INV),
                     sampler.uvSampler(u: posY.φ / PI2, v: posY.θ * PI_INV),
-                    sampler.uvSampler(u: negY.φ / PI2, v: negY.θ * PI_INV)
+                    sampler.uvSampler(u: negY.φ / PI2, v: negY.θ * PI_INV),
+                    sampler.uvSampler(u: posZ.φ / PI2, v: posZ.θ * PI_INV),
+                    sampler.uvSampler(u: negZ.φ / PI2, v: negZ.θ * PI_INV)
                 ]
                 for face in 0...5 {
                     let faceOffset = face * Int(width * numBands)
