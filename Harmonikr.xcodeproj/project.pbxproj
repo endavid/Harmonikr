@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6372C1CC269397AC00D9FC11 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372C1CB269397AC00D9FC11 /* Util.swift */; };
 		637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */; };
 		63BF50391A89837C006F41A9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF50381A89837C006F41A9 /* Matrix.swift */; };
 		63C0B1EE1AA1E40300035E53 /* compute-cubemap.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6372C1CB269397AC00D9FC11 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Util.swift; path = util/Util.swift; sourceTree = "<group>"; };
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
 		63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-cubemap.png"; path = "Resources/compute-cubemap.png"; sourceTree = "<group>"; };
@@ -84,6 +86,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6372C1CA2693977900D9FC11 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				6372C1CB269397AC00D9FC11 /* Util.swift */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
 		63D490EA1A86CCD100532F62 /* math */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +140,7 @@
 		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
 			isa = PBXGroup;
 			children = (
+				6372C1CA2693977900D9FC11 /* util */,
 				63E2EDA51A9A9B3A0002216C /* Resources */,
 				63D490EA1A86CCD100532F62 /* math */,
 				63EFEBFB1A84256300002886 /* gfx */,
@@ -296,6 +307,7 @@
 				63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */,
 				63D490EE1A86D64700532F62 /* Math.swift in Sources */,
 				63D490E91A860C8A00532F62 /* ImageSampler.swift in Sources */,
+				6372C1CC269397AC00D9FC11 /* Util.swift in Sources */,
 				63BF50391A89837C006F41A9 /* Matrix.swift in Sources */,
 				63D490F01A86DF8300532F62 /* Spherical.swift in Sources */,
 				63D490EC1A86CCF400532F62 /* Vector.swift in Sources */,
@@ -460,6 +472,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Harmonikr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.endavid.harmonikr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
