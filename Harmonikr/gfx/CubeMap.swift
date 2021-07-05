@@ -44,18 +44,25 @@ class CubeMap {
         imgBuffer = Array<UInt8>(repeating: 0, count: bufferLength)
     }
     
+    // Ref. https://docs.unity3d.com/es/current/Manual/class-Cubemap.html
     func setSideCrossCubemap(_ image: NSImage) {
         let sampler = ImageSampler(image: image)
         for j in 0..<height {
             let v = Float(j) / Float(height) / 3
             // copy the 4 xz faces
-            for i in 0..<4*width {
-                let u = Float(i) / Float(width) / 4
-                let sample = sampler.uvSampler(u: u, v: v + 1/3)
-                let k = Int(i*numBands+numBands*width*numFaces*j)
-                imgBuffer[k] = sample.r
-                imgBuffer[k+1] = sample.g
-                imgBuffer[k+2] = sample.b
+            // The 1-line cubemaps are in this order: +X, -X, +Y, -Y, +Z, -Z, and so it's the image buffer
+            // whereas in the side-cross the middle line is: -X, +Z, +X, -Z
+            let targetIndeces = [Face.NegativeX.rawValue, Face.PositiveZ.rawValue, Face.PositiveX.rawValue, Face.NegativeZ.rawValue]
+            for sourceIndex in 0..<4 {
+                let targetIndex = targetIndeces[sourceIndex]
+                for i in 0..<width {
+                    let u = Float(i) / Float(width) / 4 + Float(sourceIndex) / 4
+                    let sample = sampler.uvSampler(u: u, v: v + 1/3)
+                    let k = Int(targetIndex * width * numBands + i*numBands+numBands*width*numFaces*j)
+                    imgBuffer[k] = sample.r
+                    imgBuffer[k+1] = sample.g
+                    imgBuffer[k+2] = sample.b
+                }
             }
             // copy Y+ and Y-
             for i in 0..<width {
