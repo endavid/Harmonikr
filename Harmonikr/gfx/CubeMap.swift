@@ -133,7 +133,7 @@ class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
                 for face in 0...5 {
                     let faceOffset = face * Int(width * numBands)
                     let k = Int(faceOffset) + Int(i*numBands+numBands*width*numFaces*j)
-                    set(sampler: sampler, index: k, u: texcoords[face].u, v: texcoords[face].u)
+                    set(sampler: sampler, index: k, u: texcoords[face].u, v: texcoords[face].v)
                 }
             }
         }
@@ -142,8 +142,8 @@ class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
     // @todo replace by getPolarSampler; pass option to apply linear RGB conversion
     func polarSampler(θ: Float, φ: Float) -> Vector3 {
         let vec = Spherical(r: 1, θ: θ, φ: φ).ToVector3()
-        let rgb = directionalSampler(vec)
-        let color = Vector3(x: Float(rgb.0), y: Float(rgb.1), z: Float(rgb.2)) * (1.0/Float(T.max))
+        let c = directionalSampler(vec)
+        let color = Vector3(x: Float(c.r), y: Float(c.g), z: Float(c.b)) * (1.0/Float(T.max))
         return color
     }
     

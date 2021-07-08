@@ -46,17 +46,19 @@ class ImageSampler {
         case 16:
             let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: UInt16.self, capacity: 1)
             let a = bytesPerPixel == 8 ? p[3] : UInt16.max
-            let m = UInt32(T.max)
-            let rm = m & UInt32(p[0])
-            let gm = m & UInt32(p[1])
-            let bm = m & UInt32(p[2])
-            let am = m & UInt32(a)
-            return (T(rm), T(gm), T(bm), T(am))
+            if UInt32(T.max) == 255 {
+                return (T(p[0] >> 8), T(p[1] >> 8), T(p[2] >> 8), T(a >> 8))
+            }
+            return (T(p[0]), T(p[1]), T(p[2]), T(a))
         case 32:
             let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: UInt32.self, capacity: 1)
             let a = bytesPerPixel == 16 ? p[3] : UInt32.max
-            let m = UInt32(T.max)
-            return (T(m & p[0]), T(m & p[1]), T(m & p[2]), T(m & a))
+            if UInt32(T.max) == 255 {
+                return (T(p[0] >> 24), T(p[1] >> 24), T(p[2] >> 24), T(a >> 24))
+            } else if UInt32(T.max) == 65535 {
+                return (T(p[0] >> 16), T(p[1] >> 16), T(p[2] >> 16), T(a >> 16))
+            }
+            return (T(p[0]), T(p[1]), T(p[2]), T(a))
         default:
             return (0,0,0,0)
         }
