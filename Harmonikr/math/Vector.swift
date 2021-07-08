@@ -10,6 +10,8 @@ import Foundation
 
 // -----------------------------------------------------------
 struct Vector3 : CustomStringConvertible {
+    static let zero = Vector3(x: 0, y: 0, z: 0)
+    
     var x               : Float = 0
     var y               : Float = 0
     var z               : Float = 0

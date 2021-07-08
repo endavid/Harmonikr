@@ -27,9 +27,8 @@ func CGImageWriteToFile(_ image: CGImage, filename: URL) {
 class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     var imgIrradiance : CGImage!
-    var imgCubemap: CGImage!
     var sphereMap : SphereMap!
-    var cubeMap: CubeMap!
+    var cubeMap: GenericCubeMap!
     var sphericalHarmonics: SphericalHarmonics?
     var settings: Dictionary<String, String>!
     
@@ -54,13 +53,14 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
-        cubeMap = CubeMap(width: 64, height: 64)
+        cubeMap = GenericCubeMap(width: 64, height: 64, bitDepth: .ldr)
         // directly a dictionary, easier to serialize
         settings = [
             "negYr": "0.6",
             "mapResolution": "6",
             "convertRGB": "true",
-            "linearScale": "1.0"
+            "linearScale": "1.0",
+            "bitDepth": "LDR"
         ]
     }
 
@@ -166,15 +166,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     func updateImgCubemap() {
-        let rgb = CGColorSpaceCreateDeviceRGB()
-        let bufferLength = cubeMap.bufferLength
-        guard let provider = CGDataProvider(dataInfo: nil, data: cubeMap.imgBuffer, size: bufferLength, releaseData: {_,_,_ in }) else {
-            NSLog("Error creating provider")
-            return
-        }
-        let bitmapInfo = CGBitmapInfo.byteOrderMask
-        imgCubemap = CGImage(width: cubeMap.width * cubeMap.numFaces, height: cubeMap.height, bitsPerComponent: 8, bitsPerPixel: 8 * cubeMap.numBands, bytesPerRow: cubeMap.width * cubeMap.numBands * cubeMap.numFaces, space: rgb, bitmapInfo: bitmapInfo, provider: provider, decode: nil /*decode*/, shouldInterpolate: false /*shouldInterpolate*/, intent: .defaultIntent)
-        imgViewCubemap.image = NSImage(cgImage: imgCubemap, size: NSZeroSize)
+        imgViewCubemap.image = cubeMap.createImage()
         // SH no longer valid
         sphericalHarmonics = nil
     }
@@ -182,15 +174,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     func updateSphericalHarmonics() {
         sphericalHarmonics = SphericalHarmonics(numBands: UInt(textFieldNumBands.integerValue), numSamples: UInt(textFieldNumSamples.integerValue))
         if buttonRGBConversion.state == .on {
-            // function to sample & convert to linear RGB
-            let f = { (θ: Float, φ: Float) -> Vector3 in
-                return colorRGBfromSRGB(self.cubeMap.polarSampler(θ: θ, φ: φ))
-            }
-            // compute spherical harmonics
-            let _ = sphericalHarmonics?.projectPolarFn(f)
-        } else {
-            let _ = sphericalHarmonics?.projectPolarFn(cubeMap.polarSampler)
+            NSLog("sRGB->RGB is applied by default!")
         }
+        let _ = sphericalHarmonics?.projectPolarFn(cubeMap.polarSampler)
         tableViewCoeffs.reloadData()
     }
 
@@ -209,9 +195,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
                 return colorSRGBfromRGB(Clamp(v, low: 0, high: 1)) * 255.0
             }
         }
-        sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
+        sphereMap.update( {(v: Vector3) -> (UInt32, UInt32, UInt32) in
             let o = f(scale * sh.reconstruct(direction: v))
-            return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
+            return (UInt32(o.x), UInt32(o.y), UInt32(o.z))
         })
         updateImgIrradiance()
     }
@@ -222,9 +208,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
         let scale = textFieldLinearScale.floatValue
         let sh = sphericalHarmonics!
-        sphereMap.update( {(v: Vector3) -> (UInt8, UInt8, UInt8) in
+        sphereMap.update( {(v: Vector3) -> (UInt32, UInt32, UInt32) in
             let o = Clamp(scale * sh.GetIrradianceApproximation(normal: v) * (1/PI), low: 0, high: 1) * 255.0
-            return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
+            return (UInt32(o.x), UInt32(o.y), UInt32(o.z))
         })
         updateImgIrradiance()
     }
@@ -232,7 +218,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     // menu items connected to First Responder
     @IBAction func debugSphereMapRenderCubemap(_ sender: AnyObject) {
         // just sample the cubemap, for testing the spheremap
-        sphereMap.update(cubeMap.directionalSampler)
+        // @todo fix
+        //sphereMap.update(cubeMap.directionalSampler)
         updateImgIrradiance()        
     }
 
@@ -264,27 +251,27 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
 
         // if all are set, just copy them as sides of the cubemap
         if imgNegX != nil && imgPosX != nil && imgNegZ != nil && imgPosZ != nil && imgNegY != nil && imgPosY != nil {
-            cubeMap.setFace(CubeMap.Face.NegativeX, image: imgNegX!)
-            cubeMap.setFace(CubeMap.Face.PositiveZ, image: imgPosZ!)
-            cubeMap.setFace(CubeMap.Face.PositiveX, image: imgPosX!)
-            cubeMap.setFace(CubeMap.Face.NegativeZ, image: imgNegZ!)
-            cubeMap.setFace(CubeMap.Face.PositiveY, image: imgPosY!)
-            cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)
+            cubeMap.setFace(.NegativeX, image: imgNegX!)
+            cubeMap.setFace(.PositiveZ, image: imgPosZ!)
+            cubeMap.setFace(.PositiveX, image: imgPosX!)
+            cubeMap.setFace(.NegativeZ, image: imgNegZ!)
+            cubeMap.setFace(.PositiveY, image: imgPosY!)
+            cubeMap.setFace(.NegativeY, image: imgNegY!)
             updateImgCubemap()
         }
         // create a cubemap from stretching 2 of the pictures
         else if imgNegX != nil && imgPosX != nil && imgNegY != nil && imgPosY != nil {
-            cubeMap.setPanorama(CubeMap.Side.Left, image: imgNegX!)
-            cubeMap.setPanorama(CubeMap.Side.Right, image: imgPosX!)
-            cubeMap.setFace(CubeMap.Face.PositiveY, image: imgPosY!)
-            cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)
+            cubeMap.setPanorama(.Left, image: imgNegX!)
+            cubeMap.setPanorama(.Right, image: imgPosX!)
+            cubeMap.setFace(.PositiveY, image: imgPosY!)
+            cubeMap.setFace(.NegativeY, image: imgNegY!)
             updateImgCubemap()
         }
         // create a cubemap from just 1 image, assuming it's a spherical projection
         else if imgNegX != nil {
             cubeMap.setSphericalProjectionMap(imgNegX!)
             if imgNegY != nil { // overwrite ground
-                cubeMap.setFace(CubeMap.Face.NegativeY, image: imgNegY!)                
+                cubeMap.setFace(.NegativeY, image: imgNegY!)                
             }
             updateImgCubemap()
         }
@@ -308,8 +295,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         fileDialog.allowedFileTypes = ["png"]
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
-            if let chosenFile = fileDialog.url {
-                CGImageWriteToFile(imgCubemap, filename: chosenFile)
+            if let chosenFile = fileDialog.url, let cgImage = cubeMap.cgImage {
+                CGImageWriteToFile(cgImage, filename: chosenFile)
             }
         }
     }
@@ -367,7 +354,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let exponent = sliderCubemapSize.integerValue
         let numPixels = Int(2 << exponent)
         if cubeMap.width != numPixels || cubeMap.height != numPixels {
-            cubeMap = CubeMap(width: numPixels, height: numPixels)
+            cubeMap = GenericCubeMap(width: numPixels, height: numPixels, bitDepth: .ldr)
             updateImgCubemap()
         }
     }

@@ -32,7 +32,7 @@ class SphereMap {
     let height      : Int
     let bands       : Int = 3     ///< R,G,B
     var negYr       : Float  ///< radius at which to start encoding the negative Y hemisphere
-    var imgBuffer   : Array<UInt8>!
+    var imgBuffer   : Array<UInt32>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
     
     var bufferLength: Int {
@@ -45,7 +45,7 @@ class SphereMap {
         width = Int(w)
         height = Int(h)
         self.negYr = negYr
-        imgBuffer = Array<UInt8>(repeating: 0, count: bufferLength)
+        imgBuffer = Array<UInt32>(repeating: 0, count: bufferLength)
         update(debugDirection) // init with UV debug values
     }
         
@@ -54,7 +54,7 @@ class SphereMap {
     * Y axis is defined with respect to the center of the image, being 1 at the center, 0 at radius = 0.7, and -1 if radius >= 1.
     * TODO: convert linear color to sRGB
     */
-    func update(_ colorFn: (Vector3) -> (UInt8, UInt8, UInt8) ) {
+    func update(_ colorFn: (Vector3) -> (UInt32, UInt32, UInt32) ) {
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
         for j in 0..<height {
@@ -71,12 +71,12 @@ class SphereMap {
         } // j
     } // update()
     
-    func debugDirection(v: Vector3) -> (UInt8, UInt8, UInt8) {
+    func debugDirection(v: Vector3) -> (UInt32, UInt32, UInt32) {
         let o = 127.5 * v + Vector3(x: 127.5, y: 127.5, z: 127.5)
         //let o = Clamp(1.0 * v, 0, 1) * 255.0
         //let o = Clamp(Vector3(x: v.x, y: 0, z: -v.x), 0, 1) * 255.0
         //let o = Clamp(Vector3(x: v.x, y: 0, z: -v.x), 0, 1) * 255.0
-        return (UInt8(o.x), UInt8(o.y), UInt8(o.z))
+        return (UInt32(o.x), UInt32(o.y), UInt32(o.z))
         //return (UInt8(o.x), 0, UInt8(o.z))
         //return (0, UInt8(o.y), 0)
     }

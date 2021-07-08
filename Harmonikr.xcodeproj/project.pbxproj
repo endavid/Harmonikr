@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6372C1CC269397AC00D9FC11 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372C1CB269397AC00D9FC11 /* Util.swift */; };
+		6372C1D82695C38E00D9FC11 /* ImageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372C1D72695C38E00D9FC11 /* ImageTypes.swift */; };
 		637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */; };
 		63BF50391A89837C006F41A9 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BF50381A89837C006F41A9 /* Matrix.swift */; };
 		63C0B1EE1AA1E40300035E53 /* compute-cubemap.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		6372C1CB269397AC00D9FC11 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Util.swift; path = util/Util.swift; sourceTree = "<group>"; };
+		6372C1D72695C38E00D9FC11 /* ImageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageTypes.swift; path = gfx/ImageTypes.swift; sourceTree = "<group>"; };
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
 		63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-cubemap.png"; path = "Resources/compute-cubemap.png"; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				63EFEBFC1A8425BE00002886 /* SphereMap.swift */,
 				63D490E61A85865F00532F62 /* CubeMap.swift */,
 				63D490E81A860C8A00532F62 /* ImageSampler.swift */,
+				6372C1D72695C38E00D9FC11 /* ImageTypes.swift */,
 			);
 			name = gfx;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				6372C1CC269397AC00D9FC11 /* Util.swift in Sources */,
 				63BF50391A89837C006F41A9 /* Matrix.swift in Sources */,
 				63D490F01A86DF8300532F62 /* Spherical.swift in Sources */,
+				6372C1D82695C38E00D9FC11 /* ImageTypes.swift in Sources */,
 				63D490EC1A86CCF400532F62 /* Vector.swift in Sources */,
 				63EFEBFD1A8425BE00002886 /* SphereMap.swift in Sources */,
 			);
