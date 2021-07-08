@@ -56,7 +56,8 @@ class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
     * @todo convert linear color to sRGB
     */
     func update(_ colorFn: (Vector3) -> (Vector3) ) {
-        let maxValue = Float(T.max)
+        // 4294967295 becomes 4294967300 when using floats! it goes out of UInt32 range
+        let maxValue = Clamp(Float(T.max), low: 0, high: 4294900000)
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
         for j in 0..<height {
@@ -74,7 +75,7 @@ class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
     } // update()
         
     func createProvider() -> CGDataProvider? {
-        let size = bufferLength
+        let size = bufferLength * MemoryLayout<T>.size
         var provider: CGDataProvider?
         imgBuffer.withUnsafeBytes { data in
             if let ptr = data.baseAddress {
@@ -152,13 +153,17 @@ class GenericSphereMap {
             NSLog("Error creating image provider for SphereMap")
             return nil
         }
-        let rgb = CGColorSpaceCreateDeviceRGB()
+        let csname = bitDepth == .ldr ? CGColorSpace.sRGB : CGColorSpace.linearSRGB
+        guard let colorspace = CGColorSpace(name: csname) else {
+            NSLog("Failed to create color space: \(csname)")
+            return nil
+        }
         let bitmapInfo = CGBitmapInfo.byteOrderMask
         // with alpha
         // bitmapInfo |= CGBitmapInfo(CGImageAlphaInfo.Last.rawValue)
         let bits = bitDepth.toBits()
         let bytesPerComponent = bits / 8
-        _cgImage = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands, space: rgb, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        _cgImage = CGImage(width: width, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
         guard let cgImage = _cgImage else {
             return nil
         }

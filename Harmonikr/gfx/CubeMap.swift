@@ -207,7 +207,7 @@ class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
     }
     
     func createProvider() -> CGDataProvider? {
-        let size = bufferLength
+        let size = bufferLength * MemoryLayout<T>.size
         var provider: CGDataProvider?
         imgBuffer.withUnsafeBytes { data in
             if let ptr = data.baseAddress {
@@ -288,11 +288,15 @@ class GenericCubeMap {
             NSLog("Error creating image provider for CubeMap")
             return nil
         }
-        let rgb = CGColorSpaceCreateDeviceRGB()
+        let csname = bitDepth == .ldr ? CGColorSpace.sRGB : CGColorSpace.linearSRGB
+        guard let colorspace = CGColorSpace(name: csname) else {
+            NSLog("Failed to create color space: \(csname)")
+            return nil
+        }
         let bitmapInfo = CGBitmapInfo.byteOrderMask
         let bits = bitDepth.toBits()
         let bytesPerComponent = bits / 8
-        _cgImage = CGImage(width: width * numFaces, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands * numFaces, space: rgb, bitmapInfo: bitmapInfo, provider: provider, decode: nil /*decode*/, shouldInterpolate: false /*shouldInterpolate*/, intent: .defaultIntent)
+        _cgImage = CGImage(width: width * numFaces, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands * numFaces, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil /*decode*/, shouldInterpolate: false /*shouldInterpolate*/, intent: .defaultIntent)
         guard let cgImage = _cgImage else {
             return nil
         }

@@ -30,9 +30,12 @@ class ImageSampler {
         bytesPerRow = imgCg.bytesPerRow
         bytesPerPixel = imgCg.bitsPerPixel / 8
         bitsPerComponent = imgCg.bitsPerComponent
+        let colorspace = imgCg.colorSpace?.name ?? "Unknown" as CFString
+        let supportsOutput = imgCg.colorSpace?.supportsOutput ?? false
+        let wideRGB = imgCg.colorSpace?.isWideGamutRGB ?? false
         maxValue = bitsPerComponent == 8 ? 255 : bitsPerComponent == 16 ? UInt32(UInt16.max) : UInt32.max
         let size = CFDataGetLength(imgData)
-        logDebug("CGImage: \(width)x\(height), bitsPerComponent \(bitsPerComponent), bitsPerPixel \(imgCg.bitsPerPixel), bytesPerRow \(bytesPerRow), size \(size)")
+        logDebug("CGImage: \(width)x\(height), bitsPerComponent \(bitsPerComponent), bitsPerPixel \(imgCg.bitsPerPixel), bytesPerRow \(bytesPerRow), size \(size), colorspace: \(colorspace), supportsOutput: \(supportsOutput), wideRGB: \(wideRGB)")
     }
     
     /// u, v: 0..1; top-left corner = (0,0) (in OpenGL it would be 0,1)

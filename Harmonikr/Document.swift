@@ -48,7 +48,18 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var sliderPosYPercentage: NSSlider!
     @IBOutlet weak var sliderMapResolution: NSSlider!
     @IBOutlet weak var sliderCubemapSize: NSSlider!
-    @IBOutlet weak var buttonRGBConversion: NSButton!
+    @IBOutlet weak var precisionCell: NSPopUpButtonCell!
+    
+    var selectedBitDepth: BitDepth {
+        get {
+            if let item = precisionCell.selectedItem {
+                if let bitDepth = BitDepth(rawValue: item.title) {
+                    return bitDepth
+                }
+            }
+            return .ldr
+        }
+    }
     
     override init() {
         super.init()
@@ -58,7 +69,6 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         settings = [
             "negYr": "0.6",
             "mapResolution": "6",
-            "convertRGB": "true",
             "linearScale": "1.0",
             "bitDepth": "LDR"
         ]
@@ -137,16 +147,16 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
         sliderPosYPercentage.floatValue = (settings["negYr"]! as NSString).floatValue
         sliderMapResolution.integerValue = Int(settings["mapResolution"]!)!
-        buttonRGBConversion.state = settings["convertRGB"] == "true" ? .on : .off
         textFieldLinearScale.floatValue = (settings["linearScale"]! as NSString).floatValue
+        precisionCell.selectItem(withTitle: settings["bitDepth"] ?? "LDR")
     }
     
     func serializeSettings() {
         settings = [
             "negYr": "\(sliderPosYPercentage.floatValue)",
             "mapResolution": "\(sliderMapResolution.integerValue)",
-            "convertRGB": buttonRGBConversion.state == .on ? "true" : "false",
-            "linearScale": "\(textFieldLinearScale.floatValue)"
+            "linearScale": "\(textFieldLinearScale.floatValue)",
+            "bitDepth": selectedBitDepth.rawValue
         ]
     }
     
@@ -162,9 +172,6 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     func updateSphericalHarmonics() {
         sphericalHarmonics = SphericalHarmonics(numBands: UInt(textFieldNumBands.integerValue), numSamples: UInt(textFieldNumSamples.integerValue))
-        if buttonRGBConversion.state == .on {
-            NSLog("sRGB->RGB is applied by default!")
-        }
         let _ = sphericalHarmonics?.projectPolarFn(cubeMap.polarSampler)
         tableViewCoeffs.reloadData()
     }
@@ -178,7 +185,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         var f = { (v: Vector3) -> Vector3 in
                 return Clamp(v, low: 0, high: 1)
             }
-        if buttonRGBConversion.state == .on {
+        if sphereMap.bitDepth == .ldr {
             // function to sample & convert back to gamma RGB
             f = { (v: Vector3) -> Vector3 in
                 return colorSRGBfromRGB(Clamp(v, low: 0, high: 1))
@@ -350,14 +357,17 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         sphereMap.negYr = sliderPosYPercentage.floatValue
         debugSphereMapRenderNormal(sender)
     }
-    
-    @IBAction func validateRGBConversion(_ sender: AnyObject) {
-        // SH no longer valid
-        sphericalHarmonics = nil        
-    }
-    
+        
     @IBAction func validateLinearScale(_ sender: AnyObject) {
         
+    }
+    @IBAction func precisionSelection(_ sender: Any) {
+        let bitDepth = selectedBitDepth
+        if sphereMap.bitDepth != bitDepth {
+            sphereMap.bitDepth = bitDepth
+            cubeMap.bitDepth = bitDepth
+            sphericalHarmonics = nil // invalidate
+        }
     }
     
     // =============================================================
