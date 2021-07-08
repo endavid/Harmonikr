@@ -26,7 +26,6 @@ func CGImageWriteToFile(_ image: CGImage, filename: URL) {
 
 class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
-    var imgIrradiance : CGImage!
     var sphereMap : GenericSphereMap!
     var cubeMap: GenericCubeMap!
     var sphericalHarmonics: SphericalHarmonics?
@@ -274,11 +273,11 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func saveSphereMap(_ sender: AnyObject) {
         // Create the File Save Dialog class.
         let fileDialog : NSSavePanel = NSSavePanel()
-        fileDialog.allowedFileTypes = ["png"]
+        fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
-            if let chosenFile = fileDialog.url {
-                CGImageWriteToFile(imgIrradiance, filename: chosenFile)
+            if let chosenFile = fileDialog.url, let cgImage = sphereMap.cgImage {
+                CGImageWriteToFile(cgImage, filename: chosenFile)
             }
         }
     }
@@ -286,7 +285,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func saveCubemap(_ sender: AnyObject) {
         // Create the File Save Dialog class.
         let fileDialog : NSSavePanel = NSSavePanel()
-        fileDialog.allowedFileTypes = ["png"]
+        fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
             if let chosenFile = fileDialog.url, let cgImage = cubeMap.cgImage {
