@@ -285,7 +285,7 @@ class GenericCubeMap {
             ?? cubemap32?.createProvider()
             ?? nil
         guard let provider = prov else {
-            NSLog("Error creating provider")
+            NSLog("Error creating image provider for CubeMap")
             return nil
         }
         let rgb = CGColorSpaceCreateDeviceRGB()

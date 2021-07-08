@@ -27,7 +27,7 @@ func CGImageWriteToFile(_ image: CGImage, filename: URL) {
 class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     var imgIrradiance : CGImage!
-    var sphereMap : SphereMap!
+    var sphereMap : GenericSphereMap!
     var cubeMap: GenericCubeMap!
     var sphericalHarmonics: SphericalHarmonics?
     var settings: Dictionary<String, String>!
@@ -115,9 +115,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     /// Initialization code that needs the instantiated IBOutlets (before this function is called, they are still nil!)
     override func awakeFromNib() {
         let power = sliderMapResolution.integerValue
-        let numPixels = UInt(2 << power)
+        let numPixels = 2 << power
         updateSettingsView()
-        sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
+        sphereMap = GenericSphereMap(width: numPixels, height: numPixels, bitDepth: .ldr, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         inferCubemap(self)
         if sphericalHarmonics == nil {
@@ -150,19 +150,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         ]
     }
     
-    // ref: https://gist.github.com/irskep/e560be65163efcb04115
     func updateImgIrradiance() {
-        let rgb = CGColorSpaceCreateDeviceRGB()
-        let bufferLength = sphereMap.bufferLength
-        guard let provider = CGDataProvider(dataInfo: nil, data: sphereMap.imgBuffer, size: bufferLength, releaseData: {_,_,_ in }) else {
-            NSLog("Error creating provider")
-            return
-        }
-        let bitmapInfo = CGBitmapInfo.byteOrderMask
-        // with alpha
-        // bitmapInfo |= CGBitmapInfo(CGImageAlphaInfo.Last.rawValue)
-        imgIrradiance = CGImage(width: sphereMap.width, height: sphereMap.height, bitsPerComponent: 8, bitsPerPixel: 8 * sphereMap.bands, bytesPerRow: sphereMap.width * sphereMap.bands, space: rgb, bitmapInfo: bitmapInfo, provider: provider, decode: nil /*decode*/, shouldInterpolate: false /*shouldInterpolate*/, intent: .defaultIntent)
-        imgViewIrradiance.image = NSImage(cgImage: imgIrradiance, size: NSZeroSize)
+        imgViewIrradiance.image = sphereMap.createImage()
     }
     
     func updateImgCubemap() {
@@ -187,17 +176,16 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let scale = textFieldLinearScale.floatValue
         let sh = sphericalHarmonics!
         var f = { (v: Vector3) -> Vector3 in
-                return Clamp(v, low: 0, high: 1) * 255.0
+                return Clamp(v, low: 0, high: 1)
             }
         if buttonRGBConversion.state == .on {
             // function to sample & convert back to gamma RGB
             f = { (v: Vector3) -> Vector3 in
-                return colorSRGBfromRGB(Clamp(v, low: 0, high: 1)) * 255.0
+                return colorSRGBfromRGB(Clamp(v, low: 0, high: 1))
             }
         }
-        sphereMap.update( {(v: Vector3) -> (UInt32, UInt32, UInt32) in
-            let o = f(scale * sh.reconstruct(direction: v))
-            return (UInt32(o.x), UInt32(o.y), UInt32(o.z))
+        sphereMap.update( {(v: Vector3) -> (Vector3) in
+            return f(scale * sh.reconstruct(direction: v))
         })
         updateImgIrradiance()
     }
@@ -208,9 +196,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
         let scale = textFieldLinearScale.floatValue
         let sh = sphericalHarmonics!
-        sphereMap.update( {(v: Vector3) -> (UInt32, UInt32, UInt32) in
-            let o = Clamp(scale * sh.GetIrradianceApproximation(normal: v) * (1/PI), low: 0, high: 1) * 255.0
-            return (UInt32(o.x), UInt32(o.y), UInt32(o.z))
+        sphereMap.update( {(v: Vector3) -> (Vector3) in
+            return Clamp(scale * sh.GetIrradianceApproximation(normal: v) * (1/PI), low: 0, high: 1)
         })
         updateImgIrradiance()
     }
@@ -224,7 +211,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
 
     @IBAction func debugSphereMapRenderNormal(_ sender: AnyObject) {
-        sphereMap.update(sphereMap.debugDirection)
+        sphereMap.update(GenericSphereMap.debugDirection)
         updateImgIrradiance()
     }
 
@@ -343,8 +330,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     @IBAction func validateSphereMapResolution(_ sender: AnyObject) {
         let exponent = sliderMapResolution.integerValue
-        let numPixels = UInt(2 << exponent)
-        sphereMap = SphereMap(w: numPixels, h: numPixels, negYr: sliderPosYPercentage.floatValue)
+        let numPixels = 2 << exponent
+        sphereMap = GenericSphereMap(width: numPixels, height: numPixels, bitDepth: .ldr, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         // SH no longer valid
         sphericalHarmonics = nil

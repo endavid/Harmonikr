@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AppKit
 
 /**
  * x = f(r,u) = u/t + sign(u) * clamp(r-t, 0, 1-t) / (t-1) / t
@@ -27,12 +28,12 @@ func normalEncodingLinear(u: Float, v: Float, thresholdRadius: Float) -> Vector3
     return o
 }
 
-class SphereMap {
+class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
     let width       : Int
     let height      : Int
     let bands       : Int = 3     ///< R,G,B
     var negYr       : Float  ///< radius at which to start encoding the negative Y hemisphere
-    var imgBuffer   : Array<UInt32>!
+    var imgBuffer   : Array<T>!
         // ! implicitly unwrapped optional, because it will stop being nil after init
     
     var bufferLength: Int {
@@ -41,20 +42,21 @@ class SphereMap {
         }
     }
     
-    init(w: UInt = 64, h: UInt = 64, negYr: Float = 0.5) {
-        width = Int(w)
-        height = Int(h)
+    init(width w: Int = 64, height h: Int = 64, negYr: Float = 0.5) {
+        width = w
+        height = h
         self.negYr = negYr
-        imgBuffer = Array<UInt32>(repeating: 0, count: bufferLength)
-        update(debugDirection) // init with UV debug values
+        imgBuffer = Array<T>(repeating: T(0), count: bufferLength)
+        update(GenericSphereMap.debugDirection) // init with UV debug values
     }
         
     /**
     * @brief Creates a map of sphere coordinates on 2D
     * Y axis is defined with respect to the center of the image, being 1 at the center, 0 at radius = 0.7, and -1 if radius >= 1.
-    * TODO: convert linear color to sRGB
+    * @todo convert linear color to sRGB
     */
-    func update(_ colorFn: (Vector3) -> (UInt32, UInt32, UInt32) ) {
+    func update(_ colorFn: (Vector3) -> (Vector3) ) {
+        let maxValue = Float(T.max)
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
         for j in 0..<height {
@@ -64,21 +66,118 @@ class SphereMap {
                 let u = 2.0 * (Float(i)+0.5) * wInv - 1.0
                 let n = normalEncodingLinear(u: u, v: v, thresholdRadius: negYr)
                 let color = colorFn(n)
-                imgBuffer[Int(i*bands+bands*width*j)] = color.0
-                imgBuffer[Int(i*bands+bands*width*j+1)] = color.1
-                imgBuffer[Int(i*bands+bands*width*j+2)] = color.2
+                imgBuffer[Int(i*bands+bands*width*j)] = T(color.x * maxValue)
+                imgBuffer[Int(i*bands+bands*width*j+1)] = T(color.y * maxValue)
+                imgBuffer[Int(i*bands+bands*width*j+2)] = T(color.z * maxValue)
             } // i
         } // j
     } // update()
+        
+    func createProvider() -> CGDataProvider? {
+        let size = bufferLength
+        var provider: CGDataProvider?
+        imgBuffer.withUnsafeBytes { data in
+            if let ptr = data.baseAddress {
+                provider = CGDataProvider(dataInfo: nil, data: ptr, size: size, releaseData: {_,_,_ in })
+            }
+        }
+        return provider
+    }
+}
+
+
+class GenericSphereMap {
+    private var spheremap8: SphereMap<UInt8>?
+    private var spheremap16: SphereMap<UInt16>?
+    private var spheremap32: SphereMap<UInt32>?
+    private var _bitDepth: BitDepth
+    private var _cgImage: CGImage?
+
+    let width: Int
+    let height: Int
+    let numBands: Int = 3     ///< R,G,B
+    var negYr: Float
+
+    var cgImage: CGImage? {
+        get {
+            return _cgImage
+        }
+    }
     
-    func debugDirection(v: Vector3) -> (UInt32, UInt32, UInt32) {
-        let o = 127.5 * v + Vector3(x: 127.5, y: 127.5, z: 127.5)
+    var bitDepth: BitDepth {
+        get {
+            return _bitDepth
+        }
+        set {
+            if _bitDepth != newValue {
+                spheremap8 = nil
+                spheremap16 = nil
+                spheremap32 = nil
+                _bitDepth = newValue
+                switch(newValue) {
+                case .ldr:
+                    spheremap8 = SphereMap(width: width, height: height, negYr: negYr)
+                case .hdr16:
+                    spheremap16 = SphereMap(width: width, height: height, negYr: negYr)
+                case .hdr32:
+                    spheremap32 = SphereMap(width: width, height: height, negYr: negYr)
+                }
+            }
+        }
+    }
+    
+    init(width w: Int = 64, height h: Int = 64, bitDepth: BitDepth = .ldr, negYr: Float = 0.5) {
+        self.width = w
+        self.height = h
+        self.negYr = negYr
+        self._bitDepth = bitDepth
+        self._bitDepth = bitDepth
+        switch(bitDepth) {
+        case .ldr:
+            spheremap8 = SphereMap(width: w, height: h, negYr: negYr)
+        case .hdr16:
+            spheremap16 = SphereMap(width: w, height: h, negYr: negYr)
+        case .hdr32:
+            spheremap32 = SphereMap(width: w, height: h, negYr: negYr)
+        }
+    }
+    
+    func createImage() -> NSImage? {
+        // ref: https://gist.github.com/irskep/e560be65163efcb04115
+        let prov = spheremap8?.createProvider()
+            ?? spheremap16?.createProvider()
+            ?? spheremap32?.createProvider()
+            ?? nil
+        guard let provider = prov else {
+            NSLog("Error creating image provider for SphereMap")
+            return nil
+        }
+        let rgb = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo.byteOrderMask
+        // with alpha
+        // bitmapInfo |= CGBitmapInfo(CGImageAlphaInfo.Last.rawValue)
+        let bits = bitDepth.toBits()
+        let bytesPerComponent = bits / 8
+        _cgImage = CGImage(width: width, height: height, bitsPerComponent: 8, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands, space: rgb, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        guard let cgImage = _cgImage else {
+            return nil
+        }
+        return NSImage(cgImage: cgImage, size: NSZeroSize)
+    }
+    
+    func update(_ colorFn: (Vector3) -> (Vector3) ) {
+        // only one of them will be non-null at a time
+        spheremap8?.update(colorFn)
+        spheremap16?.update(colorFn)
+        spheremap32?.update(colorFn)
+    }
+
+    static func debugDirection(v: Vector3) -> (Vector3) {
+        return 0.5 * v + Vector3(x: 0.5, y: 0.5, z: 0.5)
         //let o = Clamp(1.0 * v, 0, 1) * 255.0
         //let o = Clamp(Vector3(x: v.x, y: 0, z: -v.x), 0, 1) * 255.0
         //let o = Clamp(Vector3(x: v.x, y: 0, z: -v.x), 0, 1) * 255.0
-        return (UInt32(o.x), UInt32(o.y), UInt32(o.z))
         //return (UInt8(o.x), 0, UInt8(o.z))
         //return (0, UInt8(o.y), 0)
     }
-    
 }
