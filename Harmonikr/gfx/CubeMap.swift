@@ -25,7 +25,7 @@ enum CubeMapSide: Int {
  *  Keeps the cubemap data.
  *  About cubemaps: http://www.nvidia.com/object/cube_map_ogl_tutorial.html
  */
-class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
+class CubeMap<T: Number> {
     let width       : Int
     let height      : Int
     let numBands    : Int = 3     ///< R,G,B
@@ -41,7 +41,8 @@ class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
     init(width: Int, height: Int) {
         self.width = width
         self.height = height
-        imgBuffer = Array<T>(repeating: T(0), count: bufferLength)
+        let zero: T = 0
+        imgBuffer = Array<T>(repeating: zero, count: bufferLength)
     }
     
     private func set(sampler: ImageSampler, index k: Int, u: Float, v: Float) {
@@ -143,7 +144,7 @@ class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
     func polarSampler(θ: Float, φ: Float) -> Vector3 {
         let vec = Spherical(r: 1, θ: θ, φ: φ).ToVector3()
         let c = directionalSampler(vec)
-        let color = Vector3(x: Float(c.r), y: Float(c.g), z: Float(c.b)) * (1.0/Float(T.max))
+        let color = Vector3(x: c.r.asFloat, y: c.g.asFloat, z: c.b.asFloat) * (1.0/T.norm)
         return color
     }
     
@@ -222,7 +223,7 @@ class CubeMap<T: UnsignedInteger & FixedWidthInteger> {
 class GenericCubeMap {
     private var cubemap8: CubeMap<UInt8>?
     private var cubemap16: CubeMap<UInt16>?
-    private var cubemap32: CubeMap<UInt32>?
+    private var cubemap32: CubeMap<Float>?
     private var _bitDepth: BitDepth
     private var _cgImage: CGImage?
     let width: Int
@@ -293,10 +294,14 @@ class GenericCubeMap {
             NSLog("Failed to create color space: \(csname)")
             return nil
         }
-        let bitmapInfo = CGBitmapInfo.byteOrderMask
+        var bitmapInfoRaw = CGBitmapInfo.byteOrderMask.rawValue
+        if let _ = cubemap32 {
+            bitmapInfoRaw |= CGBitmapInfo.floatComponents.rawValue
+        }
+        let bitmapInfo = CGBitmapInfo(rawValue: bitmapInfoRaw)
         let bits = bitDepth.toBits()
         let bytesPerComponent = bits / 8
-        _cgImage = CGImage(width: width * numFaces, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands * numFaces, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil /*decode*/, shouldInterpolate: false /*shouldInterpolate*/, intent: .defaultIntent)
+        _cgImage = CGImage(width: width * numFaces, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands * numFaces, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: true, intent: .perceptual)
         guard let cgImage = _cgImage else {
             return nil
         }

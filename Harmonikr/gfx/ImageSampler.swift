@@ -18,8 +18,8 @@ class ImageSampler {
     let bitsPerComponent    : Int
     let bytesPerRow         : Int
     let bytesPerPixel       : Int
-    let maxValue            : UInt32
-    var stride  : UInt = 0
+    let isFloat             : Bool
+    var stride              : UInt = 0
     
     init(image: NSImage) {
         img = image
@@ -30,16 +30,15 @@ class ImageSampler {
         bytesPerRow = imgCg.bytesPerRow
         bytesPerPixel = imgCg.bitsPerPixel / 8
         bitsPerComponent = imgCg.bitsPerComponent
-        let colorspace = imgCg.colorSpace?.name ?? "Unknown" as CFString
+        isFloat = imgCg.bitmapInfo.contains(.floatComponents)
         let supportsOutput = imgCg.colorSpace?.supportsOutput ?? false
         let wideRGB = imgCg.colorSpace?.isWideGamutRGB ?? false
-        maxValue = bitsPerComponent == 8 ? 255 : bitsPerComponent == 16 ? UInt32(UInt16.max) : UInt32.max
         let size = CFDataGetLength(imgData)
-        logDebug("CGImage: \(width)x\(height), bitsPerComponent \(bitsPerComponent), bitsPerPixel \(imgCg.bitsPerPixel), bytesPerRow \(bytesPerRow), size \(size), colorspace: \(colorspace), supportsOutput: \(supportsOutput), wideRGB: \(wideRGB)")
+        logDebug("\(imgCg.debugDescription), size = \(size), supportsOutput? \(supportsOutput), wideRGB? \(wideRGB), renderingIntent = \(imgCg.renderingIntent.rawValue), isFloat? \(isFloat)")
     }
     
     /// u, v: 0..1; top-left corner = (0,0) (in OpenGL it would be 0,1)
-    func uvSampler<T: UnsignedInteger & FixedWidthInteger>(u: Float, v: Float) -> (r: T, g: T, b: T, a: T) {
+    func uvSampler<T: Number>(u: Float, v: Float) -> (r: T, g: T, b: T, a: T) {
         let k = getOffset(u: u, v: v)
         let ptr : UnsafePointer<UInt8> = CFDataGetBytePtr(imgData)
         switch bitsPerComponent {
@@ -49,19 +48,26 @@ class ImageSampler {
         case 16:
             let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: UInt16.self, capacity: 1)
             let a = bytesPerPixel == 8 ? p[3] : UInt16.max
-            if UInt32(T.max) == 255 {
+            if MemoryLayout<T>.size == 1 {
                 return (T(p[0] >> 8), T(p[1] >> 8), T(p[2] >> 8), T(a >> 8))
             }
             return (T(p[0]), T(p[1]), T(p[2]), T(a))
         case 32:
-            let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: UInt32.self, capacity: 1)
-            let a = bytesPerPixel == 16 ? p[3] : UInt32.max
-            if UInt32(T.max) == 255 {
-                return (T(p[0] >> 24), T(p[1] >> 24), T(p[2] >> 24), T(a >> 24))
-            } else if UInt32(T.max) == 65535 {
-                return (T(p[0] >> 16), T(p[1] >> 16), T(p[2] >> 16), T(a >> 16))
+            if isFloat {
+                let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: Float.self, capacity: 1)
+                let a = bytesPerPixel == 16 ? p[3] : 1.0
+                let c = (p[0], p[1], p[2], a)
+                return (T(c.0), T(c.1), T(c.2), T(c.3))
+            } else {
+                let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: UInt32.self, capacity: 1)
+                let a = bytesPerPixel == 16 ? p[3] : UInt32.max
+                if MemoryLayout<T>.size == 1 {
+                    return (T(p[0] >> 24), T(p[1] >> 24), T(p[2] >> 24), T(a >> 24))
+                } else if MemoryLayout<T>.size == 2 {
+                    return (T(p[0] >> 16), T(p[1] >> 16), T(p[2] >> 16), T(a >> 16))
+                }
+                return (T(p[0]), T(p[1]), T(p[2]), T(a))
             }
-            return (T(p[0]), T(p[1]), T(p[2]), T(a))
         default:
             return (0,0,0,0)
         }

@@ -28,7 +28,7 @@ func normalEncodingLinear(u: Float, v: Float, thresholdRadius: Float) -> Vector3
     return o
 }
 
-class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
+class SphereMap<T: Number> {
     let width       : Int
     let height      : Int
     let bands       : Int = 3     ///< R,G,B
@@ -46,7 +46,8 @@ class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
         width = w
         height = h
         self.negYr = negYr
-        imgBuffer = Array<T>(repeating: T(0), count: bufferLength)
+        let zero: T = 0
+        imgBuffer = Array<T>(repeating: zero, count: bufferLength)
         update(GenericSphereMap.debugDirection) // init with UV debug values
     }
         
@@ -56,8 +57,7 @@ class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
     * @todo convert linear color to sRGB
     */
     func update(_ colorFn: (Vector3) -> (Vector3) ) {
-        // 4294967295 becomes 4294967300 when using floats! it goes out of UInt32 range
-        let maxValue = Clamp(Float(T.max), low: 0, high: 4294900000)
+        let maxValue: Float = T.norm
         let hInv = 1.0/Float(height)
         let wInv = 1.0/Float(width)
         for j in 0..<height {
@@ -90,7 +90,7 @@ class SphereMap<T: UnsignedInteger & FixedWidthInteger> {
 class GenericSphereMap {
     private var spheremap8: SphereMap<UInt8>?
     private var spheremap16: SphereMap<UInt16>?
-    private var spheremap32: SphereMap<UInt32>?
+    private var spheremap32: SphereMap<Float>?
     private var _bitDepth: BitDepth
     private var _cgImage: CGImage?
 
@@ -158,12 +158,16 @@ class GenericSphereMap {
             NSLog("Failed to create color space: \(csname)")
             return nil
         }
-        let bitmapInfo = CGBitmapInfo.byteOrderMask
+        var bitmapInfoRaw = CGBitmapInfo.byteOrderMask.rawValue
+        if let _ = spheremap32 {
+            bitmapInfoRaw |= CGBitmapInfo.floatComponents.rawValue
+        }
+        let bitmapInfo = CGBitmapInfo(rawValue: bitmapInfoRaw)
         // with alpha
         // bitmapInfo |= CGBitmapInfo(CGImageAlphaInfo.Last.rawValue)
         let bits = bitDepth.toBits()
         let bytesPerComponent = bits / 8
-        _cgImage = CGImage(width: width, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        _cgImage = CGImage(width: width, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: true, intent: .perceptual)
         guard let cgImage = _cgImage else {
             return nil
         }
