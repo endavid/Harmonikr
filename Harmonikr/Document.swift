@@ -48,6 +48,11 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var sliderMapResolution: NSSlider!
     @IBOutlet weak var sliderCubemapSize: NSSlider!
     @IBOutlet weak var precisionCell: NSPopUpButtonCell!
+    @IBOutlet weak var sliderRotationY: NSSlider!
+    @IBOutlet weak var textFieldRotationY: NSTextField!
+    @IBOutlet weak var textFieldPosYPercentage: NSTextField!
+    @IBOutlet weak var textFieldMapResolution: NSTextField!
+    @IBOutlet weak var textFieldCubemapSize: NSTextField!
     
     var selectedBitDepth: BitDepth {
         get {
@@ -337,6 +342,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func validateSphereMapResolution(_ sender: AnyObject) {
         let exponent = sliderMapResolution.integerValue
         let numPixels = 2 << exponent
+        textFieldMapResolution.stringValue = "\(numPixels)×\(numPixels)"
         sphereMap = GenericSphereMap(width: numPixels, height: numPixels, bitDepth: .ldr, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         // SH no longer valid
@@ -346,6 +352,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func validateCubemapSize(_ sender: AnyObject) {
         let exponent = sliderCubemapSize.integerValue
         let numPixels = Int(2 << exponent)
+        textFieldCubemapSize.stringValue = "\(numPixels*6)×\(numPixels)"
         if cubeMap.width != numPixels || cubeMap.height != numPixels {
             cubeMap = GenericCubeMap(width: numPixels, height: numPixels, bitDepth: .ldr)
             updateImgCubemap()
@@ -353,7 +360,9 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     @IBAction func validatePosYPercentage(_ sender: AnyObject) {
-        sphereMap.negYr = sliderPosYPercentage.floatValue
+        let p = Round(sliderPosYPercentage.doubleValue, digits: 3)
+        sphereMap.negYr = Float(p)
+        textFieldPosYPercentage.doubleValue = p
         debugSphereMapRenderNormal(sender)
     }
         
@@ -367,6 +376,10 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             cubeMap.bitDepth = bitDepth
             sphericalHarmonics = nil // invalidate
         }
+    }
+    @IBAction func updateRotationY(_ sender: Any) {
+        let r = Round(sliderRotationY.doubleValue, digits: 2)
+        textFieldRotationY.doubleValue = r
     }
     
     // =============================================================

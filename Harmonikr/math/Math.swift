@@ -76,6 +76,12 @@ func Rand(_ upperBound: UInt32) -> UInt32 {
 func Randf() -> Float {
     return Float(Rand(10000)) * 0.0001
 }
+/// Choose Float digits
+func Round(_ a: Double, digits: Int) -> Double {
+    let m = pow(10, Double(digits))
+    let rounded = Int64(a * m)
+    return Double(rounded) / m
+}
 // Factorial of a number with a cache
 func Factorial(_ n: Int) -> Double { // 64-bit ints aren't enough for big factorials
     struct CacheData {

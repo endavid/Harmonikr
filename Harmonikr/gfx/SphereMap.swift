@@ -93,15 +93,27 @@ class GenericSphereMap {
     private var spheremap32: SphereMap<Float>?
     private var _bitDepth: BitDepth
     private var _cgImage: CGImage?
+    private var _negYr: Float
 
     let width: Int
     let height: Int
     let numBands: Int = 3     ///< R,G,B
-    var negYr: Float
 
     var cgImage: CGImage? {
         get {
             return _cgImage
+        }
+    }
+    
+    var negYr: Float {
+        get {
+            return _negYr
+        }
+        set {
+            _negYr = newValue
+            spheremap8?.negYr = newValue
+            spheremap16?.negYr = newValue
+            spheremap32?.negYr = newValue
         }
     }
     
@@ -130,7 +142,7 @@ class GenericSphereMap {
     init(width w: Int = 64, height h: Int = 64, bitDepth: BitDepth = .ldr, negYr: Float = 0.5) {
         self.width = w
         self.height = h
-        self.negYr = negYr
+        self._negYr = negYr
         self._bitDepth = bitDepth
         self._bitDepth = bitDepth
         switch(bitDepth) {
