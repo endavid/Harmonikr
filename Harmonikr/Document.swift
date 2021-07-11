@@ -324,7 +324,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
-            if let chosenFile = fileDialog.url, let cgImage = cubeMap.cgImage {
+            if let chosenFile = fileDialog.url, let cgImage = cubeMapRotated?.cgImage ?? cubeMap.cgImage {
                 CGImageWriteToFile(cgImage, filename: chosenFile)
             }
         }
