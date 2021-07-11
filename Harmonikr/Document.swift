@@ -28,6 +28,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     var sphereMap : GenericSphereMap!
     var cubeMap: GenericCubeMap!
+    var cubeMapRotated: GenericCubeMap?
     var sphericalHarmonics: SphericalHarmonics?
     var settings: Dictionary<String, String>!
     
@@ -169,14 +170,30 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     func updateImgCubemap() {
-        imgViewCubemap.image = cubeMap.createImage()
+        let rotY = textFieldRotationY.floatValue
+        if IsClose(rotY, 0) {
+            imgViewCubemap.image = cubeMap.createImage()
+            cubeMapRotated = nil
+        } else {
+            let w = cubeMapRotated?.width ?? 0
+            let h = cubeMapRotated?.height ?? 0
+            let bd = cubeMapRotated?.bitDepth ?? .ldr
+            if cubeMap.width != w || cubeMap.height != h || cubeMap.bitDepth != bd {
+                cubeMapRotated = GenericCubeMap(width: cubeMap.width, height: cubeMap.height, bitDepth: cubeMap.bitDepth)
+            }
+            if let cr = cubeMapRotated {
+                cr.setCubeMap(cubeMap, rotationY: DegToRad(rotY))
+                imgViewCubemap.image = cr.createImage()
+            }
+        }
         // SH no longer valid
         sphericalHarmonics = nil
     }
     
     func updateSphericalHarmonics() {
         sphericalHarmonics = SphericalHarmonics(numBands: UInt(textFieldNumBands.integerValue), numSamples: UInt(textFieldNumSamples.integerValue))
-        let _ = sphericalHarmonics?.projectPolarFn(cubeMap.polarSampler)
+        let cbr = cubeMapRotated ?? cubeMap!
+        let _ = sphericalHarmonics?.projectPolarFn(cbr.polarSampler)
         tableViewCoeffs.reloadData()
     }
 
@@ -380,6 +397,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func updateRotationY(_ sender: Any) {
         let r = Round(sliderRotationY.doubleValue, digits: 2)
         textFieldRotationY.doubleValue = r
+        updateImgCubemap()
     }
     
     // =============================================================

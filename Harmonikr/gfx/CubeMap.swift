@@ -94,6 +94,45 @@ class CubeMap<T: Number> {
         }
     }
     
+    func setFace(_ face: CubeMapFace, sampler: (Vector3) -> (r: T, g: T, b: T), rotationY: Float) {
+        for j in 0..<height {
+            let v = Float(j) / Float(height)
+            for i in 0..<width {
+                let u = Float(i) / Float(width)
+                let faceOffset = face.rawValue * width * numBands
+                let k = Int(faceOffset + i*numBands+numBands*width*numFaces*j)
+                var dir = Vector3(x: 1, y: 0, z: 0)
+                switch face {
+                case .NegativeX:
+                    dir = Vector3(x: -1, y: 1 - 2 * v, z: -1 + 2 * u)
+                case .PositiveX:
+                    dir = Vector3(x: 1, y: 1 - 2 * v, z: 1 - 2 * u)
+                case .NegativeY:
+                    dir = Vector3(x: -1 + 2 * u, y: -1, z: 1 - 2 * v)
+                case .PositiveY:
+                    dir = Vector3(x: -1 + 2 * u, y: 1, z: -1 + 2 * v)
+                case .NegativeZ:
+                    dir = Vector3(x: -1 + 2 * u, y: 1 - 2 * v, z: -1)
+                case .PositiveZ:
+                    dir = Vector3(x: 1 - 2 * u, y: 1 - 2 * v, z: 1)
+                }
+                let sph = Spherical(v: dir.normalize())
+                let sphY = Spherical(r: 1, θ: sph.θ, φ: sph.φ + rotationY)
+                let c = sampler(sphY.ToVector3())
+                imgBuffer[k] = c.r
+                imgBuffer[k+1] = c.g
+                imgBuffer[k+2] = c.b
+            }
+        }
+    }
+    
+    func setCubeMap(_ c: CubeMap, rotationY: Float) {
+        let faces: [CubeMapFace] = [.NegativeX, .PositiveZ, .PositiveX, .NegativeZ, .NegativeY, .PositiveY]
+        for face in faces {
+            setFace(face, sampler: c.directionalSampler, rotationY: rotationY)
+        }
+    }
+    
     /// Initializes 2 faces of the cubemap with the give image
     func setPanorama(_ side: CubeMapSide, image: NSImage) {
         let sampler = ImageSampler(image: image)
@@ -321,6 +360,19 @@ class GenericCubeMap {
             return cubemap.polarSampler(θ: θ, φ: φ)
         }
         return .zero
+    }
+    
+    func setCubeMap(_ c: GenericCubeMap, rotationY: Float) {
+        // only one of them will be non-null at a time
+        if let c8 = c.cubemap8 {
+            cubemap8?.setCubeMap(c8, rotationY: rotationY)
+        }
+        if let c16 = c.cubemap16 {
+            cubemap16?.setCubeMap(c16, rotationY: rotationY)
+        }
+        if let c32 = c.cubemap32 {
+            cubemap32?.setCubeMap(c32, rotationY: rotationY)
+        }
     }
     
     func setFace(_ face: CubeMapFace, image: NSImage) {

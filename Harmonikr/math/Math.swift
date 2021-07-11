@@ -49,6 +49,9 @@ let π       : Double = Double(PI)
 func DegToRad(_ angle: Float) -> Float {
     return angle * (PI/180.0)
 }
+func IsClose(_ a: Float, _ b: Float, epsilon: Float = 0.0001) -> Bool {
+    return ( fabsf( a - b ) < epsilon )
+}
 /// Gets the sign of a number
 func Sign(_ n: Float) -> Float {
     return (n>=0) ?1:-1
