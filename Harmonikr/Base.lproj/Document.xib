@@ -50,24 +50,24 @@
                         <tabViewItems>
                             <tabViewItem label="Harmonics" identifier="1" id="Ucz-sZ-LJF">
                                 <view key="view" id="X5X-Od-sXV">
-                                    <rect key="frame" x="10" y="33" width="472" height="211"/>
+                                    <rect key="frame" x="10" y="33" width="466" height="211"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="14" horizontalPageScroll="10" verticalLineScroll="14" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x36-Ar-igD">
-                                            <rect key="frame" x="7" y="0.0" width="462" height="208"/>
+                                            <rect key="frame" x="7" y="0.0" width="456" height="208"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="6rb-Ve-ZPd">
-                                                <rect key="frame" x="1" y="0.0" width="460" height="207"/>
+                                                <rect key="frame" x="1" y="0.0" width="454" height="207"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="12" headerView="5gi-ey-T7G" id="wkN-99-eQv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="460" height="190"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="454" height="190"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn identifier="index" width="50.5" minWidth="40" maxWidth="1000" id="bed-h1-JMB">
+                                                            <tableColumn identifier="index" width="49" minWidth="40" maxWidth="1000" id="bed-h1-JMB">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Index">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -79,7 +79,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="red" width="130.5" minWidth="40" maxWidth="1000" id="kov-wY-ATc">
+                                                            <tableColumn identifier="red" width="129" minWidth="40" maxWidth="1000" id="kov-wY-ATc">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Red">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -91,7 +91,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="green" width="132.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="ytw-a1-uDz">
+                                                            <tableColumn identifier="green" width="131" minWidth="10" maxWidth="3.4028234663852886e+38" id="ytw-a1-uDz">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Green">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -103,7 +103,7 @@
                                                                 </textFieldCell>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             </tableColumn>
-                                                            <tableColumn identifier="blue" width="134.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="XY2-IX-q80">
+                                                            <tableColumn identifier="blue" width="133" minWidth="10" maxWidth="3.4028234663852886e+38" id="XY2-IX-q80">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Blue">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -124,7 +124,7 @@
                                                 </subviews>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kbf-Hp-WMe">
-                                                <rect key="frame" x="1" y="191" width="450" height="16"/>
+                                                <rect key="frame" x="1" y="191" width="454" height="16"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="7Nb-Af-JIy">
@@ -132,7 +132,7 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <tableHeaderView key="headerView" id="5gi-ey-T7G">
-                                                <rect key="frame" x="0.0" y="0.0" width="460" height="17"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="454" height="17"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>
                                         </scrollView>
@@ -284,7 +284,7 @@
                                         </textField>
                                         <slider verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Ur-oh-Mr3">
                                             <rect key="frame" x="123" y="10" width="96" height="24"/>
-                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-180" maxValue="180" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="dgc-Jj-wNB"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="-180" maxValue="180" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="dgc-Jj-wNB"/>
                                             <connections>
                                                 <action selector="updateRotationY:" target="-2" id="FAr-2c-LOC"/>
                                             </connections>
