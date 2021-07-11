@@ -54,15 +54,15 @@ class SphericalHarmonics {
             self.numBands = 3
         }
         numCoeffs = self.numBands * self.numBands
-        if let coeffs = dictionary["coeffs"] as? [[Float]] {
-            self.coeffs = coeffs.map() { Vector3(x: $0[0], y: $0[1], z: $0[2]) }
+        if let coeffs = dictionary["coeffs"] as? [[Double]] {
+            self.coeffs = coeffs.map() { Vector3(x: Float($0[0]), y: Float($0[1]), z: Float($0[2])) }
         } else {
             self.coeffs = [Vector3](repeating: Vector3(), count: Int(numCoeffs))
         }
-        if let mIrradiance = dictionary["mIrradiance"] as? [[Float]] {
-            self.mIrradiance = mIrradiance.map() {
+        if let mIrradiance = dictionary["mIrradiance"] as? [[Double]] {
+            self.mIrradiance = mIrradiance.map() { (v) -> Matrix4 in
                 var m = Matrix4()
-                m.values = $0
+                m.values = v.map { Float($0) }
                 return m
             }
         } else {

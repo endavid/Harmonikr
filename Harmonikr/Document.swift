@@ -74,8 +74,10 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         settings = [
             "negYr": "0.6",
             "mapResolution": "6",
+            "cubemapSize": "1",
             "linearScale": "1.0",
-            "bitDepth": "LDR"
+            "bitDepth": "LDR",
+            "rotationY": "0"
         ]
     }
 
@@ -150,18 +152,30 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             textFieldNumBands.stringValue = "\(sphericalHarmonics!.numBands)"
             textFieldNumSamples.stringValue = "\(sphericalHarmonics!.numSamples)"
         }
-        sliderPosYPercentage.floatValue = (settings["negYr"]! as NSString).floatValue
-        sliderMapResolution.integerValue = Int(settings["mapResolution"]!)!
-        textFieldLinearScale.floatValue = (settings["linearScale"]! as NSString).floatValue
+        let exponent = Int(settings["mapResolution"] ?? "1") ?? 1
+        let exponentCubemap = Int(settings["cubemapSize"] ?? "1") ?? 1
+        let posY = Round(((settings["negYr"] ?? "0.6") as NSString).doubleValue, digits: 3)
+        let linearScale = Round(((settings["linearScale"] ?? "1.0") as NSString).doubleValue, digits: 3)
+        sliderPosYPercentage.doubleValue = posY
+        sliderMapResolution.integerValue = exponent
+        sliderCubemapSize.integerValue = exponentCubemap
+        textFieldLinearScale.doubleValue = linearScale
         precisionCell.selectItem(withTitle: settings["bitDepth"] ?? "LDR")
+        sliderRotationY.doubleValue = ((settings["rotationY"] ?? "0") as NSString).doubleValue
+        textFieldRotationY.doubleValue = sliderRotationY.doubleValue
+        textFieldPosYPercentage.doubleValue = sliderPosYPercentage.doubleValue
+        let _ = updateSphereMapResolution()
+        let _ = updateCubemapSize()
     }
     
     func serializeSettings() {
         settings = [
-            "negYr": "\(sliderPosYPercentage.floatValue)",
+            "negYr": "\(sliderPosYPercentage.doubleValue)",
             "mapResolution": "\(sliderMapResolution.integerValue)",
-            "linearScale": "\(textFieldLinearScale.floatValue)",
-            "bitDepth": selectedBitDepth.rawValue
+            "cubemapSize": "\(sliderCubemapSize.integerValue)",
+            "linearScale": "\(textFieldLinearScale.doubleValue)",
+            "bitDepth": selectedBitDepth.rawValue,
+            "rotationY": "\(sliderRotationY.doubleValue)"
         ]
     }
     
@@ -357,23 +371,33 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     @IBAction func validateSphereMapResolution(_ sender: AnyObject) {
-        let exponent = sliderMapResolution.integerValue
-        let numPixels = 2 << exponent
-        textFieldMapResolution.stringValue = "\(numPixels)×\(numPixels)"
+        let numPixels = updateSphereMapResolution()
         sphereMap = GenericSphereMap(width: numPixels, height: numPixels, bitDepth: .ldr, negYr: sliderPosYPercentage.floatValue)
         updateImgIrradiance()
         // SH no longer valid
         sphericalHarmonics = nil
     }
     
+    private func updateSphereMapResolution() -> Int {
+        let exponent = sliderMapResolution.integerValue
+        let numPixels = 2 << exponent
+        textFieldMapResolution.stringValue = "\(numPixels)×\(numPixels)"
+        return numPixels
+    }
+    
     @IBAction func validateCubemapSize(_ sender: AnyObject) {
-        let exponent = sliderCubemapSize.integerValue
-        let numPixels = Int(2 << exponent)
-        textFieldCubemapSize.stringValue = "\(numPixels*6)×\(numPixels)"
+        let numPixels = updateCubemapSize()
         if cubeMap.width != numPixels || cubeMap.height != numPixels {
             cubeMap = GenericCubeMap(width: numPixels, height: numPixels, bitDepth: .ldr)
             updateImgCubemap()
         }
+    }
+    
+    private func updateCubemapSize() -> Int {
+        let exponent = sliderCubemapSize.integerValue
+        let numPixels = Int(2 << exponent)
+        textFieldCubemapSize.stringValue = "\(numPixels*6)×\(numPixels)"
+        return numPixels
     }
     
     @IBAction func validatePosYPercentage(_ sender: AnyObject) {
