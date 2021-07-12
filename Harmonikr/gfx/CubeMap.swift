@@ -133,9 +133,9 @@ class CubeMap<T: Number> {
                 case .PositiveY:
                     dir = Vector3(x: -1 + 2 * u, y: 1, z: -1 + 2 * v)
                 case .NegativeZ:
-                    dir = Vector3(x: -1 + 2 * u, y: 1 - 2 * v, z: -1)
+                    dir = Vector3(x: 1 - 2 * u, y: 1 - 2 * v, z: -1)
                 case .PositiveZ:
-                    dir = Vector3(x: 1 - 2 * u, y: 1 - 2 * v, z: 1)
+                    dir = Vector3(x: -1 + 2 * u, y: 1 - 2 * v, z: 1)
                 }
                 let sph = Spherical(v: dir.normalize())
                 let sphY = Spherical(r: 1, θ: sph.θ, φ: sph.φ + rotationY)
