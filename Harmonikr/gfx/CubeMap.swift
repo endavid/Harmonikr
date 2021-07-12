@@ -16,6 +16,8 @@ enum CubeMapFace: Int {
     case PositiveX = 0, NegativeX, PositiveY, NegativeY, PositiveZ, NegativeZ
 }
 
+let CubeMapFaces: [CubeMapFace] = [.PositiveX, .NegativeX, .PositiveY, .NegativeY, .PositiveZ, .NegativeZ]
+
 /// 2 faces of a cubemap (Left: -X,Z; Right: X,-Z)
 enum CubeMapSide: Int {
     case Left = 0, Right
@@ -32,11 +34,9 @@ class CubeMap<T: Number> {
     let numFaces    : Int = 6
     var imgBuffer   : Array<T>!
     
-    var bufferLength: Int {
-        get {
-            return width * height * numBands * numFaces
-        }
-    }
+    var imageWidth: Int { get { return width * numFaces } }
+    var imageHeight: Int { get { return height }}
+    var bufferLength: Int { get { return imageWidth * imageHeight * numBands } }
                 
     init(width: Int, height: Int) {
         self.width = width
@@ -45,11 +45,32 @@ class CubeMap<T: Number> {
         imgBuffer = Array<T>(repeating: zero, count: bufferLength)
     }
     
+    convenience init(cubemap: CubeMap<T>) {
+        self.init(width: cubemap.width, height: cubemap.height)
+        for face in CubeMapFaces {
+            for y in 0..<height {
+                for x in 0..<width {
+                    let c = cubemap.pixelSampler(face: face, x: x, y: y)
+                    let k = getArrayIndex(face: face, x: x, y: y)
+                    imgBuffer[k] = c.r
+                    imgBuffer[k+1] = c.g
+                    imgBuffer[k+2] = c.b
+                }
+            }
+        }
+    }
+    
     private func set(sampler: ImageSampler, index k: Int, u: Float, v: Float) {
         let sample: (r: T, g: T, b: T, a: T) = sampler.uvSampler(u: u, v: v)
         imgBuffer[k] = sample.r
         imgBuffer[k+1] = sample.g
         imgBuffer[k+2] = sample.b
+    }
+    
+    func getArrayIndex(face: CubeMapFace, x: Int, y: Int) -> Int {
+        let faceOffset = face.rawValue * width * numBands
+        let k = faceOffset + x*numBands+numBands*width*numFaces*y
+        return k
     }
     
     // Ref. https://docs.unity3d.com/es/current/Manual/class-Cubemap.html
@@ -127,8 +148,7 @@ class CubeMap<T: Number> {
     }
     
     func setCubeMap(_ c: CubeMap, rotationY: Float) {
-        let faces: [CubeMapFace] = [.NegativeX, .PositiveZ, .PositiveX, .NegativeZ, .NegativeY, .PositiveY]
-        for face in faces {
+        for face in CubeMapFaces {
             setFace(face, sampler: c.directionalSampler, rotationY: rotationY)
         }
     }
@@ -239,10 +259,15 @@ class CubeMap<T: Number> {
     }
     
     func uvSampler(face: CubeMapFace, u: Float, v: Float) -> (r: T, g: T, b: T) {
-        let faceOffset = face.rawValue * width * numBands
-        let i = Int( Float(width) * u ) % width
-        let j = Int( Float(height) * v ) % height
-        let k = faceOffset + i*numBands+numBands*width*numFaces*j
+        let i = Int( Float(width) * u )
+        let j = Int( Float(height) * v )
+        return pixelSampler(face: face, x: i, y: j)
+    }
+    
+    func pixelSampler(face: CubeMapFace, x: Int, y: Int) -> (r: T, g: T, b: T) {
+        let xc = Clamp(x, low: 0, high: width - 1)
+        let yc = Clamp(y, low: 0, high: height - 1)
+        let k = getArrayIndex(face: face, x: xc, y: yc)
         return (imgBuffer[k], imgBuffer[k+1], imgBuffer[k+2])
     }
     
@@ -270,11 +295,17 @@ class GenericCubeMap {
     let numBands: Int = 3     ///< R,G,B
     let numFaces: Int = 6
     
-    var bufferLength: Int {
+    var imageWidth: Int {
         get {
-            return width * height * numBands * numFaces
+            return cubemap8?.imageWidth ?? cubemap16?.imageWidth ?? cubemap32?.imageWidth ?? 0
         }
     }
+    var imageHeight: Int {
+        get {
+            return cubemap8?.imageHeight ?? cubemap16?.imageHeight ?? cubemap32?.imageHeight ?? 0
+        }
+    }
+    var bufferLength: Int { get { return imageWidth * imageHeight * numBands } }
     
     var cgImage: CGImage? {
         get {
@@ -319,6 +350,33 @@ class GenericCubeMap {
         }
     }
     
+    init(cubemap: GenericCubeMap, isSideCross: Bool) {
+        self.width = cubemap.width
+        self.height = cubemap.height
+        self._bitDepth = cubemap.bitDepth
+        if isSideCross {
+            if let c8 = cubemap.cubemap8 {
+                cubemap8 = SideCrossCubeMap(cubemap: c8)
+            }
+            if let c16 = cubemap.cubemap16 {
+                cubemap16 = SideCrossCubeMap(cubemap: c16)
+            }
+            if let c32 = cubemap.cubemap32 {
+                cubemap32 = SideCrossCubeMap(cubemap: c32)
+            }
+        } else {
+            if let c8 = cubemap.cubemap8 {
+                cubemap8 = CubeMap(cubemap: c8)
+            }
+            if let c16 = cubemap.cubemap16 {
+                cubemap16 = CubeMap(cubemap: c16)
+            }
+            if let c32 = cubemap.cubemap32 {
+                cubemap32 = CubeMap(cubemap: c32)
+            }
+        }
+    }
+    
     func createImage() -> NSImage? {
         let prov = cubemap8?.createProvider()
             ?? cubemap16?.createProvider()
@@ -340,7 +398,7 @@ class GenericCubeMap {
         let bitmapInfo = CGBitmapInfo(rawValue: bitmapInfoRaw)
         let bits = bitDepth.toBits()
         let bytesPerComponent = bits / 8
-        _cgImage = CGImage(width: width * numFaces, height: height, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * width * numBands * numFaces, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: true, intent: .perceptual)
+        _cgImage = CGImage(width: imageWidth, height: imageHeight, bitsPerComponent: bits, bitsPerPixel: bits * numBands, bytesPerRow: bytesPerComponent * imageWidth * numBands, space: colorspace, bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: true, intent: .perceptual)
         guard let cgImage = _cgImage else {
             return nil
         }

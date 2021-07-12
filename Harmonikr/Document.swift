@@ -330,6 +330,22 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
     }
     
+    @IBAction func saveSideCrossCubemap(_ sender: Any) {
+        let fileDialog : NSSavePanel = NSSavePanel()
+        fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
+        // Display the dialog.  If the OK button was pressed, save
+        if fileDialog.runModal() == .OK {
+            if let chosenFile = fileDialog.url {
+                let cubemap = GenericCubeMap(cubemap: cubeMapRotated ?? cubeMap!, isSideCross: true)
+                let _ = cubemap.createImage()
+                if let cgImage = cubemap.cgImage {
+                    CGImageWriteToFile(cgImage, filename: chosenFile)
+                }
+            }
+        }
+    }
+    
+    
     @IBAction func exportCoefficients(_ sender: AnyObject) {
         let fileDialog : NSSavePanel = NSSavePanel()
         fileDialog.allowedFileTypes = ["json"]

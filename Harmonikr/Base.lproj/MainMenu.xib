@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -103,16 +103,22 @@
                                     <action selector="saveDocumentAs:" target="-1" id="mDf-zr-I0C"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Export coefficients..." id="e92-AT-Axt">
+                            <menuItem title="Export Coefficients..." id="e92-AT-Axt">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="exportCoefficients:" target="-1" id="4xl-rt-OK9"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Export cubemap..." id="9yN-lr-a3y">
+                            <menuItem title="Export Cubemap..." id="9yN-lr-a3y">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="saveCubemap:" target="-1" id="kBX-z2-DiT"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Export Side-Cross Cubemap..." id="lm9-MB-a6g">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="saveSideCrossCubemap:" target="-1" id="xwf-PJ-G0w"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Revert to Saved" id="KaW-ft-85H">
@@ -445,6 +451,7 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="13" y="121"/>
         </menu>
     </objects>
 </document>
