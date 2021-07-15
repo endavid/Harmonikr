@@ -261,7 +261,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let fileDialog : NSOpenPanel = NSOpenPanel()
         fileDialog.allowsMultipleSelection = false
         fileDialog.canChooseDirectories = false
-        fileDialog.allowedFileTypes = ["png", "jpg", "tiff"]
+        fileDialog.allowedFileTypes = ["hdr", "png", "jpg", "tiff"]
         fileDialog.runModal()
         if let chosenFile = fileDialog.url { // holds path to selected file, if there is one
             let img = NSImage(byReferencing: chosenFile)
@@ -417,7 +417,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBAction func validateCubemapSize(_ sender: AnyObject) {
         let numPixels = updateCubemapSize()
         if cubeMap.width != numPixels || cubeMap.height != numPixels {
-            cubeMap = GenericCubeMap(width: numPixels, height: numPixels, bitDepth: .ldr)
+            cubeMap = GenericCubeMap(width: numPixels, height: numPixels, bitDepth: cubeMap.bitDepth)
             updateImgCubemap()
         }
     }

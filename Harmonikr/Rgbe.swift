@@ -11,7 +11,7 @@ import Foundation
 typealias Rgbe = (r: UInt8, g: UInt8, b: UInt8, e: UInt8)
 
 class RgbeWriter {
-    static let whiteEfficacy: Double = 179.0 / 255.0
+    static let whiteEfficacy: Double = 1.0
     
     static func toRadianceData<T: Number>(width: Int, height: Int, imgData: Array<T>) -> Data {
         // ref. https://github.com/LuminanceHDR/LuminanceHDR/blob/master/src/Libpfs/io/rgbewriter.cpp
