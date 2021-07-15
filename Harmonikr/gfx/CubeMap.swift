@@ -461,5 +461,17 @@ class GenericCubeMap {
         cubemap32?.setSphericalProjectionMap(image)
     }
     
+    func toRadianceData() -> Data {
+        if let c8 = cubemap8 {
+            return RgbeWriter.toRadianceData(width: imageWidth, height: imageHeight, imgData: c8.imgBuffer)
+        }
+        if let c16 = cubemap16 {
+            return RgbeWriter.toRadianceData(width: imageWidth, height: imageHeight, imgData: c16.imgBuffer)
+        }
+        if let c32 = cubemap32 {
+            return RgbeWriter.toRadianceData(width: imageWidth, height: imageHeight, imgData: c32.imgBuffer)
+        }
+        return Data()
+    }
     
 }

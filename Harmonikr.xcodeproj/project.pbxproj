@@ -23,6 +23,7 @@
 		63D490F21A87829C00532F62 /* SphericalHarmonics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D490F11A87829C00532F62 /* SphericalHarmonics.swift */; };
 		63E2EDA41A9A51540002216C /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E2EDA31A9A51540002216C /* Color.swift */; };
 		63E37EC4269CCB290067C029 /* SideCrossCubeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E37EC3269CCB290067C029 /* SideCrossCubeMap.swift */; };
+		63E37ECA269F85E30067C029 /* Rgbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E37EC9269F85E30067C029 /* Rgbe.swift */; };
 		63EFEBDC1A82DC2C00002886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */; };
 		63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBDD1A82DC2C00002886 /* Document.swift */; };
 		63EFEBE11A82DC2C00002886 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBDF1A82DC2C00002886 /* Document.xib */; };
@@ -59,6 +60,7 @@
 		63D490F11A87829C00532F62 /* SphericalHarmonics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = SphericalHarmonics.swift; path = math/SphericalHarmonics.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		63E2EDA31A9A51540002216C /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Color.swift; path = math/Color.swift; sourceTree = "<group>"; };
 		63E37EC3269CCB290067C029 /* SideCrossCubeMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SideCrossCubeMap.swift; path = gfx/SideCrossCubeMap.swift; sourceTree = "<group>"; };
+		63E37EC9269F85E30067C029 /* Rgbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rgbe.swift; sourceTree = "<group>"; };
 		63EFEBD61A82DC2C00002886 /* Harmonikr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmonikr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63EFEBDA1A82DC2C00002886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63EFEBDB1A82DC2C00002886 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				63D490E61A85865F00532F62 /* CubeMap.swift */,
 				63D490E81A860C8A00532F62 /* ImageSampler.swift */,
 				6372C1D72695C38E00D9FC11 /* ImageTypes.swift */,
+				63E37EC9269F85E30067C029 /* Rgbe.swift */,
 				63E37EC3269CCB290067C029 /* SideCrossCubeMap.swift */,
 				63EFEBFC1A8425BE00002886 /* SphereMap.swift */,
 			);
@@ -317,6 +320,7 @@
 				63BF50391A89837C006F41A9 /* Matrix.swift in Sources */,
 				63E37EC4269CCB290067C029 /* SideCrossCubeMap.swift in Sources */,
 				63D490F01A86DF8300532F62 /* Spherical.swift in Sources */,
+				63E37ECA269F85E30067C029 /* Rgbe.swift in Sources */,
 				6372C1D82695C38E00D9FC11 /* ImageTypes.swift in Sources */,
 				63D490EC1A86CCF400532F62 /* Vector.swift in Sources */,
 				63EFEBFD1A8425BE00002886 /* SphereMap.swift in Sources */,

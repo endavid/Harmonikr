@@ -310,6 +310,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         // Create the File Save Dialog class.
         let fileDialog : NSSavePanel = NSSavePanel()
         fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
+        fileDialog.isExtensionHidden = false
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
             if let chosenFile = fileDialog.url, let cgImage = sphereMap.cgImage {
@@ -319,27 +320,39 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
     
     @IBAction func saveCubemap(_ sender: AnyObject) {
-        // Create the File Save Dialog class.
+        let cubemap = cubeMapRotated ?? cubeMap!
         let fileDialog : NSSavePanel = NSSavePanel()
-        fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
+        fileDialog.allowedFileTypes = cubemap.bitDepth == .hdr32 ? ["hdr", "png"] : ["png"]
+        fileDialog.isExtensionHidden = false
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
-            if let chosenFile = fileDialog.url, let cgImage = cubeMapRotated?.cgImage ?? cubeMap.cgImage {
-                CGImageWriteToFile(cgImage, filename: chosenFile)
+            if let chosenFile = fileDialog.url {
+                if chosenFile.pathExtension == "hdr" {
+                    let data = cubemap.toRadianceData()
+                    try? data.write(to: chosenFile)
+                } else if let cgImage = cubemap.cgImage {
+                    CGImageWriteToFile(cgImage, filename: chosenFile)
+                }
             }
         }
     }
     
     @IBAction func saveSideCrossCubemap(_ sender: Any) {
         let fileDialog : NSSavePanel = NSSavePanel()
-        fileDialog.allowedFileTypes = ["png", "tiff", "hdr"]
+        fileDialog.allowedFileTypes = cubeMap.bitDepth == .hdr32 ? ["hdr", "png"] : ["png"]
+        fileDialog.isExtensionHidden = false
         // Display the dialog.  If the OK button was pressed, save
         if fileDialog.runModal() == .OK {
             if let chosenFile = fileDialog.url {
                 let cubemap = GenericCubeMap(cubemap: cubeMapRotated ?? cubeMap!, isSideCross: true)
-                let _ = cubemap.createImage()
-                if let cgImage = cubemap.cgImage {
-                    CGImageWriteToFile(cgImage, filename: chosenFile)
+                if chosenFile.pathExtension == "hdr" {
+                    let data = cubemap.toRadianceData()
+                    try? data.write(to: chosenFile)
+                } else {
+                    let _ = cubemap.createImage()
+                    if let cgImage = cubemap.cgImage {
+                        CGImageWriteToFile(cgImage, filename: chosenFile)
+                    }
                 }
             }
         }
