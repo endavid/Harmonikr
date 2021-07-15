@@ -45,7 +45,6 @@ class RgbeWriter {
             // each channel is encoded separately
             for x in 0..<width {
                 let k = y * width * 3 + x * 3
-                //let t = Float(x)/Float(width)
                 let r = imgData[k].asFloat / T.norm
                 let g = imgData[k+1].asFloat / T.norm
                 let b = imgData[k+2].asFloat / T.norm
@@ -94,7 +93,7 @@ class RgbeWriter {
                 run_len = 0
                 while (run_len < 127) && (run_start + run_len < 128) &&
                         (index + peek < scanline.count) &&
-                       (scanline[run_start] == scanline[peek]) {
+                       (scanline[index + run_start] == scanline[index + peek]) {
                     peek += 1
                     run_len += 1
                 }
@@ -105,14 +104,14 @@ class RgbeWriter {
                     var buf = [UInt8].init(repeating: 0, count: run_start + 1)
                     buf[0] = UInt8(run_start)
                     for i in 0..<run_start {
-                        buf[i + 1] = scanline[i]
+                        buf[i + 1] = scanline[index + i]
                     }
                     data += Data(buf)
                 }
                 // write a run: scanline[run_start], run_len
                 let buf: [UInt8] = [
                     UInt8(128 + run_len),
-                    scanline[run_start]
+                    scanline[index + run_start]
                 ]
                 data += Data(buf)
             } else {
@@ -120,7 +119,7 @@ class RgbeWriter {
                 var buf = [UInt8].init(repeating: 0, count: peek + 1)
                 buf[0] = UInt8(peek)
                 for i in 0 ..< peek {
-                    buf[i + 1] = scanline[i]
+                    buf[i + 1] = scanline[index + i]
                 }
                 data += Data(buf)
             }
@@ -128,36 +127,6 @@ class RgbeWriter {
         }
         if index != scanline.count {
             NSLog("RGBE: difference in size while writing RLE scanline")
-        }
-        return data
-    }
-    
-    static func compressRLE(_ bytes: [UInt8]) -> Data {
-        // https://victorqi.gitbooks.io/swift-algorithm/content/run-length-encoding-rle.html
-        var data = Data()
-        let length = bytes.count
-        if length > 0 {
-            var index = 0
-            while index < length {
-                var count = 0
-                let byte = bytes[index]
-                var next = byte
-
-                while next == byte && index < length && count < 64 {
-                    index += 1
-                    if index < length {
-                        next = bytes[index]
-                    }
-                    count += 1
-                }
-
-                if count > 1 || byte >= 192 {
-                    let size = 191 + UInt8(count)
-                    data += Data([size, byte])
-                } else {
-                    data += Data([byte])
-                }
-           }
         }
         return data
     }
