@@ -255,13 +255,64 @@ class CubeMap<T: Number> {
         }
         let s = ( sc/abs(maxAxisValue) + 1 ) / 2
         let t = ( tc/abs(maxAxisValue) + 1 ) / 2
-        return uvSampler(face: maxAxis, u: s, v: t)
+        return uvSampler(face: maxAxis, u: s, v: t, sampling: .linear)
     }
     
-    func uvSampler(face: CubeMapFace, u: Float, v: Float) -> (r: T, g: T, b: T) {
-        let i = Int( Float(width) * u )
-        let j = Int( Float(height) * v )
-        return pixelSampler(face: face, x: i, y: j)
+    func uvSampler(face: CubeMapFace, u: Float, v: Float, sampling: SamplingType) -> (r: T, g: T, b: T) {
+        // +half pixel, used to center the (u,v) at the center of the pixel
+        let x = Float(width) * u + 0.5
+        let y = Float(width) * v + 0.5
+        if sampling == .point {
+            return pixelSampler(face: face, x: Int(round(x)), y: Int(round(y)))
+        }
+        // linear interpolation
+        let (xi, xf) = modf(x)
+        let (yi, yf) = modf(y)
+        var x0 = xi
+        var x1 = xi + 1
+        var y0 = yi
+        var y1 = yi + 1
+        var rx: Float = 1
+        var ry: Float = 1
+        if xf < 0.5 {
+            x0 = xi - 1
+            x1 = xi
+            rx = 1 - 2 * xf
+        } else {
+            x0 = xi
+            x1 = xi + 1
+            rx = 2 - 2 * xf
+        }
+        if yf < 0.5 {
+            y0 = yi - 1
+            y1 = yi
+            ry = 1 - 2 * yf
+        } else {
+            y0 = yi
+            y1 = yi + 1
+            ry = 2 - 2 * yf
+        }
+        let samples = [
+            pixelSampler(face: face, x: Int(x0), y: Int(y0)),
+            pixelSampler(face: face, x: Int(x0), y: Int(y1)),
+            pixelSampler(face: face, x: Int(x1), y: Int(y0)),
+            pixelSampler(face: face, x: Int(x1), y: Int(y1))
+        ]
+        let rs = [
+            rx * ry,
+            rx * (1 - ry),
+            (1 - rx) * ry,
+            (1 - rx) * (1 - ry)
+        ]
+        var r: Float = 0
+        var g: Float = 0
+        var b: Float = 0
+        for i in 0..<4 {
+            r += rs[i] * samples[i].r.asFloat
+            g += rs[i] * samples[i].g.asFloat
+            b += rs[i] * samples[i].b.asFloat
+        }
+        return (T(r), T(g), T(b))
     }
     
     func pixelSampler(face: CubeMapFace, x: Int, y: Int) -> (r: T, g: T, b: T) {

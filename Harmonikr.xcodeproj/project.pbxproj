@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63140A8426ACAB8100727916 /* SamplingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63140A8326ACAB8100727916 /* SamplingType.swift */; };
 		6372C1CC269397AC00D9FC11 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372C1CB269397AC00D9FC11 /* Util.swift */; };
 		6372C1D82695C38E00D9FC11 /* ImageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6372C1D72695C38E00D9FC11 /* ImageTypes.swift */; };
 		637D7BEC1A9E761A00DD1633 /* spharmDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = 637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		63140A8326ACAB8100727916 /* SamplingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SamplingType.swift; path = gfx/SamplingType.swift; sourceTree = "<group>"; };
 		6372C1CB269397AC00D9FC11 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Util.swift; path = util/Util.swift; sourceTree = "<group>"; };
 		6372C1D72695C38E00D9FC11 /* ImageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageTypes.swift; path = gfx/ImageTypes.swift; sourceTree = "<group>"; };
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				63D490E81A860C8A00532F62 /* ImageSampler.swift */,
 				6372C1D72695C38E00D9FC11 /* ImageTypes.swift */,
 				63E37EC9269F85E30067C029 /* Rgbe.swift */,
+				63140A8326ACAB8100727916 /* SamplingType.swift */,
 				63E37EC3269CCB290067C029 /* SideCrossCubeMap.swift */,
 				63EFEBFC1A8425BE00002886 /* SphereMap.swift */,
 			);
@@ -319,6 +322,7 @@
 				6372C1CC269397AC00D9FC11 /* Util.swift in Sources */,
 				63BF50391A89837C006F41A9 /* Matrix.swift in Sources */,
 				63E37EC4269CCB290067C029 /* SideCrossCubeMap.swift in Sources */,
+				63140A8426ACAB8100727916 /* SamplingType.swift in Sources */,
 				63D490F01A86DF8300532F62 /* Spherical.swift in Sources */,
 				63E37ECA269F85E30067C029 /* Rgbe.swift in Sources */,
 				6372C1D82695C38E00D9FC11 /* ImageTypes.swift in Sources */,
