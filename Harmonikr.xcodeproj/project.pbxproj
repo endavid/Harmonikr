@@ -32,6 +32,7 @@
 		63EFEBE61A82DC2C00002886 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63EFEBE41A82DC2C00002886 /* MainMenu.xib */; };
 		63EFEBF21A82DC2C00002886 /* HarmonikrTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */; };
 		63EFEBFD1A8425BE00002886 /* SphereMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EFEBFC1A8425BE00002886 /* SphereMap.swift */; };
+		63F262B126ADCA8A00812E15 /* Image+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F262B026ADCA8A00812E15 /* Image+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		63EFEBF01A82DC2C00002886 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63EFEBF11A82DC2C00002886 /* HarmonikrTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonikrTests.swift; sourceTree = "<group>"; };
 		63EFEBFC1A8425BE00002886 /* SphereMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SphereMap.swift; path = gfx/SphereMap.swift; sourceTree = "<group>"; };
+		63F262B026ADCA8A00812E15 /* Image+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Image+Ext.swift"; path = "gfx/Image+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				63D490E61A85865F00532F62 /* CubeMap.swift */,
+				63F262B026ADCA8A00812E15 /* Image+Ext.swift */,
 				63D490E81A860C8A00532F62 /* ImageSampler.swift */,
 				6372C1D72695C38E00D9FC11 /* ImageTypes.swift */,
 				63E37EC9269F85E30067C029 /* Rgbe.swift */,
@@ -312,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63F262B126ADCA8A00812E15 /* Image+Ext.swift in Sources */,
 				63EFEBDE1A82DC2C00002886 /* Document.swift in Sources */,
 				63D490F21A87829C00532F62 /* SphericalHarmonics.swift in Sources */,
 				63E2EDA41A9A51540002216C /* Color.swift in Sources */,

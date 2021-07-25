@@ -309,6 +309,15 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             let img = NSImage(byReferencing: chosenFile)
             cubeMap.setSideCrossCubemap(img)
             updateImgCubemap()
+            let imgSize = img.size
+            let w = imgSize.width / 4
+            let h = imgSize.height / 3
+            imgViewNegativeX.image = img.trim(rect: CGRect(x: 0, y: h, width: w, height: h))
+            imgViewPositiveZ.image = img.trim(rect: CGRect(x: w, y: h, width: w, height: h))
+            imgViewPositiveX.image = img.trim(rect: CGRect(x: w * 2, y: h, width: w, height: h))
+            imgViewNegativeZ.image = img.trim(rect: CGRect(x: w * 3, y: h, width: w, height: h))
+            imgViewNegativeY.image = img.trim(rect: CGRect(x: w, y: 0, width: w, height: h))
+            imgViewPositiveY.image = img.trim(rect: CGRect(x: w, y: h * 2, width: w, height: h))
         }
     }
 
