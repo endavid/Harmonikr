@@ -161,20 +161,29 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         let power = sliderMapResolution.integerValue
         let numPixels = 2 << power
         updateSettingsView()
-        sphereMap = GenericSphereMap(width: numPixels, height: numPixels, bitDepth: .ldr, negYr: sliderPosYPercentage.floatValue)
-        updateImgIrradiance()
-        inferCubemap(self)
-        if sphericalHarmonics == nil {
+        let bitDepth = selectedBitDepth
+        sphereMap = GenericSphereMap(width: numPixels, height: numPixels, bitDepth: bitDepth, negYr: sliderPosYPercentage.floatValue)
+        cubeMap.bitDepth = bitDepth
+        if !images.isEmpty {
+            // set images
+            imgViewNegativeX.image = images["imgNegativeX"]
+            imgViewPositiveX.image = images["imgPositiveX"]
+            imgViewPositiveZ.image = images["imgPositiveZ"]
+            imgViewNegativeZ.image = images["imgNegativeZ"]
+            imgViewPositiveY.image = images["imgPositiveY"]
+            imgViewNegativeY.image = images["imgNegativeY"]
+            images.removeAll()
+            inferCubemap(self)
+            computeHarmonics(self)
+        } else if sphericalHarmonics != nil {
+            // we saved the harmonics, but the images wells were emptied
+            // We can recover the irradiance map at least
+            computeHarmonics(self)
+        } else {
+            // show debug normals
+            updateImgIrradiance()
             updateImgCubemap()
         }
-        // set images
-        imgViewNegativeX.image = images["imgNegativeX"]
-        imgViewPositiveX.image = images["imgPositiveX"]
-        imgViewPositiveZ.image = images["imgPositiveZ"]
-        imgViewNegativeZ.image = images["imgNegativeZ"]
-        imgViewPositiveY.image = images["imgPositiveY"]
-        imgViewNegativeY.image = images["imgNegativeY"]
-        images.removeAll()
     }
     
     
@@ -200,7 +209,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         textFieldRotationY.doubleValue = sliderRotationY.doubleValue
         textFieldPosYPercentage.doubleValue = sliderPosYPercentage.doubleValue
         let _ = updateSphereMapResolution()
-        let _ = updateCubemapSize()
+        validateCubemapSize(self)
     }
     
     func serializeSettings() {
@@ -235,8 +244,6 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
                 imgViewCubemap.image = cr.createImage()
             }
         }
-        // SH no longer valid
-        sphericalHarmonics = nil
     }
     
     func updateSphericalHarmonics() {
