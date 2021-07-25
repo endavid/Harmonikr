@@ -535,5 +535,10 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         }
         return ""
     }
+    
+    @objc
+    func showHelp(_ sender: Any?) {
+        openURL("http://harmonikr.endavid.com")
+    }
 }
 
