@@ -56,7 +56,7 @@ class ImageSampler {
             if isFloat {
                 let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: Float.self, capacity: 1)
                 let a = bytesPerPixel == 16 ? p[3] : 1.0
-                let c = (p[0], p[1], p[2], a)
+                let c = (min(p[0], T.maxFloat), min(p[1], T.maxFloat), min(p[2], T.maxFloat), min(a, T.maxFloat))
                 return (T(c.0), T(c.1), T(c.2), T(c.3))
             } else {
                 let p = UnsafeRawPointer(ptr.advanced(by: k)).bindMemory(to: UInt32.self, capacity: 1)
