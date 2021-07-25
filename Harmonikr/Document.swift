@@ -55,6 +55,17 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var textFieldMapResolution: NSTextField!
     @IBOutlet weak var textFieldCubemapSize: NSTextField!
     
+    // used to deserialize on start
+    var images: [String: NSImage] = [:]
+    let imageKeys = [
+        "imgNegativeX",
+        "imgPositiveX",
+        "imgPositiveZ",
+        "imgNegativeZ",
+        "imgPositiveY",
+        "imgNegativeY"
+    ]
+    
     var selectedBitDepth: BitDepth {
         get {
             if let item = precisionCell.selectedItem {
@@ -95,13 +106,21 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     // "Swift Development with Cocoa"
     override func data(ofType typeName: String) throws -> Data {
         serializeSettings()
-        let dic: [String: Any] = [
+        let dic: [String: Any?] = [
             "SH": sphericalHarmonics?.toDictionary() ?? [],
-            "settings": settings!
+            "settings": settings!,
+            "imgNegativeX": imgViewNegativeX.image?.tiffRepresentation,
+            "imgPositiveX": imgViewPositiveX.image?.tiffRepresentation,
+            "imgPositiveZ": imgViewPositiveZ.image?.tiffRepresentation,
+            "imgNegativeZ": imgViewNegativeZ.image?.tiffRepresentation,
+            "imgPositiveY": imgViewPositiveY.image?.tiffRepresentation,
+            "imgNegativeY": imgViewNegativeY.image?.tiffRepresentation
         ]
         let serializedData: Data?
         do {
-            serializedData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+            serializedData = try NSKeyedArchiver.archivedData(withRootObject: dic, requiringSecureCoding: true)
+            // JSON can't be used to serialize images :(
+            //serializedData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
         } catch let error as NSError {
             serializedData = nil
             throw error
@@ -113,16 +132,23 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
 
     override func read(from data: Data, ofType typeName: String) throws {
+        logFunctionName()
         do {
-            let data = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? NSDictionary
-            guard let json = data else {
+            guard let dict = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? NSDictionary else {
                 throw NSError(domain: "Migrator", code: 0, userInfo: nil)
             }
-            if let shDic = json["SH"] as? NSDictionary {
+            //let data = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? NSDictionary
+            if let shDic = dict["SH"] as? NSDictionary {
                 sphericalHarmonics = SphericalHarmonics(dictionary: shDic)
             }
-            if let settings = json["settings"] as? Dictionary<String,String> {
+            if let settings = dict["settings"] as? Dictionary<String,String> {
                 self.settings = settings
+            }
+            for key in imageKeys {
+                if let img = dict[key] as? Data {
+                    // The image views are still nil on start!
+                    self.images[key] = NSImage(data: img)
+                }
             }
         } catch let error {
             throw error
@@ -131,6 +157,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     
     /// Initialization code that needs the instantiated IBOutlets (before this function is called, they are still nil!)
     override func awakeFromNib() {
+        logFunctionName()
         let power = sliderMapResolution.integerValue
         let numPixels = 2 << power
         updateSettingsView()
@@ -140,6 +167,14 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
         if sphericalHarmonics == nil {
             updateImgCubemap()
         }
+        // set images
+        imgViewNegativeX.image = images["imgNegativeX"]
+        imgViewPositiveX.image = images["imgPositiveX"]
+        imgViewPositiveZ.image = images["imgPositiveZ"]
+        imgViewNegativeZ.image = images["imgNegativeZ"]
+        imgViewPositiveY.image = images["imgPositiveY"]
+        imgViewNegativeY.image = images["imgNegativeY"]
+        images.removeAll()
     }
     
     
