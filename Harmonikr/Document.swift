@@ -316,8 +316,8 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             imgViewPositiveZ.image = img.cropping(to: CGRect(x: w, y: h, width: w, height: h))
             imgViewPositiveX.image = img.cropping(to: CGRect(x: w * 2, y: h, width: w, height: h))
             imgViewNegativeZ.image = img.cropping(to: CGRect(x: w * 3, y: h, width: w, height: h))
-            imgViewNegativeY.image = img.cropping(to: CGRect(x: w, y: 0, width: w, height: h))
-            imgViewPositiveY.image = img.cropping(to: CGRect(x: w, y: h * 2, width: w, height: h))
+            imgViewPositiveY.image = img.cropping(to: CGRect(x: w, y: 0, width: w, height: h))
+            imgViewNegativeY.image = img.cropping(to: CGRect(x: w, y: h * 2, width: w, height: h))
         }
     }
 
