@@ -51,6 +51,7 @@
 		6372C1D72695C38E00D9FC11 /* ImageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageTypes.swift; path = gfx/ImageTypes.swift; sourceTree = "<group>"; };
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
 		63A93F1A26B6B32900F3FA05 /* Harmonikr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Harmonikr.entitlements; sourceTree = "<group>"; };
+		63A93F1B26B6BD6200F3FA05 /* distribution.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = distribution.md; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
 		63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-cubemap.png"; path = "Resources/compute-cubemap.png"; sourceTree = "<group>"; };
 		63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-irradiance.png"; path = "Resources/compute-irradiance.png"; sourceTree = "<group>"; };
@@ -134,6 +135,7 @@
 		63EFEBCD1A82DC2C00002886 = {
 			isa = PBXGroup;
 			children = (
+				63A93F1B26B6BD6200F3FA05 /* distribution.md */,
 				63F262B226ADE77200812E15 /* README.md */,
 				63EFEBD81A82DC2C00002886 /* Harmonikr */,
 				63EFEBEE1A82DC2C00002886 /* HarmonikrTests */,
@@ -492,7 +494,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7JBVTX94L2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -515,7 +517,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7JBVTX94L2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Harmonikr/Info.plist;
