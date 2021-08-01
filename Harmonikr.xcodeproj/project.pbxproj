@@ -50,6 +50,7 @@
 		6372C1CB269397AC00D9FC11 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Util.swift; path = util/Util.swift; sourceTree = "<group>"; };
 		6372C1D72695C38E00D9FC11 /* ImageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageTypes.swift; path = gfx/ImageTypes.swift; sourceTree = "<group>"; };
 		637D7BEB1A9E761A00DD1633 /* spharmDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = spharmDocument.icns; path = Resources/spharmDocument.icns; sourceTree = "<group>"; };
+		63A93F1A26B6B32900F3FA05 /* Harmonikr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Harmonikr.entitlements; sourceTree = "<group>"; };
 		63BF50381A89837C006F41A9 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = math/Matrix.swift; sourceTree = "<group>"; };
 		63C0B1EA1AA1E40300035E53 /* compute-cubemap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-cubemap.png"; path = "Resources/compute-cubemap.png"; sourceTree = "<group>"; };
 		63C0B1EB1AA1E40300035E53 /* compute-irradiance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "compute-irradiance.png"; path = "Resources/compute-irradiance.png"; sourceTree = "<group>"; };
@@ -152,6 +153,7 @@
 		63EFEBD81A82DC2C00002886 /* Harmonikr */ = {
 			isa = PBXGroup;
 			children = (
+				63A93F1A26B6B32900F3FA05 /* Harmonikr.entitlements */,
 				6372C1CA2693977900D9FC11 /* util */,
 				63E2EDA51A9A9B3A0002216C /* Resources */,
 				63D490EA1A86CCD100532F62 /* math */,
@@ -486,9 +488,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Harmonikr/Harmonikr.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7JBVTX94L2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -499,6 +503,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -506,9 +511,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Harmonikr/Harmonikr.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 7JBVTX94L2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Harmonikr/Info.plist;
@@ -517,6 +524,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
