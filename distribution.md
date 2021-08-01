@@ -1,5 +1,9 @@
 #  Distribution
 
+## Submission
+
+Check: [Screenshot specifications](https://help.apple.com/app-store-connect/#/devd274dd925)
+
 ## Troubleshooting
 
 
