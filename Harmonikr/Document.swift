@@ -320,6 +320,28 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
             imgViewNegativeY.image = img.cropping(to: CGRect(x: w, y: h * 2, width: w, height: h))
         }
     }
+    
+    @IBAction func importVerticalCubemap(_ sender: AnyObject) {
+        let fileDialog : NSOpenPanel = NSOpenPanel()
+        fileDialog.allowsMultipleSelection = false
+        fileDialog.canChooseDirectories = false
+        fileDialog.allowedFileTypes = ["hdr", "png", "jpg", "tiff"]
+        fileDialog.runModal()
+        if let chosenFile = fileDialog.url { // holds path to selected file, if there is one
+            let img = NSImage(byReferencing: chosenFile)
+            cubeMap.setVerticalCubemap(img)
+            updateImgCubemap()
+            let imgSize = img.size
+            let w = imgSize.width
+            let h = imgSize.height / 6
+            imgViewPositiveX.image = img.cropping(to: CGRect(x: 0, y: 0, width: w, height: h))
+            imgViewNegativeX.image = img.cropping(to: CGRect(x: 0, y: h, width: w, height: h))
+            imgViewPositiveY.image = img.cropping(to: CGRect(x: 0, y: h * 2, width: w, height: h))
+            imgViewNegativeY.image = img.cropping(to: CGRect(x: 0, y: h * 3, width: w, height: h))
+            imgViewPositiveZ.image = img.cropping(to: CGRect(x: 0, y: h * 4, width: w, height: h))
+            imgViewNegativeZ.image = img.cropping(to: CGRect(x: 0, y: h * 5, width: w, height: h))
+        }
+    }
 
     @IBAction func inferCubemap(_ sender: AnyObject) {
         let imgNegX = imgViewNegativeX.image

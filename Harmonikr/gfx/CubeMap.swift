@@ -101,6 +101,22 @@ class CubeMap<T: Number> {
         }
     }
     
+    func setVerticalCubemap(_ image: NSImage) {
+        let sampler = ImageSampler(image: image)
+        for i in 0..<width {
+            let u = Float(i) / Float(width)
+            // The 1-line cubemaps are in this order: +X, -X, +Y, -Y, +Z, -Z,
+            // for both horizontal and vertical. We just need to rotate them.
+            for sliceIndex in 0..<6 {
+                for j in 0..<height {
+                    let v = Float(j + sliceIndex * height) / Float(6 * height)
+                    let k = Int(sliceIndex * width * numBands + i*numBands+numBands*width*numFaces*j)
+                    set(sampler: sampler, index: k, u: u, v: v)
+                }
+            }
+        }
+    }
+    
     /// Initializes a face of the cubemap with the given image
     func setFace(_ face: CubeMapFace, image: NSImage) {
         let sampler = ImageSampler(image: image)
@@ -503,6 +519,12 @@ class GenericCubeMap {
         cubemap8?.setSideCrossCubemap(image)
         cubemap16?.setSideCrossCubemap(image)
         cubemap32?.setSideCrossCubemap(image)
+    }
+    
+    func setVerticalCubemap(_ image: NSImage) {
+        cubemap8?.setVerticalCubemap(image)
+        cubemap16?.setVerticalCubemap(image)
+        cubemap32?.setVerticalCubemap(image)
     }
     
     func setSphericalProjectionMap(_ image: NSImage) {
