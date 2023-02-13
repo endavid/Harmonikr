@@ -458,9 +458,13 @@ class GenericCubeMap {
             NSLog("Failed to create color space: \(csname)")
             return nil
         }
-        var bitmapInfoRaw = CGBitmapInfo.byteOrderMask.rawValue
+        var bitmapInfoRaw = CGBitmapInfo.byteOrderDefault.rawValue
         if let _ = cubemap32 {
-            bitmapInfoRaw |= CGBitmapInfo.floatComponents.rawValue
+            // this seems to work for .hdr images
+            bitmapInfoRaw = CGBitmapInfo.byteOrder32Little.rawValue | CGBitmapInfo.floatComponents.rawValue
+        } else if let _ = cubemap16 {
+            // this seems to work for 16-bit PNG images
+            bitmapInfoRaw = CGBitmapInfo.byteOrder16Little.rawValue
         }
         let bitmapInfo = CGBitmapInfo(rawValue: bitmapInfoRaw)
         let bits = bitDepth.toBits()

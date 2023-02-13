@@ -170,9 +170,13 @@ class GenericSphereMap {
             NSLog("Failed to create color space: \(csname)")
             return nil
         }
-        var bitmapInfoRaw = CGBitmapInfo.byteOrderMask.rawValue
+        var bitmapInfoRaw = CGBitmapInfo.byteOrderDefault.rawValue
         if let _ = spheremap32 {
-            bitmapInfoRaw |= CGBitmapInfo.floatComponents.rawValue
+            // this seems to work for .hdr images
+            bitmapInfoRaw = CGBitmapInfo.byteOrder32Little.rawValue | CGBitmapInfo.floatComponents.rawValue
+        } else if let _ = spheremap16 {
+            // this seems to work for 16-bit PNG images
+            bitmapInfoRaw = CGBitmapInfo.byteOrder16Little.rawValue
         }
         let bitmapInfo = CGBitmapInfo(rawValue: bitmapInfoRaw)
         // with alpha
