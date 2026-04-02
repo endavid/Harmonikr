@@ -253,9 +253,7 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     }
 
     @IBAction func computeHarmonics(_ sender: AnyObject) {
-        if sphericalHarmonics == nil {
-            updateSphericalHarmonics()
-        }
+        updateSphericalHarmonics()
         let scale = textFieldLinearScale.floatValue
         let sh = sphericalHarmonics!
         var f = { (v: Vector3) -> Vector3 in
