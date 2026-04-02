@@ -134,23 +134,22 @@ class Document: NSDocument, NSTableViewDataSource, NSTableViewDelegate {
     override func read(from data: Data, ofType typeName: String) throws {
         logFunctionName()
         do {
-            guard let dict = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? NSDictionary else {
-                throw NSError(domain: "Migrator", code: 0, userInfo: nil)
-            }
-            //let data = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? NSDictionary
+            // Use secure unarchiving to decode the root dictionary
+            let dict = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSDictionary.self, from: data) ?? NSDictionary()
+
             if let shDic = dict["SH"] as? NSDictionary {
                 sphericalHarmonics = SphericalHarmonics(dictionary: shDic)
             }
-            if let settings = dict["settings"] as? Dictionary<String,String> {
+            if let settings = dict["settings"] as? Dictionary<String, String> {
                 self.settings = settings
             }
             for key in imageKeys {
-                if let img = dict[key] as? Data {
+                if let imgData = dict[key] as? Data {
                     // The image views are still nil on start!
-                    self.images[key] = NSImage(data: img)
+                    self.images[key] = NSImage(data: imgData)
                 }
             }
-        } catch let error {
+        } catch {
             throw error
         }
     }
